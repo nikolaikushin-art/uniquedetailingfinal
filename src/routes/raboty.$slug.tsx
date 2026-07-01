@@ -32,7 +32,7 @@ export const Route = createFileRoute("/raboty/$slug")({
 });
 
 function WorkPage() {
-  const { work: w, related } = Route.useLoaderData();
+  const { work: w, related } = Route.useLoaderData() as { work: Work; related: Work[] };
 
   return (
     <div>
