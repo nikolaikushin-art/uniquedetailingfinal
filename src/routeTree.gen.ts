@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as HeritageRouteImport } from './routes/heritage'
 import { Route as CollectionRouteImport } from './routes/collection'
+import { Route as BespokeRouteImport } from './routes/bespoke'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as VehiclesSlugRouteImport } from './routes/vehicles.$slug'
 
@@ -22,6 +23,11 @@ const HeritageRoute = HeritageRouteImport.update({
 const CollectionRoute = CollectionRouteImport.update({
   id: '/collection',
   path: '/collection',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BespokeRoute = BespokeRouteImport.update({
+  id: '/bespoke',
+  path: '/bespoke',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -37,12 +43,14 @@ const VehiclesSlugRoute = VehiclesSlugRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/bespoke': typeof BespokeRoute
   '/collection': typeof CollectionRoute
   '/heritage': typeof HeritageRoute
   '/vehicles/$slug': typeof VehiclesSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/bespoke': typeof BespokeRoute
   '/collection': typeof CollectionRoute
   '/heritage': typeof HeritageRoute
   '/vehicles/$slug': typeof VehiclesSlugRoute
@@ -50,20 +58,28 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/bespoke': typeof BespokeRoute
   '/collection': typeof CollectionRoute
   '/heritage': typeof HeritageRoute
   '/vehicles/$slug': typeof VehiclesSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/collection' | '/heritage' | '/vehicles/$slug'
+  fullPaths: '/' | '/bespoke' | '/collection' | '/heritage' | '/vehicles/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/collection' | '/heritage' | '/vehicles/$slug'
-  id: '__root__' | '/' | '/collection' | '/heritage' | '/vehicles/$slug'
+  to: '/' | '/bespoke' | '/collection' | '/heritage' | '/vehicles/$slug'
+  id:
+    | '__root__'
+    | '/'
+    | '/bespoke'
+    | '/collection'
+    | '/heritage'
+    | '/vehicles/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  BespokeRoute: typeof BespokeRoute
   CollectionRoute: typeof CollectionRoute
   HeritageRoute: typeof HeritageRoute
   VehiclesSlugRoute: typeof VehiclesSlugRoute
@@ -85,6 +101,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CollectionRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/bespoke': {
+      id: '/bespoke'
+      path: '/bespoke'
+      fullPath: '/bespoke'
+      preLoaderRoute: typeof BespokeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -104,6 +127,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  BespokeRoute: BespokeRoute,
   CollectionRoute: CollectionRoute,
   HeritageRoute: HeritageRoute,
   VehiclesSlugRoute: VehiclesSlugRoute,
