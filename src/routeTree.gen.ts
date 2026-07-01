@@ -9,38 +9,82 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as HeritageRouteImport } from './routes/heritage'
+import { Route as CollectionRouteImport } from './routes/collection'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as VehiclesSlugRouteImport } from './routes/vehicles.$slug'
 
+const HeritageRoute = HeritageRouteImport.update({
+  id: '/heritage',
+  path: '/heritage',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CollectionRoute = CollectionRouteImport.update({
+  id: '/collection',
+  path: '/collection',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const VehiclesSlugRoute = VehiclesSlugRouteImport.update({
+  id: '/vehicles/$slug',
+  path: '/vehicles/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/collection': typeof CollectionRoute
+  '/heritage': typeof HeritageRoute
+  '/vehicles/$slug': typeof VehiclesSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/collection': typeof CollectionRoute
+  '/heritage': typeof HeritageRoute
+  '/vehicles/$slug': typeof VehiclesSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/collection': typeof CollectionRoute
+  '/heritage': typeof HeritageRoute
+  '/vehicles/$slug': typeof VehiclesSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/collection' | '/heritage' | '/vehicles/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/collection' | '/heritage' | '/vehicles/$slug'
+  id: '__root__' | '/' | '/collection' | '/heritage' | '/vehicles/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CollectionRoute: typeof CollectionRoute
+  HeritageRoute: typeof HeritageRoute
+  VehiclesSlugRoute: typeof VehiclesSlugRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/heritage': {
+      id: '/heritage'
+      path: '/heritage'
+      fullPath: '/heritage'
+      preLoaderRoute: typeof HeritageRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/collection': {
+      id: '/collection'
+      path: '/collection'
+      fullPath: '/collection'
+      preLoaderRoute: typeof CollectionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,22 +92,22 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/vehicles/$slug': {
+      id: '/vehicles/$slug'
+      path: '/vehicles/$slug'
+      fullPath: '/vehicles/$slug'
+      preLoaderRoute: typeof VehiclesSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CollectionRoute: CollectionRoute,
+  HeritageRoute: HeritageRoute,
+  VehiclesSlugRoute: VehiclesSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

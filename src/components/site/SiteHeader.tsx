@@ -1,0 +1,136 @@
+import { Link } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
+
+const NAV = [
+  { to: "/", label: "Maison" },
+  { to: "/collection", label: "Collection" },
+  { to: "/bespoke", label: "Bespoke" },
+  { to: "/atelier", label: "Atelier" },
+  { to: "/heritage", label: "Heritage" },
+  { to: "/concierge", label: "Concierge" },
+  { to: "/chauffeur", label: "Chauffeur" },
+  { to: "/experiences", label: "Experiences" },
+  { to: "/journal", label: "Journal" },
+  { to: "/enquire", label: "Enquire" },
+] as const;
+
+export function SiteHeader() {
+  const [scrolled, setScrolled] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    const on = () => setScrolled(window.scrollY > 20);
+    on();
+    window.addEventListener("scroll", on, { passive: true });
+    return () => window.removeEventListener("scroll", on);
+  }, []);
+
+  useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : "";
+  }, [open]);
+
+  return (
+    <>
+      <header
+        className={`fixed inset-x-0 top-0 z-50 flex items-center justify-between px-[5vw] transition-all duration-500 ${
+          scrolled ? "py-4 bg-obsidian/85 backdrop-blur border-b border-line" : "py-8"
+        }`}
+      >
+        <button
+          onClick={() => setOpen(true)}
+          className="flex items-center gap-3 text-[11px] tracking-[0.35em] uppercase text-ivory"
+          aria-label="Open menu"
+        >
+          <span className="flex w-[22px] flex-col gap-[5px]">
+            <span className="block h-px bg-ivory" />
+            <span className="block h-px w-[70%] bg-ivory" />
+            <span className="block h-px bg-ivory" />
+          </span>
+          Menu
+        </button>
+
+        <Link to="/" className="font-display text-[15px] tracking-[0.5em] uppercase text-ivory">
+          Maison&nbsp;Noir
+        </Link>
+
+        <Link
+          to="/enquire"
+          className="flex items-center gap-[10px] text-[11px] tracking-[0.3em] uppercase text-mute"
+        >
+          <span className="h-[6px] w-[6px] rounded-full bg-ember shadow-[0_0_10px_theme(colors.ember)]" />
+          Private Enquiry
+        </Link>
+      </header>
+
+      {/* Fullscreen menu */}
+      <div
+        className={`fixed inset-0 z-[90] flex transition-opacity duration-500 ${
+          open ? "opacity-100 visible" : "opacity-0 invisible"
+        }`}
+        style={{ background: "linear-gradient(120deg,#0c0d10 0%,#08090b 60%)" }}
+      >
+        <button
+          onClick={() => setOpen(false)}
+          className="absolute left-[5vw] top-8 flex items-center gap-3 text-[11px] tracking-[0.35em] uppercase text-ivory"
+          aria-label="Close menu"
+        >
+          <span className="relative block h-4 w-4">
+            <span className="absolute left-0 top-1/2 h-px w-full rotate-45 bg-ivory" />
+            <span className="absolute left-0 top-1/2 h-px w-full -rotate-45 bg-ivory" />
+          </span>
+          Close
+        </button>
+
+        <nav className="flex w-full flex-col justify-center border-r border-line px-[8vw] md:w-[55%]">
+          <ul className="space-y-1">
+            {NAV.map((n, i) => (
+              <li key={n.to} className="overflow-hidden">
+                <Link
+                  to={n.to}
+                  onClick={() => setOpen(false)}
+                  className="block font-display uppercase text-mute transition-all duration-300 hover:pl-4 hover:tracking-[0.18em] hover:text-ivory"
+                  style={{
+                    fontSize: "clamp(26px,3.4vw,42px)",
+                    letterSpacing: "0.14em",
+                    padding: "12px 0",
+                    transform: open ? "translateY(0)" : "translateY(110%)",
+                    opacity: open ? 1 : 0,
+                    transition: `transform .7s cubic-bezier(.2,.8,.2,1) ${i * 0.05 + 0.05}s, opacity .7s ease ${
+                      i * 0.05 + 0.05
+                    }s, color .3s ease, padding .3s ease`,
+                  }}
+                >
+                  {String(i + 1).padStart(2, "0")} — {n.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+          <div className="mt-16 text-[11px] uppercase tracking-[0.3em] text-mute-2">
+            <p>Salon by appointment — Jura, Switzerland</p>
+            <p>concierge@maisonnoire.example</p>
+          </div>
+        </nav>
+
+        <div
+          className="relative hidden overflow-hidden md:block md:w-[45%]"
+          style={{
+            background:
+              "repeating-linear-gradient(180deg,rgba(255,255,255,0.02) 0px,rgba(255,255,255,0.02) 1px,transparent 1px,transparent 26px), radial-gradient(ellipse at 30% 30%,#1c1e22 0%,#0a0b0d 70%)",
+          }}
+        >
+          <div
+            className="absolute inset-0 animate-drift bg-cover bg-center opacity-70"
+            style={{
+              backgroundImage:
+                "url(https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&q=80&w=1400)",
+            }}
+          />
+          <div className="absolute inset-0 plate-scrim" />
+          <div className="absolute bottom-10 left-10 right-10 font-display text-3xl uppercase leading-tight tracking-[0.06em] text-ivory">
+            A private house of quiet motoring.
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
