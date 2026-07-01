@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as HeritageRouteImport } from './routes/heritage'
+import { Route as ConciergeRouteImport } from './routes/concierge'
 import { Route as CollectionRouteImport } from './routes/collection'
 import { Route as BespokeRouteImport } from './routes/bespoke'
 import { Route as AtelierRouteImport } from './routes/atelier'
@@ -19,6 +20,11 @@ import { Route as VehiclesSlugRouteImport } from './routes/vehicles.$slug'
 const HeritageRoute = HeritageRouteImport.update({
   id: '/heritage',
   path: '/heritage',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConciergeRoute = ConciergeRouteImport.update({
+  id: '/concierge',
+  path: '/concierge',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CollectionRoute = CollectionRouteImport.update({
@@ -52,6 +58,7 @@ export interface FileRoutesByFullPath {
   '/atelier': typeof AtelierRoute
   '/bespoke': typeof BespokeRoute
   '/collection': typeof CollectionRoute
+  '/concierge': typeof ConciergeRoute
   '/heritage': typeof HeritageRoute
   '/vehicles/$slug': typeof VehiclesSlugRoute
 }
@@ -60,6 +67,7 @@ export interface FileRoutesByTo {
   '/atelier': typeof AtelierRoute
   '/bespoke': typeof BespokeRoute
   '/collection': typeof CollectionRoute
+  '/concierge': typeof ConciergeRoute
   '/heritage': typeof HeritageRoute
   '/vehicles/$slug': typeof VehiclesSlugRoute
 }
@@ -69,6 +77,7 @@ export interface FileRoutesById {
   '/atelier': typeof AtelierRoute
   '/bespoke': typeof BespokeRoute
   '/collection': typeof CollectionRoute
+  '/concierge': typeof ConciergeRoute
   '/heritage': typeof HeritageRoute
   '/vehicles/$slug': typeof VehiclesSlugRoute
 }
@@ -79,6 +88,7 @@ export interface FileRouteTypes {
     | '/atelier'
     | '/bespoke'
     | '/collection'
+    | '/concierge'
     | '/heritage'
     | '/vehicles/$slug'
   fileRoutesByTo: FileRoutesByTo
@@ -87,6 +97,7 @@ export interface FileRouteTypes {
     | '/atelier'
     | '/bespoke'
     | '/collection'
+    | '/concierge'
     | '/heritage'
     | '/vehicles/$slug'
   id:
@@ -95,6 +106,7 @@ export interface FileRouteTypes {
     | '/atelier'
     | '/bespoke'
     | '/collection'
+    | '/concierge'
     | '/heritage'
     | '/vehicles/$slug'
   fileRoutesById: FileRoutesById
@@ -104,6 +116,7 @@ export interface RootRouteChildren {
   AtelierRoute: typeof AtelierRoute
   BespokeRoute: typeof BespokeRoute
   CollectionRoute: typeof CollectionRoute
+  ConciergeRoute: typeof ConciergeRoute
   HeritageRoute: typeof HeritageRoute
   VehiclesSlugRoute: typeof VehiclesSlugRoute
 }
@@ -115,6 +128,13 @@ declare module '@tanstack/react-router' {
       path: '/heritage'
       fullPath: '/heritage'
       preLoaderRoute: typeof HeritageRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/concierge': {
+      id: '/concierge'
+      path: '/concierge'
+      fullPath: '/concierge'
+      preLoaderRoute: typeof ConciergeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/collection': {
@@ -160,6 +180,7 @@ const rootRouteChildren: RootRouteChildren = {
   AtelierRoute: AtelierRoute,
   BespokeRoute: BespokeRoute,
   CollectionRoute: CollectionRoute,
+  ConciergeRoute: ConciergeRoute,
   HeritageRoute: HeritageRoute,
   VehiclesSlugRoute: VehiclesSlugRoute,
 }
