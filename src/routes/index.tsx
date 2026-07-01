@@ -1,302 +1,329 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { Link } from "@tanstack/react-router";
-import { VEHICLES } from "@/lib/vehicles";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { WORKS } from "@/lib/works";
 import { carImage, lifestyleImage } from "@/lib/images";
+import heroVideo from "@/assets/hero.mov.asset.json";
+import logo from "@/assets/logo.png.asset.json";
 
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: "UNIQUE Detailing — Европейский стандарт детейлинга и оклейки PPF" },
+      { name: "description", content: "Премиальная детейлинг-студия UNIQUE в Санкт-Петербурге. Оклейка PPF без разбора автомобиля, собственная плёнка Unique, керамика и клубный сервис. Более 10 лет опыта." },
+      { property: "og:title", content: "UNIQUE Detailing — Европейский стандарт" },
+      { property: "og:description", content: "Оклейка PPF, керамика и клубный сервис. Скоро открытие в Санкт-Петербурге." },
+    ],
+  }),
   component: Index,
 });
 
 function Index() {
-  const featured = VEHICLES.slice(0, 6);
-  const collections = [
-    { key: "Signature", title: "Signature", copy: "The permanent collection — a canon of quiet motorcars refined over generations." },
-    { key: "Bespoke", title: "Bespoke Commissions", copy: "One client. One sketch. One motorcar. The house's most private work." },
-    { key: "Black Ember", title: "Black Ember", copy: "Nightfall, expressed in obsidian lacquer and low-lustre metalwork." },
-  ];
+  const featured = WORKS.slice(0, 6);
 
   return (
     <div>
-      {/* HERO */}
+      {/* HERO — с видео */}
       <section className="relative flex min-h-screen items-end overflow-hidden">
-        <div
-          className="absolute inset-0 animate-drift bg-cover bg-center"
-          style={{ backgroundImage: `url(${carImage(0, 2400)})` }}
+        <video
+          src={heroVideo.url}
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="absolute inset-0 h-full w-full object-cover"
+          poster={carImage(0, 2400)}
         />
+        <div className="absolute inset-0 bg-obsidian/55" />
         <div className="absolute inset-0 plate-scrim" />
-        <div className="absolute inset-0 plate-scrim-top opacity-70" />
 
         <div className="relative z-10 mx-auto w-full max-w-[1400px] px-[6vw] pb-32 pt-40">
-          <p className="eyebrow eyebrow-dot animate-fade-up">Maison Noir · Est. 1919</p>
+          <div className="mb-10 flex items-center gap-4 animate-fade-up">
+            <img src={logo.url} alt="UNIQUE" className="h-12 w-auto md:h-16" />
+            <span className="h-8 w-px bg-line-strong" />
+            <span className="text-[10px] uppercase tracking-[0.4em] text-ember">Скоро открытие</span>
+          </div>
+          <p className="eyebrow eyebrow-dot animate-fade-up" style={{ animationDelay: ".05s" }}>
+            Санкт-Петербург · с 2015 года
+          </p>
           <h1
             className="mt-6 max-w-[1100px] font-display uppercase leading-[1.02] text-ivory animate-fade-up"
-            style={{ fontSize: "clamp(46px,9vw,132px)", letterSpacing: "0.03em", animationDelay: ".1s" }}
+            style={{ fontSize: "clamp(40px,7.4vw,116px)", letterSpacing: "0.03em", animationDelay: ".1s" }}
           >
-            A quieter kind
-            <br />
-            of prestige.
+            Европейский<br/>стандарт<br/>детейлинга.
           </h1>
-          <p className="mt-8 max-w-[540px] text-[16px] leading-[1.9] text-mute animate-fade-up" style={{ animationDelay: ".2s" }}>
-            A private house of coachbuilt motorcars, bespoke commissions, chauffeur experiences
-            and curated travel. Each automobile is drawn to a single client, unrepeated,
-            unphotographed unless requested.
+          <p className="mt-8 max-w-[560px] text-[16px] leading-[1.9] text-mute animate-fade-up" style={{ animationDelay: ".2s" }}>
+            Более 10 лет опыта, клубная атмосфера и сервис, в который хочется возвращаться.
+            Вы уникальны — и ваш автомобиль тоже.
           </p>
           <div className="mt-12 flex flex-wrap gap-4 animate-fade-up" style={{ animationDelay: ".3s" }}>
-            <Link to="/collection" className="btn-line">The Collection</Link>
-            <Link to="/bespoke" className="btn-line btn-ember">Commission a Motorcar</Link>
+            <Link to="/kontakty" className="btn-line btn-ember">Рассчитать стоимость</Link>
+            <Link to="/raboty" className="btn-line">Наши работы</Link>
           </div>
         </div>
 
         <div className="absolute bottom-8 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-3 text-[10px] uppercase tracking-[0.4em] text-mute-2">
-          <span>Scroll</span>
+          <span>Листайте</span>
           <span className="h-12 w-px bg-gradient-to-b from-mute-2 to-transparent" />
         </div>
       </section>
 
-      {/* PROLOGUE */}
-      <Section num="01" title="Prologue" heading="The house does not build motorcars. It answers letters.">
+      {/* О СТУДИИ */}
+      <Section num="01" title="О студии" heading="Мы не просто выполняем работу — мы создаём результат.">
         <div className="grid gap-24 md:grid-cols-[0.9fr_1.1fr] md:items-center">
           <div className="relative aspect-[4/5] overflow-hidden">
-            <img src={lifestyleImage(3, 1400)} alt="Atelier interior" className="h-full w-full object-cover" loading="lazy" />
+            <img src={carImage(6, 1400)} alt="Студия UNIQUE" className="h-full w-full object-cover" loading="lazy" />
+            <div className="absolute inset-0 plate-scrim" />
+            <p className="absolute bottom-6 left-6 text-[10px] uppercase tracking-[0.35em] text-ivory">Внутри студии</p>
           </div>
           <div className="space-y-6 text-[15.5px] leading-[1.95] text-mute">
             <p>
-              Every commission begins with a conversation — never a specification. The house's
-              designers travel to the client; they walk the estate, they visit the library,
-              they listen. Only then does a first line appear on paper.
+              UNIQUE — это премиальная детейлинг-студия с европейским уровнем сервиса.
+              Мы работаем по единым высоким стандартам качества и технологическим картам,
+              которые уже проверены временем в Европе.
             </p>
             <p>
-              The atelier delivers between eleven and eighteen motorcars each year. It has done
-              so, at roughly this cadence, since 1919. The waiting list is long. It is not
-              published.
+              Более 10 лет реального опыта, сотни выполненных проектов и команда,
+              которая действительно любит автомобили.
             </p>
             <p>
-              What follows is not a catalogue. It is a house journal — a record, in image and
-              language, of a hundred years of quiet work.
+              Мы не просто выполняем работу — мы создаём результат,
+              в который хочется возвращаться снова и снова.
             </p>
           </div>
         </div>
       </Section>
 
-      {/* FEATURED FILM PANEL */}
-      <section className="relative flex min-h-[92vh] items-center justify-center overflow-hidden border-y border-line">
-        <div className="absolute inset-0 animate-drift bg-cover bg-center" style={{ backgroundImage: `url(${carImage(4, 2200)})` }} />
-        <div className="absolute inset-0 bg-obsidian/60" />
-        <div className="relative z-10 max-w-[760px] px-[6vw] text-center">
-          <p className="eyebrow eyebrow-dot mb-6">A Film — Autumn 2026</p>
-          <h2 className="font-display uppercase leading-[1.1] text-ivory" style={{ fontSize: "clamp(34px,5vw,60px)", letterSpacing: "0.06em" }}>
-            Nocturne, in twelve coats of obsidian.
-          </h2>
-          <p className="mx-auto mt-6 max-w-[520px] text-[15.5px] leading-[1.9] text-mute">
-            Nine weeks in the paint hall, filmed at half-speed, in a single continuous cut.
-            A meditation on patience — the house's most abundant material.
-          </p>
-          <div className="mt-10">
-            <Link to="/journal" className="btn-line btn-ember">View the Film</Link>
-          </div>
+      {/* 3 КЛЮЧЕВЫХ ПРЕИМУЩЕСТВА */}
+      <section className="border-y border-line bg-obsidian-2 px-[6vw] py-24">
+        <div className="mx-auto grid max-w-[1280px] gap-[2px] bg-line md:grid-cols-3">
+          {[
+            ["Идеальная оклейка", "без разбора автомобиля", "Технология европейского центра — плёнка заводится под кромки без снятия оптики, ручек и эмблем."],
+            ["Собственная плёнка UNIQUE", "с уникальными свойствами", "Разработана нашим центром — эластичность 320%, самовосстановление и глубина цвета выше стандарта."],
+            ["Действующий премиум-центр", "в Европе", "Более 10 лет практики в европейской студии — стандарты и мастера, привезённые сюда без компромиссов."],
+          ].map(([h1, h2, copy], i) => (
+            <div key={h1} className="bg-obsidian p-10">
+              <span className="font-display text-xs uppercase tracking-[0.3em] text-ember">{String(i + 1).padStart(2, "0")}</span>
+              <h3 className="mt-8 font-display text-2xl uppercase leading-tight text-ivory" style={{ letterSpacing: "0.05em" }}>{h1}</h3>
+              <p className="text-[11px] uppercase tracking-[0.3em] text-mute-2 mt-2">{h2}</p>
+              <p className="mt-6 text-[14.5px] leading-[1.85] text-mute">{copy}</p>
+            </div>
+          ))}
         </div>
       </section>
 
-      {/* FEATURED VEHICLES */}
-      <Section num="02" title="The Collection" heading="Six motorcars, currently at delivery.">
+      {/* УСЛУГИ ЦЕНТРА */}
+      <Section num="02" title="Услуги центра" heading="Четыре направления. Один стандарт.">
+        <div className="grid gap-16 md:grid-cols-[1.1fr_0.9fr] md:items-start">
+          <div className="space-y-[2px]">
+            {SERVICES_HOME.map((s, i) => (
+              <details key={s.title} className="group border-t border-line bg-obsidian" open={i === 0}>
+                <summary className="flex cursor-pointer items-center justify-between px-6 py-6 list-none">
+                  <div>
+                    <span className="font-display text-[13px] text-mute-2 mr-4">{String(i + 1).padStart(2, "0")}</span>
+                    <span className="font-display text-[18px] uppercase text-ivory" style={{ letterSpacing: "0.05em" }}>{s.title}</span>
+                  </div>
+                  <span className="text-ember text-xl group-open:rotate-45 transition-transform">+</span>
+                </summary>
+                <div className="px-6 pb-8 pl-16 text-[14.5px] leading-[1.85] text-mute">
+                  <p>{s.copy}</p>
+                  {s.bullets && (
+                    <ul className="mt-4 space-y-2">
+                      {s.bullets.map(b => (
+                        <li key={b} className="flex gap-3">
+                          <span className="mt-2 h-px w-4 bg-ember" />
+                          <span>{b}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              </details>
+            ))}
+            <div className="border-t border-line pt-8">
+              <Link to="/uslugi" className="btn-line">Все услуги</Link>
+            </div>
+          </div>
+          <div className="relative aspect-[4/5] overflow-hidden">
+            <img src={carImage(3, 1600)} alt="Работа в студии" className="h-full w-full object-cover" loading="lazy" />
+            <div className="absolute inset-0 plate-scrim" />
+          </div>
+        </div>
+      </Section>
+
+      {/* ВЫПОЛНЕННЫЕ РАБОТЫ */}
+      <Section num="03" title="Выполненные работы" heading="Портфолио, которым мы гордимся.">
         <div className="grid gap-[2px] bg-line md:grid-cols-3">
-          {featured.map((v, i) => (
+          {featured.map((w, i) => (
             <Link
-              key={v.slug}
-              to="/vehicles/$slug"
-              params={{ slug: v.slug }}
+              key={w.slug}
+              to="/raboty/$slug"
+              params={{ slug: w.slug }}
               className="group relative flex aspect-[4/5] flex-col justify-end overflow-hidden bg-obsidian p-8"
             >
               <div
                 className="absolute inset-0 bg-cover bg-center transition-transform duration-[1200ms] ease-out group-hover:scale-[1.06]"
-                style={{ backgroundImage: `url(${v.hero})` }}
+                style={{ backgroundImage: `url(${w.hero})` }}
               />
               <div className="absolute inset-0 plate-scrim" />
               <div className="relative z-10">
                 <p className="eyebrow mb-3 text-mute-2">
-                  {String(i + 1).padStart(2, "0")} · {v.collection}
+                  {String(i + 1).padStart(2, "0")} · {w.category}
                 </p>
                 <h3 className="font-display uppercase leading-tight text-ivory" style={{ fontSize: "26px", letterSpacing: "0.06em" }}>
-                  {v.name}
+                  {w.brand}
                 </h3>
-                <p className="mt-3 max-w-[320px] text-[13.5px] leading-[1.7] text-mute">{v.tagline}</p>
-                <span className="link-more mt-5">Discover</span>
+                <p className="mt-1 text-[15px] text-mute">{w.model}</p>
+                <span className="link-more mt-5">Подробнее</span>
               </div>
             </Link>
           ))}
         </div>
         <div className="mt-16 text-center">
-          <Link to="/collection" className="btn-line">View all fifty motorcars</Link>
+          <Link to="/raboty" className="btn-line">Все работы</Link>
         </div>
       </Section>
 
-      {/* COLLECTIONS TRIPTYCH */}
-      <Section num="03" title="Houses" heading="Three collections, one atelier.">
-        <div className="grid gap-[2px] bg-line md:grid-cols-3">
-          {collections.map((c, i) => (
-            <div key={c.key} className="relative aspect-[3/4] overflow-hidden bg-obsidian">
-              <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${carImage(i * 7 + 2, 1400)})` }} />
-              <div className="absolute inset-0 plate-scrim" />
-              <div className="absolute inset-x-8 bottom-10 z-10">
-                <p className="eyebrow mb-4 text-mute-2">Collection · {String(i + 1).padStart(2, "0")}</p>
-                <h3 className="font-display text-3xl uppercase leading-tight text-ivory" style={{ letterSpacing: "0.05em" }}>
-                  {c.title}
-                </h3>
-                <p className="mt-4 max-w-[320px] text-[14px] leading-[1.75] text-mute">{c.copy}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </Section>
-
-      {/* SPLIT EDITORIAL — BESPOKE */}
+      {/* ПЛЁНКА UNIQUE — split editorial */}
       <section className="border-y border-line bg-obsidian-2">
         <div className="grid md:grid-cols-2">
-          <div className="relative min-h-[70vh]">
-            <img src={carImage(9, 1600)} alt="Bespoke commission" className="absolute inset-0 h-full w-full object-cover" loading="lazy" />
+          <div className="relative min-h-[60vh]">
+            <img src={carImage(9, 1600)} alt="Плёнка UNIQUE" className="absolute inset-0 h-full w-full object-cover" loading="lazy" />
+            <div className="absolute inset-0 plate-scrim" />
           </div>
           <div className="flex items-center px-[8vw] py-24">
-            <div className="max-w-[500px]">
-              <p className="eyebrow mb-6">Bespoke</p>
-              <h2 className="font-display uppercase leading-tight text-ivory" style={{ fontSize: "clamp(32px,3.6vw,48px)", letterSpacing: "0.05em" }}>
-                A commission takes eighteen months. We consider that a courtesy.
+            <div className="max-w-[520px]">
+              <p className="eyebrow mb-6">Эксклюзивная плёнка Unique</p>
+              <h2 className="font-display uppercase leading-tight text-ivory" style={{ fontSize: "clamp(30px,3.4vw,46px)", letterSpacing: "0.05em" }}>
+                Особые свойства, которые вы почувствуете.
               </h2>
               <p className="mt-8 text-[15.5px] leading-[1.95] text-mute">
-                Every bespoke motorcar begins in the north salon of the atelier — a room reserved
-                for a single client at a time. What follows is a slow correspondence: sketches,
-                material studies, colour trials in the paint hall's north light, and a hand-bound
-                monograph documenting the build.
+                Мы разработали и используем собственную плёнку с уникальными характеристиками.
+                Она обеспечивает максимальную защиту, сохраняет насыщенность цвета
+                и обладает повышенной эластичностью.
+              </p>
+              <p className="mt-4 text-[15.5px] leading-[1.95] text-mute">
+                Идеально ложится на любые поверхности без необходимости разбора автомобиля.
+                Качество и долговечность, которые подтверждаются реальными кейсами.
               </p>
               <div className="mt-10">
-                <Link to="/bespoke" className="btn-line">Begin a Commission</Link>
+                <Link to="/plenka" className="btn-line btn-ember">Узнать о плёнке</Link>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* CRAFTSMANSHIP TIMELINE */}
-      <Section num="04" title="Craftsmanship" heading="A single motorcar. Eighteen months. Six hundred hands.">
-        <div className="mt-8 grid gap-[2px] bg-line md:grid-cols-4">
+      {/* ЦИФРЫ */}
+      <Section num="04" title="Цифры" heading="Более десяти лет — и каждая цифра честная.">
+        <div className="grid gap-[2px] bg-line md:grid-cols-4">
           {[
-            ["Conversation", "Nine weeks", "The client is met — at home, at the atelier, or wherever the sketches must be drawn."],
-            ["Drawing", "Twelve weeks", "First lines, first models, first material studies. Nothing is signed off in haste."],
-            ["Laying-In", "Twenty-four weeks", "Bodywork is composed. Every panel is hammered, planished and hand-fettled."],
-            ["Delivery", "By candlelight", "The final panel is signed by its master; the keys are given quietly, in a courtyard."],
-          ].map(([t, dur, copy], i) => (
-            <div key={t} className="bg-obsidian p-10">
-              <p className="font-display text-2xl text-mute-2">{String(i + 1).padStart(2, "0")}</p>
-              <h3 className="mt-6 font-display text-2xl uppercase leading-tight text-ivory" style={{ letterSpacing: "0.05em" }}>{t}</h3>
-              <p className="mt-2 text-[11px] uppercase tracking-[0.3em] text-ember">{dur}</p>
-              <p className="mt-6 text-[14px] leading-[1.8] text-mute">{copy}</p>
+            ["10+", "лет опыта",           "В европейском и российском детейлинге."],
+            ["500+","автомобилей",         "Обработано за годы практики."],
+            ["10",  "лет гарантии",        "На собственную плёнку UNIQUE PPF."],
+            ["9",   "мастеров в команде", "Каждый — со своей узкой специализацией."],
+          ].map(([n, l, c]) => (
+            <div key={l} className="bg-obsidian p-10 text-center md:text-left">
+              <p className="font-display text-ember" style={{ fontSize: "clamp(56px,6vw,88px)", letterSpacing: "0.02em" }}>{n}</p>
+              <p className="mt-2 text-[11px] uppercase tracking-[0.3em] text-ivory">{l}</p>
+              <p className="mt-4 text-[13.5px] leading-[1.8] text-mute">{c}</p>
             </div>
           ))}
         </div>
       </Section>
 
-      {/* QUOTE */}
+      {/* ЦИТАТА */}
       <section className="relative overflow-hidden border-y border-line py-40 text-center">
-        <div className="absolute inset-0 bg-cover bg-center opacity-30" style={{ backgroundImage: `url(${lifestyleImage(6, 1800)})` }} />
+        <div className="absolute inset-0 bg-cover bg-center opacity-25" style={{ backgroundImage: `url(${lifestyleImage(1, 1800)})` }} />
         <div className="absolute inset-0 bg-gradient-to-b from-obsidian via-obsidian/70 to-obsidian" />
         <blockquote className="relative z-10 mx-auto max-w-[900px] px-[6vw]">
-          <p className="font-display uppercase leading-[1.2] text-ivory" style={{ fontSize: "clamp(28px,3.6vw,44px)", letterSpacing: "0.06em" }}>
-            “Luxury is what remains when everything unnecessary has been quietly removed.”
+          <p className="font-display uppercase leading-[1.2] text-ivory" style={{ fontSize: "clamp(26px,3.4vw,42px)", letterSpacing: "0.06em" }}>
+            «Идеальная оклейка — та, о которой не думаешь. Плёнка UNIQUE делает своё дело тихо.»
           </p>
           <footer className="mt-10 text-[11px] uppercase tracking-[0.4em] text-mute">
-            — Élise Cavelier, Founding Designer
+            — Мастер студии UNIQUE
           </footer>
         </blockquote>
       </section>
 
-      {/* SERVICES GRID */}
-      <Section num="05" title="The House" heading="A hundred years of quiet services.">
-        <div className="grid border-l border-t border-line md:grid-cols-3">
-          {SERVICES.map((s, i) => (
-            <Link
-              key={s.href}
-              to={s.href}
-              className="group relative border-b border-r border-line p-12 transition-colors hover:bg-white/[0.02]"
-            >
-              <span className="font-display text-xs uppercase tracking-[0.1em] text-mute-2">
-                {String(i + 1).padStart(2, "0")}
-              </span>
-              <h3 className="mt-8 text-[22px] font-normal leading-tight text-ivory">{s.title}</h3>
-              <p className="mt-4 max-w-[380px] text-[14.5px] leading-[1.85] text-mute">{s.copy}</p>
-              <span className="link-more mt-6 inline-flex">Discover</span>
-            </Link>
+      {/* КЛУБ UNIQUE — тизер */}
+      <Section num="05" title="Клуб Unique" heading="Не просто клиент. Часть закрытого клуба.">
+        <div className="grid gap-14 md:grid-cols-3">
+          {[
+            ["Персональный менеджер",   "Прямая линия с мастером, который вёл ваш автомобиль от первого дня."],
+            ["Ежегодная ревизия",       "Раз в год — бесплатная проверка плёнки и покрытия по клубной программе."],
+            ["Закрытые мероприятия",    "Приглашения на клубные встречи, тест-драйвы и партнёрские события."],
+          ].map(([t, c], i) => (
+            <div key={t} className="border-t border-line pt-10">
+              <p className="font-display text-3xl text-mute-2">{String(i + 1).padStart(2, "0")}</p>
+              <h3 className="mt-8 font-display text-2xl uppercase text-ivory" style={{ letterSpacing: "0.05em" }}>{t}</h3>
+              <p className="mt-6 text-[14.5px] leading-[1.85] text-mute">{c}</p>
+            </div>
           ))}
+        </div>
+        <div className="mt-16 text-center">
+          <Link to="/klub" className="btn-line">Подробнее о клубе</Link>
         </div>
       </Section>
 
-      {/* MARQUEE — cities */}
+      {/* ПАРТНЁРЫ — маркетинговая полоса */}
       <div className="overflow-hidden border-y border-line bg-obsidian-2 py-8">
         <div className="flex w-max animate-marquee gap-16 whitespace-nowrap font-display text-2xl uppercase tracking-[0.35em] text-mute-2">
-          {[..."JURA · LONDON · KYOTO · MILAN · DUBAI · LOS ANGELES · PARIS · MONACO · GENEVA · NEW YORK · TOKYO · SHANGHAI".split(" · "), ...Array(2).fill(0)].map((c, i) => (
-            <span key={i} className="opacity-70">{typeof c === "string" ? c : "·"}</span>
-          ))}
-          {"JURA · LONDON · KYOTO · MILAN · DUBAI · LOS ANGELES · PARIS · MONACO".split(" · ").map((c, i) => (
-            <span key={"b" + i} className="opacity-70">{c}</span>
+          {["AUDI","ASTON MARTIN","BMW","BENTLEY","MERCEDES-BENZ","PORSCHE","LAMBORGHINI","FERRARI","ROLLS-ROYCE","RANGE ROVER","MCLAREN","MASERATI","AUDI","ASTON MARTIN","BMW","BENTLEY","MERCEDES-BENZ","PORSCHE"].map((c, i) => (
+            <span key={c + i} className="opacity-70">{c}</span>
           ))}
         </div>
       </div>
 
-      {/* JOURNAL PREVIEW (light) */}
-      <section className="bg-parchment px-[6vw] py-32 text-ink">
-        <div className="mx-auto max-w-[1280px]">
-          <div className="mb-16 flex items-end justify-between gap-8 border-b border-ink-line pb-8">
-            <div>
-              <p className="eyebrow text-ink-mute">Journal</p>
-              <h2 className="mt-4 font-display uppercase" style={{ fontSize: "clamp(30px,3.6vw,48px)", letterSpacing: "0.05em" }}>
-                Recent dispatches from the atelier.
-              </h2>
-            </div>
-            <Link to="/journal" className="btn-line !border-ink-line !text-ink hover:!bg-ink hover:!text-parchment">
-              All entries
-            </Link>
-          </div>
-          <div className="grid gap-8 md:grid-cols-4">
-            {[
-              ["Nine weeks in the paint hall", "Craft"],
-              ["A conversation with the marqueteur", "Interiors"],
-              ["Delivering a motorcar to a farmhouse in Umbria", "Owners"],
-              ["Notes on silence, at 240 kilometres per hour", "Engineering"],
-            ].map(([title, tag], i) => (
-              <article key={title} className="group">
-                <div className="relative aspect-[3/4] overflow-hidden">
-                  <img src={lifestyleImage(i + 2, 900)} alt="" className="h-full w-full object-cover transition-transform duration-[1200ms] group-hover:scale-105" loading="lazy" />
-                </div>
-                <p className="mt-6 text-[10px] uppercase tracking-[0.35em] text-ink-mute">{tag}</p>
-                <h3 className="mt-3 font-display text-[18px] uppercase leading-tight" style={{ letterSpacing: "0.06em" }}>{title}</h3>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* CTA */}
       <section className="relative border-y border-line px-[6vw] py-40 text-center">
-        <h2 className="mx-auto max-w-[880px] font-display uppercase leading-tight text-ivory" style={{ fontSize: "clamp(30px,4.4vw,54px)", letterSpacing: "0.06em" }}>
-          For those who consider silence the highest form of luxury.
+        <h2 className="mx-auto max-w-[900px] font-display uppercase leading-tight text-ivory" style={{ fontSize: "clamp(28px,4vw,52px)", letterSpacing: "0.06em" }}>
+          Ваш автомобиль уже<br/>ждёт трансформации.
         </h2>
         <p className="mx-auto mt-8 max-w-[520px] text-[15px] leading-[1.9] text-mute">
-          Enquiries are received by private correspondence, and answered by the founding designer.
+          Оставьте заявку — мы рассчитаем стоимость и предложим удобное время в клубной студии UNIQUE.
         </p>
         <div className="mt-12 flex flex-wrap justify-center gap-4">
-          <Link to="/enquire" className="btn-line btn-ember">Write to the Maison</Link>
-          <Link to="/concierge" className="btn-line">Meet the Concierge</Link>
+          <Link to="/kontakty" className="btn-line btn-ember">Рассчитать стоимость</Link>
+          <Link to="/raboty" className="btn-line">Посмотреть работы</Link>
         </div>
       </section>
     </div>
   );
 }
 
-const SERVICES = [
-  { title: "Bespoke Commissions", copy: "A single motorcar drawn to a single client — the house's most private work.", href: "/bespoke" as const },
-  { title: "The Atelier", copy: "Six hundred artisans across nine trades, in a valley in the Jura.", href: "/atelier" as const },
-  { title: "Heritage & Provenance", copy: "A hundred years of records, retained for every motorcar the house has built.", href: "/heritage" as const },
-  { title: "Concierge", copy: "A private line, answered by the master who signed your motorcar's final panel.", href: "/concierge" as const },
-  { title: "Chauffeur", copy: "A trained team available in eleven cities. Immaculate discretion, guaranteed.", href: "/chauffeur" as const },
-  { title: "Curated Experiences", copy: "Private drives, gastronomic residencies, closed circuits, and quiet Alpine mornings.", href: "/experiences" as const },
+const SERVICES_HOME = [
+  {
+    title: "Полная и зональная оклейка PPF без разбора авто",
+    copy: "Надёжная защита кузова полиуретановой плёнкой от сколов, царапин, реагентов, песка и других повреждений на дороге. Плёнка сохраняет заводской блеск лакокрасочного покрытия, предотвращает выгорание и помогает поддерживать автомобиль в идеальном состоянии.",
+    bullets: [
+      "Максимальная защита кузова от сколов и царапин.",
+      "Сохранение заводского вида на годы.",
+      "Работа без разбора — оптика, ручки и эмблемы остаются на месте.",
+    ],
+  },
+  {
+    title: "Смена цвета полиуретановой плёнкой без разбора авто",
+    copy: "Полная смена цвета кузова с помощью плёнки — обратимо, безопасно и без вмешательства в заводскую окраску. Матовые, глянцевые, сатиновые и цветные плёнки собственного производства UNIQUE.",
+    bullets: [
+      "Более 80 цветов плёнки UNIQUE в наличии.",
+      "Возможность вернуть заводской цвет в любой момент.",
+    ],
+  },
+  {
+    title: "Керамическая защита кузова, дисков и стёкол",
+    copy: "Керамическое покрытие 9H создаёт кристаллическую защитную плёнку на лаке. Дополняет PPF или используется самостоятельно — для гидрофобности, глубины цвета и лёгкой мойки.",
+    bullets: [
+      "Защита кузова, колёсных дисков и стёкол.",
+      "Гарантия сохранения свойств до 5 лет.",
+    ],
+  },
+  {
+    title: "Комплекс «Восстановление + защита»",
+    copy: "Многоступенчатая полировка лакокрасочного покрытия — устранение мелких царапин, голограмм и следов эксплуатации, с последующим нанесением плёнки или керамики.",
+    bullets: [
+      "Восстановление ЛКП до состояния «как новое».",
+      "Индивидуальный подбор дальнейшей защиты.",
+    ],
+  },
 ];
 
 function Section({
@@ -318,7 +345,7 @@ function Section({
           <span className="h-px flex-1 bg-line" />
           <span className="eyebrow">{title}</span>
         </div>
-        <h2 className="mb-16 max-w-[860px] font-display uppercase leading-[1.1] text-ivory" style={{ fontSize: "clamp(30px,4vw,52px)", letterSpacing: "0.05em" }}>
+        <h2 className="mb-16 max-w-[900px] font-display uppercase leading-[1.1] text-ivory" style={{ fontSize: "clamp(28px,4vw,52px)", letterSpacing: "0.05em" }}>
           {heading}
         </h2>
         {children}
