@@ -9,38 +9,154 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as UslugiRouteImport } from './routes/uslugi'
+import { Route as RabotyRouteImport } from './routes/raboty'
+import { Route as PlenkaRouteImport } from './routes/plenka'
+import { Route as KontaktyRouteImport } from './routes/kontakty'
+import { Route as KlubRouteImport } from './routes/klub'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as RabotySlugRouteImport } from './routes/raboty.$slug'
 
+const UslugiRoute = UslugiRouteImport.update({
+  id: '/uslugi',
+  path: '/uslugi',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RabotyRoute = RabotyRouteImport.update({
+  id: '/raboty',
+  path: '/raboty',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PlenkaRoute = PlenkaRouteImport.update({
+  id: '/plenka',
+  path: '/plenka',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KontaktyRoute = KontaktyRouteImport.update({
+  id: '/kontakty',
+  path: '/kontakty',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KlubRoute = KlubRouteImport.update({
+  id: '/klub',
+  path: '/klub',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RabotySlugRoute = RabotySlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => RabotyRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/klub': typeof KlubRoute
+  '/kontakty': typeof KontaktyRoute
+  '/plenka': typeof PlenkaRoute
+  '/raboty': typeof RabotyRouteWithChildren
+  '/uslugi': typeof UslugiRoute
+  '/raboty/$slug': typeof RabotySlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/klub': typeof KlubRoute
+  '/kontakty': typeof KontaktyRoute
+  '/plenka': typeof PlenkaRoute
+  '/raboty': typeof RabotyRouteWithChildren
+  '/uslugi': typeof UslugiRoute
+  '/raboty/$slug': typeof RabotySlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/klub': typeof KlubRoute
+  '/kontakty': typeof KontaktyRoute
+  '/plenka': typeof PlenkaRoute
+  '/raboty': typeof RabotyRouteWithChildren
+  '/uslugi': typeof UslugiRoute
+  '/raboty/$slug': typeof RabotySlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/klub'
+    | '/kontakty'
+    | '/plenka'
+    | '/raboty'
+    | '/uslugi'
+    | '/raboty/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/klub'
+    | '/kontakty'
+    | '/plenka'
+    | '/raboty'
+    | '/uslugi'
+    | '/raboty/$slug'
+  id:
+    | '__root__'
+    | '/'
+    | '/klub'
+    | '/kontakty'
+    | '/plenka'
+    | '/raboty'
+    | '/uslugi'
+    | '/raboty/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  KlubRoute: typeof KlubRoute
+  KontaktyRoute: typeof KontaktyRoute
+  PlenkaRoute: typeof PlenkaRoute
+  RabotyRoute: typeof RabotyRouteWithChildren
+  UslugiRoute: typeof UslugiRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/uslugi': {
+      id: '/uslugi'
+      path: '/uslugi'
+      fullPath: '/uslugi'
+      preLoaderRoute: typeof UslugiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/raboty': {
+      id: '/raboty'
+      path: '/raboty'
+      fullPath: '/raboty'
+      preLoaderRoute: typeof RabotyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/plenka': {
+      id: '/plenka'
+      path: '/plenka'
+      fullPath: '/plenka'
+      preLoaderRoute: typeof PlenkaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/kontakty': {
+      id: '/kontakty'
+      path: '/kontakty'
+      fullPath: '/kontakty'
+      preLoaderRoute: typeof KontaktyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/klub': {
+      id: '/klub'
+      path: '/klub'
+      fullPath: '/klub'
+      preLoaderRoute: typeof KlubRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,11 +164,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/raboty/$slug': {
+      id: '/raboty/$slug'
+      path: '/$slug'
+      fullPath: '/raboty/$slug'
+      preLoaderRoute: typeof RabotySlugRouteImport
+      parentRoute: typeof RabotyRoute
+    }
   }
 }
 
+interface RabotyRouteChildren {
+  RabotySlugRoute: typeof RabotySlugRoute
+}
+
+const RabotyRouteChildren: RabotyRouteChildren = {
+  RabotySlugRoute: RabotySlugRoute,
+}
+
+const RabotyRouteWithChildren =
+  RabotyRoute._addFileChildren(RabotyRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  KlubRoute: KlubRoute,
+  KontaktyRoute: KontaktyRoute,
+  PlenkaRoute: PlenkaRoute,
+  RabotyRoute: RabotyRouteWithChildren,
+  UslugiRoute: UslugiRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

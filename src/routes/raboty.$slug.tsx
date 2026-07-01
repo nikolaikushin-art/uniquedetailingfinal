@@ -1,8 +1,8 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { getWork, relatedWorks } from "@/lib/works";
+import { getWork, relatedWorks, type Work } from "@/lib/works";
 
 export const Route = createFileRoute("/raboty/$slug")({
-  loader: ({ params }) => {
+  loader: ({ params }): { work: Work; related: Work[] } => {
     const work = getWork(params.slug);
     if (!work) throw notFound();
     return { work, related: relatedWorks(params.slug, 3) };
