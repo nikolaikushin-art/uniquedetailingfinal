@@ -25,7 +25,7 @@ function RabotyPage() {
   return (
     <div>
       {/* HERO */}
-      <section className="relative flex min-h-[64vh] items-end overflow-hidden border-b border-line pt-40 pb-24">
+      <section className="relative flex min-h-[78vh] items-center overflow-hidden border-b border-line pt-28">
         <div className="absolute inset-0 animate-drift bg-cover bg-center opacity-70" style={{ backgroundImage: `url(${carImage(4, 2200)})` }} />
         <div className="absolute inset-0 plate-scrim" />
         <div className="relative z-10 mx-auto w-full max-w-[1400px] px-[6vw]">

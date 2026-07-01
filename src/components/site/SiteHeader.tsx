@@ -46,7 +46,7 @@ export function SiteHeader() {
         </button>
 
         <Link to="/" className="flex items-center gap-3" aria-label="UNIQUE Detailing">
-          <img src={logo.url} alt="UNIQUE Detailing" className="h-8 w-auto md:h-10" />
+          <img src={logo.url} alt="UNIQUE Detailing" className="h-12 w-auto md:h-14" />
         </Link>
 
         <div className="hidden items-center gap-[10px] text-[11px] tracking-[0.3em] uppercase text-mute md:flex">

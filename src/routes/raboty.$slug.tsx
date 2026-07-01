@@ -37,10 +37,10 @@ function WorkPage() {
   return (
     <div>
       {/* HERO */}
-      <section className="relative flex min-h-[92vh] items-end overflow-hidden border-b border-line">
+      <section className="relative flex min-h-[92vh] items-center overflow-hidden border-b border-line">
         <div className="absolute inset-0 animate-drift bg-cover bg-center" style={{ backgroundImage: `url(${w.hero})` }} />
         <div className="absolute inset-0 plate-scrim" />
-        <div className="relative z-10 mx-auto w-full max-w-[1400px] px-[6vw] pb-32 pt-40">
+        <div className="relative z-10 mx-auto w-full max-w-[1400px] px-[6vw] pt-28">
           <p className="eyebrow eyebrow-dot mb-6">{w.category} · {w.city}</p>
           <h1 className="max-w-[1100px] font-display uppercase leading-[0.98] text-ivory" style={{ fontSize: "clamp(48px,9vw,140px)", letterSpacing: "0.03em" }}>
             {w.brand}

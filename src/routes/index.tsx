@@ -22,7 +22,7 @@ function Index() {
   return (
     <div>
       {/* HERO — с видео */}
-      <section className="relative flex min-h-screen items-end overflow-hidden">
+      <section className="relative flex min-h-screen items-center overflow-hidden">
         <video
           src={heroVideo.url}
           autoPlay
@@ -35,7 +35,7 @@ function Index() {
         <div className="absolute inset-0 bg-obsidian/55" />
         <div className="absolute inset-0 plate-scrim" />
 
-        <div className="relative z-10 mx-auto w-full max-w-[1400px] px-[6vw] pb-32 pt-40">
+        <div className="relative z-10 mx-auto w-full max-w-[1400px] px-[6vw] pt-24">
           <div className="mb-10 flex items-center gap-4 animate-fade-up">
             <img src={logo.url} alt="UNIQUE" className="h-12 w-auto md:h-16" />
             <span className="h-8 w-px bg-line-strong" />
