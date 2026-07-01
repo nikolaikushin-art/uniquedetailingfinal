@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as JournalRouteImport } from './routes/journal'
 import { Route as HeritageRouteImport } from './routes/heritage'
 import { Route as ExperiencesRouteImport } from './routes/experiences'
 import { Route as ConciergeRouteImport } from './routes/concierge'
@@ -19,6 +20,11 @@ import { Route as AtelierRouteImport } from './routes/atelier'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as VehiclesSlugRouteImport } from './routes/vehicles.$slug'
 
+const JournalRoute = JournalRouteImport.update({
+  id: '/journal',
+  path: '/journal',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const HeritageRoute = HeritageRouteImport.update({
   id: '/heritage',
   path: '/heritage',
@@ -74,6 +80,7 @@ export interface FileRoutesByFullPath {
   '/concierge': typeof ConciergeRoute
   '/experiences': typeof ExperiencesRoute
   '/heritage': typeof HeritageRoute
+  '/journal': typeof JournalRoute
   '/vehicles/$slug': typeof VehiclesSlugRoute
 }
 export interface FileRoutesByTo {
@@ -85,6 +92,7 @@ export interface FileRoutesByTo {
   '/concierge': typeof ConciergeRoute
   '/experiences': typeof ExperiencesRoute
   '/heritage': typeof HeritageRoute
+  '/journal': typeof JournalRoute
   '/vehicles/$slug': typeof VehiclesSlugRoute
 }
 export interface FileRoutesById {
@@ -97,6 +105,7 @@ export interface FileRoutesById {
   '/concierge': typeof ConciergeRoute
   '/experiences': typeof ExperiencesRoute
   '/heritage': typeof HeritageRoute
+  '/journal': typeof JournalRoute
   '/vehicles/$slug': typeof VehiclesSlugRoute
 }
 export interface FileRouteTypes {
@@ -110,6 +119,7 @@ export interface FileRouteTypes {
     | '/concierge'
     | '/experiences'
     | '/heritage'
+    | '/journal'
     | '/vehicles/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -121,6 +131,7 @@ export interface FileRouteTypes {
     | '/concierge'
     | '/experiences'
     | '/heritage'
+    | '/journal'
     | '/vehicles/$slug'
   id:
     | '__root__'
@@ -132,6 +143,7 @@ export interface FileRouteTypes {
     | '/concierge'
     | '/experiences'
     | '/heritage'
+    | '/journal'
     | '/vehicles/$slug'
   fileRoutesById: FileRoutesById
 }
@@ -144,11 +156,19 @@ export interface RootRouteChildren {
   ConciergeRoute: typeof ConciergeRoute
   ExperiencesRoute: typeof ExperiencesRoute
   HeritageRoute: typeof HeritageRoute
+  JournalRoute: typeof JournalRoute
   VehiclesSlugRoute: typeof VehiclesSlugRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/journal': {
+      id: '/journal'
+      path: '/journal'
+      fullPath: '/journal'
+      preLoaderRoute: typeof JournalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/heritage': {
       id: '/heritage'
       path: '/heritage'
@@ -224,6 +244,7 @@ const rootRouteChildren: RootRouteChildren = {
   ConciergeRoute: ConciergeRoute,
   ExperiencesRoute: ExperiencesRoute,
   HeritageRoute: HeritageRoute,
+  JournalRoute: JournalRoute,
   VehiclesSlugRoute: VehiclesSlugRoute,
 }
 export const routeTree = rootRouteImport
