@@ -1,17 +1,13 @@
 import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import logo from "@/assets/logo.png.asset.json";
 
 const NAV = [
-  { to: "/", label: "Maison" },
-  { to: "/collection", label: "Collection" },
-  { to: "/bespoke", label: "Bespoke" },
-  { to: "/atelier", label: "Atelier" },
-  { to: "/heritage", label: "Heritage" },
-  { to: "/concierge", label: "Concierge" },
-  { to: "/chauffeur", label: "Chauffeur" },
-  { to: "/experiences", label: "Experiences" },
-  { to: "/journal", label: "Journal" },
-  { to: "/enquire", label: "Enquire" },
+  { to: "/uslugi",   label: "Услуги" },
+  { to: "/plenka",   label: "Пленка Unique" },
+  { to: "/raboty",   label: "Работы" },
+  { to: "/klub",     label: "Клуб Unique" },
+  { to: "/kontakty", label: "Контакты" },
 ] as const;
 
 export function SiteHeader() {
@@ -33,36 +29,39 @@ export function SiteHeader() {
     <>
       <header
         className={`fixed inset-x-0 top-0 z-50 flex items-center justify-between px-[5vw] transition-all duration-500 ${
-          scrolled ? "py-4 bg-obsidian/85 backdrop-blur border-b border-line" : "py-8"
+          scrolled ? "py-3 bg-obsidian/90 backdrop-blur border-b border-line" : "py-6"
         }`}
       >
         <button
           onClick={() => setOpen(true)}
           className="flex items-center gap-3 text-[11px] tracking-[0.35em] uppercase text-ivory"
-          aria-label="Open menu"
+          aria-label="Открыть меню"
         >
           <span className="flex w-[22px] flex-col gap-[5px]">
             <span className="block h-px bg-ivory" />
             <span className="block h-px w-[70%] bg-ivory" />
             <span className="block h-px bg-ivory" />
           </span>
-          Menu
+          Меню
         </button>
 
-        <Link to="/" className="font-display text-[15px] tracking-[0.5em] uppercase text-ivory">
-          Maison&nbsp;Noir
+        <Link to="/" className="flex items-center gap-3" aria-label="UNIQUE Detailing">
+          <img src={logo.url} alt="UNIQUE Detailing" className="h-8 w-auto md:h-10" />
         </Link>
 
-        <Link
-          to="/enquire"
-          className="flex items-center gap-[10px] text-[11px] tracking-[0.3em] uppercase text-mute"
-        >
+        <div className="hidden items-center gap-[10px] text-[11px] tracking-[0.3em] uppercase text-mute md:flex">
           <span className="h-[6px] w-[6px] rounded-full bg-ember shadow-[0_0_10px_theme(colors.ember)]" />
-          Private Enquiry
+          Скоро открытие
+        </div>
+        <Link
+          to="/kontakty"
+          className="md:hidden text-[10px] tracking-[0.3em] uppercase text-ember"
+        >
+          Скоро
         </Link>
       </header>
 
-      {/* Fullscreen menu */}
+      {/* Полноэкранное меню */}
       <div
         className={`fixed inset-0 z-[90] flex transition-opacity duration-500 ${
           open ? "opacity-100 visible" : "opacity-0 invisible"
@@ -71,14 +70,14 @@ export function SiteHeader() {
       >
         <button
           onClick={() => setOpen(false)}
-          className="absolute left-[5vw] top-8 flex items-center gap-3 text-[11px] tracking-[0.35em] uppercase text-ivory"
-          aria-label="Close menu"
+          className="absolute left-[5vw] top-6 flex items-center gap-3 text-[11px] tracking-[0.35em] uppercase text-ivory"
+          aria-label="Закрыть меню"
         >
           <span className="relative block h-4 w-4">
             <span className="absolute left-0 top-1/2 h-px w-full rotate-45 bg-ivory" />
             <span className="absolute left-0 top-1/2 h-px w-full -rotate-45 bg-ivory" />
           </span>
-          Close
+          Закрыть
         </button>
 
         <nav className="flex w-full flex-col justify-center border-r border-line px-[8vw] md:w-[55%]">
@@ -105,9 +104,11 @@ export function SiteHeader() {
               </li>
             ))}
           </ul>
-          <div className="mt-16 text-[11px] uppercase tracking-[0.3em] text-mute-2">
-            <p>Salon by appointment — Jura, Switzerland</p>
-            <p>concierge@maisonnoire.example</p>
+          <div className="mt-16 space-y-2 text-[11px] uppercase tracking-[0.3em] text-mute-2">
+            <p>г. Санкт-Петербург · Ленинградская область</p>
+            <p>микрорайон Овцино, Петрозаводская улица, 33</p>
+            <p className="text-ember">Скоро открытие</p>
+            <p className="normal-case tracking-normal text-mute">info@uniquedetailing.ru</p>
           </div>
         </nav>
 
@@ -119,15 +120,18 @@ export function SiteHeader() {
           }}
         >
           <div
-            className="absolute inset-0 animate-drift bg-cover bg-center opacity-70"
+            className="absolute inset-0 animate-drift bg-cover bg-center opacity-60"
             style={{
               backgroundImage:
-                "url(https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&q=80&w=1400)",
+                "url(https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&q=80&w=1400)",
             }}
           />
           <div className="absolute inset-0 plate-scrim" />
-          <div className="absolute bottom-10 left-10 right-10 font-display text-3xl uppercase leading-tight tracking-[0.06em] text-ivory">
-            A private house of quiet motoring.
+          <div className="absolute bottom-10 left-10 right-10">
+            <img src={logo.url} alt="" className="mb-6 h-10 w-auto opacity-90" />
+            <p className="font-display text-2xl uppercase leading-tight tracking-[0.08em] text-ivory">
+              Европейский стандарт<br/>детейлинга и оклейки.
+            </p>
           </div>
         </div>
       </div>

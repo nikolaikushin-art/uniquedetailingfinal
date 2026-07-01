@@ -9,61 +9,37 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as JournalRouteImport } from './routes/journal'
-import { Route as HeritageRouteImport } from './routes/heritage'
-import { Route as ExperiencesRouteImport } from './routes/experiences'
-import { Route as EnquireRouteImport } from './routes/enquire'
-import { Route as ConciergeRouteImport } from './routes/concierge'
-import { Route as CollectionRouteImport } from './routes/collection'
-import { Route as ChauffeurRouteImport } from './routes/chauffeur'
-import { Route as BespokeRouteImport } from './routes/bespoke'
-import { Route as AtelierRouteImport } from './routes/atelier'
+import { Route as UslugiRouteImport } from './routes/uslugi'
+import { Route as RabotyRouteImport } from './routes/raboty'
+import { Route as PlenkaRouteImport } from './routes/plenka'
+import { Route as KontaktyRouteImport } from './routes/kontakty'
+import { Route as KlubRouteImport } from './routes/klub'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as VehiclesSlugRouteImport } from './routes/vehicles.$slug'
+import { Route as RabotySlugRouteImport } from './routes/raboty.$slug'
 
-const JournalRoute = JournalRouteImport.update({
-  id: '/journal',
-  path: '/journal',
+const UslugiRoute = UslugiRouteImport.update({
+  id: '/uslugi',
+  path: '/uslugi',
   getParentRoute: () => rootRouteImport,
 } as any)
-const HeritageRoute = HeritageRouteImport.update({
-  id: '/heritage',
-  path: '/heritage',
+const RabotyRoute = RabotyRouteImport.update({
+  id: '/raboty',
+  path: '/raboty',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ExperiencesRoute = ExperiencesRouteImport.update({
-  id: '/experiences',
-  path: '/experiences',
+const PlenkaRoute = PlenkaRouteImport.update({
+  id: '/plenka',
+  path: '/plenka',
   getParentRoute: () => rootRouteImport,
 } as any)
-const EnquireRoute = EnquireRouteImport.update({
-  id: '/enquire',
-  path: '/enquire',
+const KontaktyRoute = KontaktyRouteImport.update({
+  id: '/kontakty',
+  path: '/kontakty',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ConciergeRoute = ConciergeRouteImport.update({
-  id: '/concierge',
-  path: '/concierge',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CollectionRoute = CollectionRouteImport.update({
-  id: '/collection',
-  path: '/collection',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ChauffeurRoute = ChauffeurRouteImport.update({
-  id: '/chauffeur',
-  path: '/chauffeur',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const BespokeRoute = BespokeRouteImport.update({
-  id: '/bespoke',
-  path: '/bespoke',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AtelierRoute = AtelierRouteImport.update({
-  id: '/atelier',
-  path: '/atelier',
+const KlubRoute = KlubRouteImport.update({
+  id: '/klub',
+  path: '/klub',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -71,171 +47,114 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const VehiclesSlugRoute = VehiclesSlugRouteImport.update({
-  id: '/vehicles/$slug',
-  path: '/vehicles/$slug',
-  getParentRoute: () => rootRouteImport,
+const RabotySlugRoute = RabotySlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => RabotyRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/atelier': typeof AtelierRoute
-  '/bespoke': typeof BespokeRoute
-  '/chauffeur': typeof ChauffeurRoute
-  '/collection': typeof CollectionRoute
-  '/concierge': typeof ConciergeRoute
-  '/enquire': typeof EnquireRoute
-  '/experiences': typeof ExperiencesRoute
-  '/heritage': typeof HeritageRoute
-  '/journal': typeof JournalRoute
-  '/vehicles/$slug': typeof VehiclesSlugRoute
+  '/klub': typeof KlubRoute
+  '/kontakty': typeof KontaktyRoute
+  '/plenka': typeof PlenkaRoute
+  '/raboty': typeof RabotyRouteWithChildren
+  '/uslugi': typeof UslugiRoute
+  '/raboty/$slug': typeof RabotySlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/atelier': typeof AtelierRoute
-  '/bespoke': typeof BespokeRoute
-  '/chauffeur': typeof ChauffeurRoute
-  '/collection': typeof CollectionRoute
-  '/concierge': typeof ConciergeRoute
-  '/enquire': typeof EnquireRoute
-  '/experiences': typeof ExperiencesRoute
-  '/heritage': typeof HeritageRoute
-  '/journal': typeof JournalRoute
-  '/vehicles/$slug': typeof VehiclesSlugRoute
+  '/klub': typeof KlubRoute
+  '/kontakty': typeof KontaktyRoute
+  '/plenka': typeof PlenkaRoute
+  '/raboty': typeof RabotyRouteWithChildren
+  '/uslugi': typeof UslugiRoute
+  '/raboty/$slug': typeof RabotySlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/atelier': typeof AtelierRoute
-  '/bespoke': typeof BespokeRoute
-  '/chauffeur': typeof ChauffeurRoute
-  '/collection': typeof CollectionRoute
-  '/concierge': typeof ConciergeRoute
-  '/enquire': typeof EnquireRoute
-  '/experiences': typeof ExperiencesRoute
-  '/heritage': typeof HeritageRoute
-  '/journal': typeof JournalRoute
-  '/vehicles/$slug': typeof VehiclesSlugRoute
+  '/klub': typeof KlubRoute
+  '/kontakty': typeof KontaktyRoute
+  '/plenka': typeof PlenkaRoute
+  '/raboty': typeof RabotyRouteWithChildren
+  '/uslugi': typeof UslugiRoute
+  '/raboty/$slug': typeof RabotySlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/atelier'
-    | '/bespoke'
-    | '/chauffeur'
-    | '/collection'
-    | '/concierge'
-    | '/enquire'
-    | '/experiences'
-    | '/heritage'
-    | '/journal'
-    | '/vehicles/$slug'
+    | '/klub'
+    | '/kontakty'
+    | '/plenka'
+    | '/raboty'
+    | '/uslugi'
+    | '/raboty/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/atelier'
-    | '/bespoke'
-    | '/chauffeur'
-    | '/collection'
-    | '/concierge'
-    | '/enquire'
-    | '/experiences'
-    | '/heritage'
-    | '/journal'
-    | '/vehicles/$slug'
+    | '/klub'
+    | '/kontakty'
+    | '/plenka'
+    | '/raboty'
+    | '/uslugi'
+    | '/raboty/$slug'
   id:
     | '__root__'
     | '/'
-    | '/atelier'
-    | '/bespoke'
-    | '/chauffeur'
-    | '/collection'
-    | '/concierge'
-    | '/enquire'
-    | '/experiences'
-    | '/heritage'
-    | '/journal'
-    | '/vehicles/$slug'
+    | '/klub'
+    | '/kontakty'
+    | '/plenka'
+    | '/raboty'
+    | '/uslugi'
+    | '/raboty/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AtelierRoute: typeof AtelierRoute
-  BespokeRoute: typeof BespokeRoute
-  ChauffeurRoute: typeof ChauffeurRoute
-  CollectionRoute: typeof CollectionRoute
-  ConciergeRoute: typeof ConciergeRoute
-  EnquireRoute: typeof EnquireRoute
-  ExperiencesRoute: typeof ExperiencesRoute
-  HeritageRoute: typeof HeritageRoute
-  JournalRoute: typeof JournalRoute
-  VehiclesSlugRoute: typeof VehiclesSlugRoute
+  KlubRoute: typeof KlubRoute
+  KontaktyRoute: typeof KontaktyRoute
+  PlenkaRoute: typeof PlenkaRoute
+  RabotyRoute: typeof RabotyRouteWithChildren
+  UslugiRoute: typeof UslugiRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/journal': {
-      id: '/journal'
-      path: '/journal'
-      fullPath: '/journal'
-      preLoaderRoute: typeof JournalRouteImport
+    '/uslugi': {
+      id: '/uslugi'
+      path: '/uslugi'
+      fullPath: '/uslugi'
+      preLoaderRoute: typeof UslugiRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/heritage': {
-      id: '/heritage'
-      path: '/heritage'
-      fullPath: '/heritage'
-      preLoaderRoute: typeof HeritageRouteImport
+    '/raboty': {
+      id: '/raboty'
+      path: '/raboty'
+      fullPath: '/raboty'
+      preLoaderRoute: typeof RabotyRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/experiences': {
-      id: '/experiences'
-      path: '/experiences'
-      fullPath: '/experiences'
-      preLoaderRoute: typeof ExperiencesRouteImport
+    '/plenka': {
+      id: '/plenka'
+      path: '/plenka'
+      fullPath: '/plenka'
+      preLoaderRoute: typeof PlenkaRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/enquire': {
-      id: '/enquire'
-      path: '/enquire'
-      fullPath: '/enquire'
-      preLoaderRoute: typeof EnquireRouteImport
+    '/kontakty': {
+      id: '/kontakty'
+      path: '/kontakty'
+      fullPath: '/kontakty'
+      preLoaderRoute: typeof KontaktyRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/concierge': {
-      id: '/concierge'
-      path: '/concierge'
-      fullPath: '/concierge'
-      preLoaderRoute: typeof ConciergeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/collection': {
-      id: '/collection'
-      path: '/collection'
-      fullPath: '/collection'
-      preLoaderRoute: typeof CollectionRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/chauffeur': {
-      id: '/chauffeur'
-      path: '/chauffeur'
-      fullPath: '/chauffeur'
-      preLoaderRoute: typeof ChauffeurRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/bespoke': {
-      id: '/bespoke'
-      path: '/bespoke'
-      fullPath: '/bespoke'
-      preLoaderRoute: typeof BespokeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/atelier': {
-      id: '/atelier'
-      path: '/atelier'
-      fullPath: '/atelier'
-      preLoaderRoute: typeof AtelierRouteImport
+    '/klub': {
+      id: '/klub'
+      path: '/klub'
+      fullPath: '/klub'
+      preLoaderRoute: typeof KlubRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -245,39 +164,35 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/vehicles/$slug': {
-      id: '/vehicles/$slug'
-      path: '/vehicles/$slug'
-      fullPath: '/vehicles/$slug'
-      preLoaderRoute: typeof VehiclesSlugRouteImport
-      parentRoute: typeof rootRouteImport
+    '/raboty/$slug': {
+      id: '/raboty/$slug'
+      path: '/$slug'
+      fullPath: '/raboty/$slug'
+      preLoaderRoute: typeof RabotySlugRouteImport
+      parentRoute: typeof RabotyRoute
     }
   }
 }
 
+interface RabotyRouteChildren {
+  RabotySlugRoute: typeof RabotySlugRoute
+}
+
+const RabotyRouteChildren: RabotyRouteChildren = {
+  RabotySlugRoute: RabotySlugRoute,
+}
+
+const RabotyRouteWithChildren =
+  RabotyRoute._addFileChildren(RabotyRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AtelierRoute: AtelierRoute,
-  BespokeRoute: BespokeRoute,
-  ChauffeurRoute: ChauffeurRoute,
-  CollectionRoute: CollectionRoute,
-  ConciergeRoute: ConciergeRoute,
-  EnquireRoute: EnquireRoute,
-  ExperiencesRoute: ExperiencesRoute,
-  HeritageRoute: HeritageRoute,
-  JournalRoute: JournalRoute,
-  VehiclesSlugRoute: VehiclesSlugRoute,
+  KlubRoute: KlubRoute,
+  KontaktyRoute: KontaktyRoute,
+  PlenkaRoute: PlenkaRoute,
+  RabotyRoute: RabotyRouteWithChildren,
+  UslugiRoute: UslugiRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
