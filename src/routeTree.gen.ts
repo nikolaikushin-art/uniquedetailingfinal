@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as HeritageRouteImport } from './routes/heritage'
 import { Route as CollectionRouteImport } from './routes/collection'
 import { Route as BespokeRouteImport } from './routes/bespoke'
+import { Route as AtelierRouteImport } from './routes/atelier'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as VehiclesSlugRouteImport } from './routes/vehicles.$slug'
 
@@ -30,6 +31,11 @@ const BespokeRoute = BespokeRouteImport.update({
   path: '/bespoke',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AtelierRoute = AtelierRouteImport.update({
+  id: '/atelier',
+  path: '/atelier',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -43,6 +49,7 @@ const VehiclesSlugRoute = VehiclesSlugRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/atelier': typeof AtelierRoute
   '/bespoke': typeof BespokeRoute
   '/collection': typeof CollectionRoute
   '/heritage': typeof HeritageRoute
@@ -50,6 +57,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/atelier': typeof AtelierRoute
   '/bespoke': typeof BespokeRoute
   '/collection': typeof CollectionRoute
   '/heritage': typeof HeritageRoute
@@ -58,6 +66,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/atelier': typeof AtelierRoute
   '/bespoke': typeof BespokeRoute
   '/collection': typeof CollectionRoute
   '/heritage': typeof HeritageRoute
@@ -65,12 +74,25 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/bespoke' | '/collection' | '/heritage' | '/vehicles/$slug'
+  fullPaths:
+    | '/'
+    | '/atelier'
+    | '/bespoke'
+    | '/collection'
+    | '/heritage'
+    | '/vehicles/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/bespoke' | '/collection' | '/heritage' | '/vehicles/$slug'
+  to:
+    | '/'
+    | '/atelier'
+    | '/bespoke'
+    | '/collection'
+    | '/heritage'
+    | '/vehicles/$slug'
   id:
     | '__root__'
     | '/'
+    | '/atelier'
     | '/bespoke'
     | '/collection'
     | '/heritage'
@@ -79,6 +101,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AtelierRoute: typeof AtelierRoute
   BespokeRoute: typeof BespokeRoute
   CollectionRoute: typeof CollectionRoute
   HeritageRoute: typeof HeritageRoute
@@ -108,6 +131,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BespokeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/atelier': {
+      id: '/atelier'
+      path: '/atelier'
+      fullPath: '/atelier'
+      preLoaderRoute: typeof AtelierRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -127,6 +157,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AtelierRoute: AtelierRoute,
   BespokeRoute: BespokeRoute,
   CollectionRoute: CollectionRoute,
   HeritageRoute: HeritageRoute,
