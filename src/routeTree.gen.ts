@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as UslugiRouteImport } from './routes/uslugi'
 import { Route as RabotyRouteImport } from './routes/raboty'
 import { Route as PlenkaRouteImport } from './routes/plenka'
+import { Route as NasledieRouteImport } from './routes/nasledie'
 import { Route as KontaktyRouteImport } from './routes/kontakty'
 import { Route as KlubRouteImport } from './routes/klub'
 import { Route as IndexRouteImport } from './routes/index'
@@ -30,6 +31,11 @@ const RabotyRoute = RabotyRouteImport.update({
 const PlenkaRoute = PlenkaRouteImport.update({
   id: '/plenka',
   path: '/plenka',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NasledieRoute = NasledieRouteImport.update({
+  id: '/nasledie',
+  path: '/nasledie',
   getParentRoute: () => rootRouteImport,
 } as any)
 const KontaktyRoute = KontaktyRouteImport.update({
@@ -57,6 +63,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/klub': typeof KlubRoute
   '/kontakty': typeof KontaktyRoute
+  '/nasledie': typeof NasledieRoute
   '/plenka': typeof PlenkaRoute
   '/raboty': typeof RabotyRouteWithChildren
   '/uslugi': typeof UslugiRoute
@@ -66,6 +73,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/klub': typeof KlubRoute
   '/kontakty': typeof KontaktyRoute
+  '/nasledie': typeof NasledieRoute
   '/plenka': typeof PlenkaRoute
   '/raboty': typeof RabotyRouteWithChildren
   '/uslugi': typeof UslugiRoute
@@ -76,6 +84,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/klub': typeof KlubRoute
   '/kontakty': typeof KontaktyRoute
+  '/nasledie': typeof NasledieRoute
   '/plenka': typeof PlenkaRoute
   '/raboty': typeof RabotyRouteWithChildren
   '/uslugi': typeof UslugiRoute
@@ -87,6 +96,7 @@ export interface FileRouteTypes {
     | '/'
     | '/klub'
     | '/kontakty'
+    | '/nasledie'
     | '/plenka'
     | '/raboty'
     | '/uslugi'
@@ -96,6 +106,7 @@ export interface FileRouteTypes {
     | '/'
     | '/klub'
     | '/kontakty'
+    | '/nasledie'
     | '/plenka'
     | '/raboty'
     | '/uslugi'
@@ -105,6 +116,7 @@ export interface FileRouteTypes {
     | '/'
     | '/klub'
     | '/kontakty'
+    | '/nasledie'
     | '/plenka'
     | '/raboty'
     | '/uslugi'
@@ -115,6 +127,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   KlubRoute: typeof KlubRoute
   KontaktyRoute: typeof KontaktyRoute
+  NasledieRoute: typeof NasledieRoute
   PlenkaRoute: typeof PlenkaRoute
   RabotyRoute: typeof RabotyRouteWithChildren
   UslugiRoute: typeof UslugiRoute
@@ -141,6 +154,13 @@ declare module '@tanstack/react-router' {
       path: '/plenka'
       fullPath: '/plenka'
       preLoaderRoute: typeof PlenkaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/nasledie': {
+      id: '/nasledie'
+      path: '/nasledie'
+      fullPath: '/nasledie'
+      preLoaderRoute: typeof NasledieRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/kontakty': {
@@ -189,6 +209,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   KlubRoute: KlubRoute,
   KontaktyRoute: KontaktyRoute,
+  NasledieRoute: NasledieRoute,
   PlenkaRoute: PlenkaRoute,
   RabotyRoute: RabotyRouteWithChildren,
   UslugiRoute: UslugiRoute,
