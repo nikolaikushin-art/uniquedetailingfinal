@@ -4,6 +4,97 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* =============================================================
+ * MAISON NOIR — Ultra-luxury design system
+ * Cormorant display serif + Jost sans, deep obsidian palette,
+ * ember red accent, editorial spacing.
+ * ============================================================= */
+
+@theme inline {
+  --font-display: "Cormorant", "Cormorant Garamond", ui-serif, Georgia, serif;
+  --font-sans: "Jost", ui-sans-serif, system-ui, sans-serif;
+
+  --color-obsidian: #08090b;
+  --color-obsidian-2: #101215;
+  --color-panel: #15171a;
+  --color-line: rgb(234 232 226 / 0.14);
+  --color-line-strong: rgb(234 232 226 / 0.28);
+  --color-ivory: #eae8e2;
+  --color-mute: #8d9096;
+  --color-mute-2: #5c5f64;
+  --color-ember: #b8202f;
+  --color-ember-soft: rgb(184 32 47 / 0.35);
+  --color-champagne: #c9a86a;
+  --color-parchment: #f2efe9;
+  --color-parchment-2: #eae6de;
+  --color-ink: #15161a;
+  --color-ink-mute: #6b6a63;
+  --color-ink-line: rgb(21 22 26 / 0.12);
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: var(--color-obsidian);
+  color: var(--color-ivory);
+  font-family: var(--font-sans);
+  font-weight: 300;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+::selection { background: var(--color-ember); color: #fff; }
+
+.font-display { font-family: var(--font-display); font-weight: 400; letter-spacing: 0.06em; }
+.eyebrow {
+  font-family: var(--font-sans);
+  font-size: 11px; letter-spacing: 0.42em; text-transform: uppercase;
+  color: var(--color-mute); font-weight: 400;
+}
+.eyebrow-dot::before {
+  content: ''; display: inline-block; width: 5px; height: 5px; border-radius: 50%;
+  background: var(--color-ember); box-shadow: 0 0 10px var(--color-ember);
+  margin-right: 10px; vertical-align: middle;
+}
+
+.reveal { opacity: 0; transform: translateY(28px); transition: opacity 1s cubic-bezier(.2,.8,.2,1), transform 1s cubic-bezier(.2,.8,.2,1); }
+.reveal.in { opacity: 1; transform: translateY(0); }
+
+/* Image plates / scrims used across the site */
+.plate-scrim { background: linear-gradient(180deg, rgba(8,9,11,0) 20%, rgba(8,9,11,0.55) 65%, rgba(8,9,11,0.95) 100%); }
+.plate-scrim-top { background: linear-gradient(180deg, rgba(8,9,11,0.75) 0%, rgba(8,9,11,0.15) 45%, rgba(8,9,11,0.85) 100%); }
+.plate-vignette { background: radial-gradient(120% 90% at 50% 20%, rgba(255,255,255,0.06), transparent 60%), linear-gradient(180deg, #0b0c0e 0%, #08090b 60%); }
+
+.hairline { height: 1px; background: var(--color-line); }
+.hairline-strong { height: 1px; background: var(--color-line-strong); }
+
+.link-more {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: 11px; letter-spacing: 0.32em; text-transform: uppercase;
+  color: var(--color-mute); transition: gap .35s ease, color .3s ease;
+}
+.link-more::after { content: '→'; }
+.link-more:hover { gap: 18px; color: var(--color-ivory); }
+
+.btn-line {
+  display: inline-block; padding: 18px 42px;
+  font-family: var(--font-sans); font-size: 11px; letter-spacing: 0.32em;
+  text-transform: uppercase; color: var(--color-ivory);
+  border: 1px solid var(--color-line-strong); background: transparent;
+  transition: background .35s ease, color .35s ease, border-color .35s ease;
+}
+.btn-line:hover { background: var(--color-ivory); color: var(--color-obsidian); border-color: var(--color-ivory); }
+.btn-ember { border-color: var(--color-ember); }
+.btn-ember:hover { background: var(--color-ember); color: #fff; border-color: var(--color-ember); }
+
+/* Kenburns / drift for hero imagery */
+@keyframes drift { 0%,100% { transform: scale(1.05) translate(0,0); } 50% { transform: scale(1.08) translate(-1.5%, -1%); } }
+.animate-drift { animation: drift 18s ease-in-out infinite; }
+
+@keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+.animate-fade-up { animation: fadeUp .9s cubic-bezier(.2,.8,.2,1) both; }
+
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.animate-marquee { animation: marquee 40s linear infinite; }
+
 /*
  * Design system definition.
  *
