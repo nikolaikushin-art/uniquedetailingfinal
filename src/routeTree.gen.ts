@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as HeritageRouteImport } from './routes/heritage'
+import { Route as ExperiencesRouteImport } from './routes/experiences'
 import { Route as ConciergeRouteImport } from './routes/concierge'
 import { Route as CollectionRouteImport } from './routes/collection'
 import { Route as ChauffeurRouteImport } from './routes/chauffeur'
@@ -21,6 +22,11 @@ import { Route as VehiclesSlugRouteImport } from './routes/vehicles.$slug'
 const HeritageRoute = HeritageRouteImport.update({
   id: '/heritage',
   path: '/heritage',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExperiencesRoute = ExperiencesRouteImport.update({
+  id: '/experiences',
+  path: '/experiences',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ConciergeRoute = ConciergeRouteImport.update({
@@ -66,6 +72,7 @@ export interface FileRoutesByFullPath {
   '/chauffeur': typeof ChauffeurRoute
   '/collection': typeof CollectionRoute
   '/concierge': typeof ConciergeRoute
+  '/experiences': typeof ExperiencesRoute
   '/heritage': typeof HeritageRoute
   '/vehicles/$slug': typeof VehiclesSlugRoute
 }
@@ -76,6 +83,7 @@ export interface FileRoutesByTo {
   '/chauffeur': typeof ChauffeurRoute
   '/collection': typeof CollectionRoute
   '/concierge': typeof ConciergeRoute
+  '/experiences': typeof ExperiencesRoute
   '/heritage': typeof HeritageRoute
   '/vehicles/$slug': typeof VehiclesSlugRoute
 }
@@ -87,6 +95,7 @@ export interface FileRoutesById {
   '/chauffeur': typeof ChauffeurRoute
   '/collection': typeof CollectionRoute
   '/concierge': typeof ConciergeRoute
+  '/experiences': typeof ExperiencesRoute
   '/heritage': typeof HeritageRoute
   '/vehicles/$slug': typeof VehiclesSlugRoute
 }
@@ -99,6 +108,7 @@ export interface FileRouteTypes {
     | '/chauffeur'
     | '/collection'
     | '/concierge'
+    | '/experiences'
     | '/heritage'
     | '/vehicles/$slug'
   fileRoutesByTo: FileRoutesByTo
@@ -109,6 +119,7 @@ export interface FileRouteTypes {
     | '/chauffeur'
     | '/collection'
     | '/concierge'
+    | '/experiences'
     | '/heritage'
     | '/vehicles/$slug'
   id:
@@ -119,6 +130,7 @@ export interface FileRouteTypes {
     | '/chauffeur'
     | '/collection'
     | '/concierge'
+    | '/experiences'
     | '/heritage'
     | '/vehicles/$slug'
   fileRoutesById: FileRoutesById
@@ -130,6 +142,7 @@ export interface RootRouteChildren {
   ChauffeurRoute: typeof ChauffeurRoute
   CollectionRoute: typeof CollectionRoute
   ConciergeRoute: typeof ConciergeRoute
+  ExperiencesRoute: typeof ExperiencesRoute
   HeritageRoute: typeof HeritageRoute
   VehiclesSlugRoute: typeof VehiclesSlugRoute
 }
@@ -141,6 +154,13 @@ declare module '@tanstack/react-router' {
       path: '/heritage'
       fullPath: '/heritage'
       preLoaderRoute: typeof HeritageRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/experiences': {
+      id: '/experiences'
+      path: '/experiences'
+      fullPath: '/experiences'
+      preLoaderRoute: typeof ExperiencesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/concierge': {
@@ -202,6 +222,7 @@ const rootRouteChildren: RootRouteChildren = {
   ChauffeurRoute: ChauffeurRoute,
   CollectionRoute: CollectionRoute,
   ConciergeRoute: ConciergeRoute,
+  ExperiencesRoute: ExperiencesRoute,
   HeritageRoute: HeritageRoute,
   VehiclesSlugRoute: VehiclesSlugRoute,
 }
