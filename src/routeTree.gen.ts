@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as JournalRouteImport } from './routes/journal'
 import { Route as HeritageRouteImport } from './routes/heritage'
 import { Route as ExperiencesRouteImport } from './routes/experiences'
+import { Route as EnquireRouteImport } from './routes/enquire'
 import { Route as ConciergeRouteImport } from './routes/concierge'
 import { Route as CollectionRouteImport } from './routes/collection'
 import { Route as ChauffeurRouteImport } from './routes/chauffeur'
@@ -33,6 +34,11 @@ const HeritageRoute = HeritageRouteImport.update({
 const ExperiencesRoute = ExperiencesRouteImport.update({
   id: '/experiences',
   path: '/experiences',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EnquireRoute = EnquireRouteImport.update({
+  id: '/enquire',
+  path: '/enquire',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ConciergeRoute = ConciergeRouteImport.update({
@@ -78,6 +84,7 @@ export interface FileRoutesByFullPath {
   '/chauffeur': typeof ChauffeurRoute
   '/collection': typeof CollectionRoute
   '/concierge': typeof ConciergeRoute
+  '/enquire': typeof EnquireRoute
   '/experiences': typeof ExperiencesRoute
   '/heritage': typeof HeritageRoute
   '/journal': typeof JournalRoute
@@ -90,6 +97,7 @@ export interface FileRoutesByTo {
   '/chauffeur': typeof ChauffeurRoute
   '/collection': typeof CollectionRoute
   '/concierge': typeof ConciergeRoute
+  '/enquire': typeof EnquireRoute
   '/experiences': typeof ExperiencesRoute
   '/heritage': typeof HeritageRoute
   '/journal': typeof JournalRoute
@@ -103,6 +111,7 @@ export interface FileRoutesById {
   '/chauffeur': typeof ChauffeurRoute
   '/collection': typeof CollectionRoute
   '/concierge': typeof ConciergeRoute
+  '/enquire': typeof EnquireRoute
   '/experiences': typeof ExperiencesRoute
   '/heritage': typeof HeritageRoute
   '/journal': typeof JournalRoute
@@ -117,6 +126,7 @@ export interface FileRouteTypes {
     | '/chauffeur'
     | '/collection'
     | '/concierge'
+    | '/enquire'
     | '/experiences'
     | '/heritage'
     | '/journal'
@@ -129,6 +139,7 @@ export interface FileRouteTypes {
     | '/chauffeur'
     | '/collection'
     | '/concierge'
+    | '/enquire'
     | '/experiences'
     | '/heritage'
     | '/journal'
@@ -141,6 +152,7 @@ export interface FileRouteTypes {
     | '/chauffeur'
     | '/collection'
     | '/concierge'
+    | '/enquire'
     | '/experiences'
     | '/heritage'
     | '/journal'
@@ -154,6 +166,7 @@ export interface RootRouteChildren {
   ChauffeurRoute: typeof ChauffeurRoute
   CollectionRoute: typeof CollectionRoute
   ConciergeRoute: typeof ConciergeRoute
+  EnquireRoute: typeof EnquireRoute
   ExperiencesRoute: typeof ExperiencesRoute
   HeritageRoute: typeof HeritageRoute
   JournalRoute: typeof JournalRoute
@@ -181,6 +194,13 @@ declare module '@tanstack/react-router' {
       path: '/experiences'
       fullPath: '/experiences'
       preLoaderRoute: typeof ExperiencesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/enquire': {
+      id: '/enquire'
+      path: '/enquire'
+      fullPath: '/enquire'
+      preLoaderRoute: typeof EnquireRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/concierge': {
@@ -242,6 +262,7 @@ const rootRouteChildren: RootRouteChildren = {
   ChauffeurRoute: ChauffeurRoute,
   CollectionRoute: CollectionRoute,
   ConciergeRoute: ConciergeRoute,
+  EnquireRoute: EnquireRoute,
   ExperiencesRoute: ExperiencesRoute,
   HeritageRoute: HeritageRoute,
   JournalRoute: JournalRoute,
