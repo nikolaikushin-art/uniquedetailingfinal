@@ -1,4 +1,5 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { useState } from "react";
 import { getWork, relatedWorks, type Work } from "@/lib/works";
 
 export const Route = createFileRoute("/raboty/$slug")({
@@ -33,29 +34,13 @@ export const Route = createFileRoute("/raboty/$slug")({
 
 function WorkPage() {
   const { work: w, related } = Route.useLoaderData() as { work: Work; related: Work[] };
-
   return (
     <div>
-      {/* HERO */}
-      <section className="relative flex min-h-[92vh] items-center overflow-hidden border-b border-line">
-        <div className="absolute inset-0 animate-drift bg-cover bg-center" style={{ backgroundImage: `url(${w.hero})` }} />
-        <div className="absolute inset-0 plate-scrim" />
-        <div className="relative z-10 mx-auto w-full max-w-[1400px] px-[6vw] pt-28">
-          <p className="eyebrow eyebrow-dot mb-6">{w.category} · {w.city}</p>
-          <h1 className="max-w-[1100px] font-display uppercase leading-[0.98] text-ivory" style={{ fontSize: "clamp(48px,9vw,140px)", letterSpacing: "0.03em" }}>
-            {w.brand}
-            <br />
-            <span className="text-ember">{w.model}</span>
-          </h1>
-          <p className="mt-8 max-w-[600px] text-[16px] leading-[1.9] text-mute">{w.tagline}</p>
-          <div className="mt-12 flex flex-wrap gap-8 border-t border-line pt-8 text-[11px] uppercase tracking-[0.3em] text-mute">
-            <span><span className="text-mute-2 mr-3">Часов работы</span>{w.hours}</span>
-            <span><span className="text-mute-2 mr-3">Плёнка</span>{w.film}</span>
-            <span><span className="text-mute-2 mr-3">Срок</span>{w.duration}</span>
-            <span><span className="text-mute-2 mr-3">Год</span>{w.year}</span>
-          </div>
-        </div>
-      </section>
+      {/* HERO — четыре варианта раскладки */}
+      <Hero w={w} />
+
+      {/* СПЕЦИФИКАЦИЯ — интерактивный переключатель */}
+      <SpecsPanel w={w} />
 
       {/* ИСТОРИЯ ПРОЕКТА */}
       <section className="px-[6vw] py-32">
@@ -114,6 +99,12 @@ function WorkPage() {
           </div>
         </div>
       </section>
+
+      {/* ПЕРСОНАЛИЗАЦИЯ — Bespoke configurator */}
+      <BespokeConfigurator w={w} />
+
+      {/* ПАЛИТРА */}
+      <PalettePanel w={w} />
 
       {/* МАТЕРИАЛЫ */}
       <section className="bg-obsidian-2 px-[6vw] py-32">
