@@ -41,9 +41,6 @@ function Index() {
             <span className="text-[10px] uppercase tracking-[0.4em] text-ember">Скоро открытие · Санкт-Петербург</span>
           </div>
 
-          <p className="eyebrow eyebrow-dot animate-fade-up" style={{ animationDelay: ".05s" }}>
-            Санкт-Петербург · с 2015 года
-          </p>
           <h1
             className="mt-6 max-w-[1100px] font-display uppercase leading-[1.02] text-ivory animate-fade-up"
             style={{ fontSize: "clamp(40px,7.4vw,116px)", letterSpacing: "0.03em", animationDelay: ".1s" }}
