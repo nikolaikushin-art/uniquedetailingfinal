@@ -1,5 +1,6 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
 import { getWork, relatedWorks, type Work } from "@/lib/works";
 
 export const Route = createFileRoute("/raboty/$slug")({
@@ -57,29 +58,8 @@ function WorkPage() {
         </div>
       </section>
 
-      {/* ГАЛЕРЕЯ — асимметричная */}
-      <section className="bg-obsidian-2 px-[6vw] py-24">
-        <div className="mx-auto grid max-w-[1400px] gap-4 md:grid-cols-3">
-          <div className="relative aspect-[3/4] overflow-hidden md:col-span-2 md:aspect-[16/10]">
-            <img src={w.gallery[0]} alt="" className="h-full w-full object-cover" loading="lazy" />
-          </div>
-          <div className="relative aspect-[3/4] overflow-hidden">
-            <img src={w.gallery[1]} alt="" className="h-full w-full object-cover" loading="lazy" />
-          </div>
-          <div className="relative aspect-[4/5] overflow-hidden">
-            <img src={w.gallery[2]} alt="" className="h-full w-full object-cover" loading="lazy" />
-          </div>
-          <div className="relative aspect-[4/5] overflow-hidden md:col-span-2">
-            <img src={w.gallery[3]} alt="" className="h-full w-full object-cover" loading="lazy" />
-          </div>
-          <div className="relative aspect-[3/4] overflow-hidden md:col-span-2">
-            <img src={w.gallery[4]} alt="" className="h-full w-full object-cover" loading="lazy" />
-          </div>
-          <div className="relative aspect-[3/4] overflow-hidden">
-            <img src={w.gallery[5]} alt="" className="h-full w-full object-cover" loading="lazy" />
-          </div>
-        </div>
-      </section>
+      {/* ГАЛЕРЕЯ — кинематическая с табами и лайтбоксом */}
+      <CinematicGallery w={w} />
 
       {/* ЧТО СДЕЛАНО */}
       <section className="px-[6vw] py-32">
@@ -100,31 +80,15 @@ function WorkPage() {
         </div>
       </section>
 
+      {/* EXPLORE — интерактивные аккордеоны по разделам */}
+      <ExploreAccordion w={w} />
+
       {/* ПЕРСОНАЛИЗАЦИЯ — Bespoke configurator */}
       <BespokeConfigurator w={w} />
 
       {/* ПАЛИТРА */}
       <PalettePanel w={w} />
 
-      {/* МАТЕРИАЛЫ */}
-      <section className="bg-obsidian-2 px-[6vw] py-32">
-        <div className="mx-auto max-w-[1280px]">
-          <div className="mb-16 flex items-center gap-5">
-            <span className="font-display text-[14px] text-mute-2">03</span>
-            <span className="h-px flex-1 bg-line" />
-            <span className="eyebrow">Материалы и покрытия</span>
-          </div>
-          <div className="divide-y divide-line">
-            {w.materials.map((m, i) => (
-              <div key={m.name} className="grid gap-6 py-8 md:grid-cols-[60px_320px_1fr] md:items-start">
-                <span className="font-display text-2xl text-ember">{String(i + 1).padStart(2, "0")}</span>
-                <h3 className="font-display text-xl uppercase text-ivory" style={{ letterSpacing: "0.05em" }}>{m.name}</h3>
-                <p className="text-[15px] leading-[1.9] text-mute">{m.note}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* ЦИТАТА */}
       <section className="border-y border-line py-32 text-center">
@@ -473,6 +437,274 @@ function PalettePanel({ w }: { w: Work }) {
               </div>
             </div>
           ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─────────── КИНЕМАТИЧЕСКАЯ ГАЛЕРЕЯ — табы + лайтбокс ─────────── */
+const GALLERY_TABS = [
+  { key: "exterior", label: "Экстерьер",   indices: [0, 1, 2, 3] },
+  { key: "interior", label: "Интерьер",    indices: [4, 5, 6] },
+  { key: "detail",   label: "Деталь",      indices: [7, 8, 9] },
+  { key: "craft",    label: "Мастерство",  indices: [10, 11, 0] },
+] as const;
+
+function CinematicGallery({ w }: { w: Work }) {
+  const [tabKey, setTabKey] = useState<(typeof GALLERY_TABS)[number]["key"]>("exterior");
+  const [active, setActive] = useState(0);
+  const [lightbox, setLightbox] = useState<number | null>(null);
+
+  const tab = GALLERY_TABS.find(t => t.key === tabKey)!;
+  const images = tab.indices.map(i => w.gallery[i % w.gallery.length]).filter(Boolean);
+  const featured = images[active] ?? w.gallery[0];
+
+  useEffect(() => { setActive(0); }, [tabKey]);
+  useEffect(() => {
+    if (lightbox === null) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setLightbox(null);
+      if (e.key === "ArrowRight") setLightbox(v => v === null ? v : (v + 1) % images.length);
+      if (e.key === "ArrowLeft")  setLightbox(v => v === null ? v : (v - 1 + images.length) % images.length);
+    };
+    window.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+    return () => { window.removeEventListener("keydown", onKey); document.body.style.overflow = ""; };
+  }, [lightbox, images.length]);
+
+  return (
+    <section className="border-b border-line bg-obsidian-2 px-[6vw] py-28">
+      <div className="mx-auto max-w-[1500px]">
+        <div className="mb-10 flex flex-wrap items-end justify-between gap-6">
+          <div>
+            <p className="eyebrow eyebrow-dot mb-4">Кинематическая галерея</p>
+            <h2 className="font-display uppercase text-ivory" style={{ fontSize: "clamp(28px,3.4vw,44px)", letterSpacing: "0.05em" }}>
+              {w.brand} <span className="text-ember">{w.model}</span>
+            </h2>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {GALLERY_TABS.map(t => (
+              <button
+                key={t.key}
+                onClick={() => setTabKey(t.key)}
+                className={`border px-5 py-2 text-[10px] uppercase tracking-[0.3em] transition-all duration-300 ${
+                  tabKey === t.key
+                    ? "border-ember bg-ember text-obsidian"
+                    : "border-line-strong text-mute hover:border-ivory hover:text-ivory"
+                }`}
+              >
+                {t.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* featured */}
+        <button
+          type="button"
+          onClick={() => setLightbox(active)}
+          className="group relative block aspect-[16/9] w-full overflow-hidden bg-obsidian"
+          aria-label="Открыть в полноэкранном режиме"
+        >
+          <img
+            key={featured}
+            src={featured}
+            alt={`${w.brand} ${w.model} — ${tab.label}`}
+            className="h-full w-full animate-fade-in object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-[1.03]"
+          />
+          <div className="absolute inset-0 plate-scrim" />
+          <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between gap-6 text-ivory">
+            <div>
+              <p className="text-[10px] uppercase tracking-[0.4em] text-mute">{tab.label} · {String(active + 1).padStart(2, "0")} / {String(images.length).padStart(2, "0")}</p>
+              <p className="mt-2 font-display text-2xl uppercase" style={{ letterSpacing: "0.05em" }}>{w.category}</p>
+            </div>
+            <span className="border border-ivory/60 px-4 py-2 text-[10px] uppercase tracking-[0.3em] backdrop-blur-sm transition-colors group-hover:bg-ivory group-hover:text-obsidian">
+              Увеличить
+            </span>
+          </div>
+        </button>
+
+        {/* thumbs */}
+        <div className="mt-4 grid grid-cols-3 gap-2 md:grid-cols-6">
+          {images.map((src, i) => (
+            <button
+              key={src + i}
+              onClick={() => setActive(i)}
+              className={`relative aspect-[4/3] overflow-hidden border transition-all duration-300 ${
+                active === i ? "border-ember opacity-100" : "border-transparent opacity-55 hover:opacity-90"
+              }`}
+            >
+              <img src={src} alt="" loading="lazy" className="h-full w-full object-cover" />
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {lightbox !== null && (
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-obsidian/95 p-6 animate-fade-in"
+          onClick={() => setLightbox(null)}
+        >
+          <button
+            className="absolute left-6 top-6 text-[11px] uppercase tracking-[0.35em] text-ivory"
+            onClick={(e) => { e.stopPropagation(); setLightbox(null); }}
+          >
+            ✕ Закрыть
+          </button>
+          <button
+            className="absolute left-6 top-1/2 -translate-y-1/2 border border-ivory/40 px-4 py-3 text-ivory hover:bg-ivory hover:text-obsidian"
+            onClick={(e) => { e.stopPropagation(); setLightbox(v => v === null ? v : (v - 1 + images.length) % images.length); }}
+            aria-label="Предыдущее"
+          >←</button>
+          <img
+            key={lightbox}
+            src={images[lightbox]}
+            alt=""
+            className="max-h-[90vh] max-w-[92vw] animate-scale-in object-contain"
+            onClick={(e) => e.stopPropagation()}
+          />
+          <button
+            className="absolute right-6 top-1/2 -translate-y-1/2 border border-ivory/40 px-4 py-3 text-ivory hover:bg-ivory hover:text-obsidian"
+            onClick={(e) => { e.stopPropagation(); setLightbox(v => v === null ? v : (v + 1) % images.length); }}
+            aria-label="Следующее"
+          >→</button>
+          <p className="absolute bottom-6 left-1/2 -translate-x-1/2 text-[11px] uppercase tracking-[0.35em] text-mute">
+            {String(lightbox + 1).padStart(2, "0")} / {String(images.length).padStart(2, "0")} · {tab.label}
+          </p>
+        </div>
+      )}
+    </section>
+  );
+}
+
+/* ─────────── EXPLORE — интерактивные аккордеоны разделов ─────────── */
+type ExploreCat = "exterior" | "interior" | "materials" | "craft";
+const EXPLORE_CATS: { key: ExploreCat; label: string; num: string }[] = [
+  { key: "exterior",  label: "Экстерьер",   num: "I" },
+  { key: "interior",  label: "Интерьер",    num: "II" },
+  { key: "materials", label: "Материалы",   num: "III" },
+  { key: "craft",     label: "Мастерство",  num: "IV" },
+];
+
+function ExploreAccordion({ w }: { w: Work }) {
+  const [cat, setCat] = useState<ExploreCat>("exterior");
+  const [open, setOpen] = useState(0);
+
+  const content: Record<ExploreCat, { image: string; items: { title: string; body: string }[] }> = {
+    exterior: {
+      image: w.gallery[1] ?? w.hero,
+      items: [
+        { title: "Плёнка UNIQUE PPF",          body: "Полиуретан толщиной 200 микрон с эластичностью 320 %. Плёнка заводится под кромки без снятия оптики, ручек и молдингов." },
+        { title: "Ручной раскрой без выкроек", body: "Каждая панель раскраивается непосредственно на кузове — швов на видимых зонах не остаётся." },
+        { title: "Защита оптики и стёкол",     body: "Отдельная плёнка для фар и лобового стекла — устойчива к точечным ударам щебня и реагентам зимой." },
+        { title: "Хром и молдинги",            body: "Полировка и защитный слой на хромированные элементы — блеск сохраняется без потемнения." },
+      ],
+    },
+    interior: {
+      image: w.gallery[5] ?? w.hero,
+      items: [
+        { title: "Кожа и алькантара",   body: "UNIQUE Interior Coat — водооталкивающий состав для натуральной кожи, замши и алькантары. Впитывание запахов снижено на 80 %." },
+        { title: "Дерево и карбон",     body: "Полировка декоративных вставок с последующей керамической защитой — глубина рисунка сохраняется годами." },
+        { title: "Металлические детали", body: "Обработка нержавеющих накладок порогов и педалей — микроцарапины закрываются составом UNIQUE Metal." },
+        { title: "Стёкла салона",       body: "Керамика для внутренних стёкол — снижает налипание пыли и запотевание в холодную погоду." },
+      ],
+    },
+    materials: {
+      image: w.gallery[3] ?? w.hero,
+      items: w.materials.map(m => ({ title: m.name, body: m.note })),
+    },
+    craft: {
+      image: w.gallery[7] ?? w.hero,
+      items: [
+        { title: "Клубный протокол приёма",   body: "Опись, диагностика при трёх источниках света и десятистраничная карта работ до старта проекта." },
+        { title: "Температурная выдержка",    body: "Автомобиль проводит 48 часов в тёплом боксе перед оклейкой — металл должен принять комнатную температуру." },
+        { title: "Финальная тройная проверка", body: "Каждый шов фотографируется под галогеном, LED и УФ-лампой — только после этого работа считается завершённой." },
+        { title: "Клубная книга владельца",   body: "Документ с историей работы и фото каждого этапа передаётся в панель бардачка автомобиля." },
+      ],
+    },
+  };
+
+  const active = content[cat];
+
+  useEffect(() => { setOpen(0); }, [cat]);
+
+  return (
+    <section className="border-y border-line bg-obsidian-2 px-[6vw] py-32">
+      <div className="mx-auto max-w-[1400px]">
+        <div className="mb-12 flex flex-wrap items-end justify-between gap-6">
+          <div>
+            <p className="eyebrow eyebrow-dot mb-4">Исследуйте автомобиль</p>
+            <h2 className="font-display uppercase leading-tight text-ivory" style={{ fontSize: "clamp(28px,3.6vw,48px)", letterSpacing: "0.05em" }}>
+              Четыре измерения<br /><span className="text-ember">одной работы.</span>
+            </h2>
+          </div>
+          <p className="max-w-[380px] text-[14px] leading-[1.85] text-mute">
+            Каждый раздел раскрывает автомобиль с новой стороны — от плёнки на кузове
+            до последнего шва внутри салона.
+          </p>
+        </div>
+
+        {/* Category rail */}
+        <div className="mb-10 grid grid-cols-2 gap-[1px] bg-line md:grid-cols-4">
+          {EXPLORE_CATS.map(c => (
+            <button
+              key={c.key}
+              onClick={() => setCat(c.key)}
+              className={`group flex items-center gap-4 bg-obsidian px-6 py-5 text-left transition-all ${
+                cat === c.key ? "bg-obsidian-2" : "hover:bg-obsidian-2/60"
+              }`}
+            >
+              <span className={`font-display text-lg transition-colors ${cat === c.key ? "text-ember" : "text-mute-2"}`}>
+                {c.num}
+              </span>
+              <span className={`text-[11px] uppercase tracking-[0.3em] transition-colors ${
+                cat === c.key ? "text-ivory" : "text-mute group-hover:text-ivory"
+              }`}>
+                {c.label}
+              </span>
+              <span className={`ml-auto h-px transition-all ${cat === c.key ? "w-10 bg-ember" : "w-4 bg-line-strong"}`} />
+            </button>
+          ))}
+        </div>
+
+        <div className="grid gap-10 md:grid-cols-[0.9fr_1.1fr]">
+          <div key={cat} className="relative aspect-[4/5] overflow-hidden animate-fade-in md:aspect-auto">
+            <img src={active.image} alt="" loading="lazy" className="h-full w-full object-cover" />
+            <div className="absolute inset-0 plate-scrim" />
+            <p className="absolute bottom-6 left-6 text-[10px] uppercase tracking-[0.35em] text-ivory">
+              {EXPLORE_CATS.find(c => c.key === cat)?.label}
+            </p>
+          </div>
+          <div className="divide-y divide-line border-y border-line">
+            {active.items.map((it, i) => {
+              const isOpen = open === i;
+              return (
+                <div key={it.title + i}>
+                  <button
+                    onClick={() => setOpen(isOpen ? -1 : i)}
+                    className="flex w-full items-center justify-between gap-6 py-6 text-left transition-colors hover:text-ivory"
+                  >
+                    <span className="flex items-center gap-6">
+                      <span className="font-display text-[13px] text-mute-2">{String(i + 1).padStart(2, "0")}</span>
+                      <span className="font-display text-lg uppercase text-ivory md:text-xl" style={{ letterSpacing: "0.05em" }}>
+                        {it.title}
+                      </span>
+                    </span>
+                    <span className={`text-2xl text-ember transition-transform duration-300 ${isOpen ? "rotate-45" : ""}`}>+</span>
+                  </button>
+                  <div
+                    className="grid overflow-hidden text-[14.5px] leading-[1.9] text-mute transition-all duration-500 ease-out"
+                    style={{ gridTemplateRows: isOpen ? "1fr" : "0fr" }}
+                  >
+                    <div className="min-h-0 overflow-hidden">
+                      <p className="pb-6 pl-12 pr-8 max-w-[640px]">{it.body}</p>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </section>
