@@ -57,29 +57,8 @@ function WorkPage() {
         </div>
       </section>
 
-      {/* ГАЛЕРЕЯ — асимметричная */}
-      <section className="bg-obsidian-2 px-[6vw] py-24">
-        <div className="mx-auto grid max-w-[1400px] gap-4 md:grid-cols-3">
-          <div className="relative aspect-[3/4] overflow-hidden md:col-span-2 md:aspect-[16/10]">
-            <img src={w.gallery[0]} alt="" className="h-full w-full object-cover" loading="lazy" />
-          </div>
-          <div className="relative aspect-[3/4] overflow-hidden">
-            <img src={w.gallery[1]} alt="" className="h-full w-full object-cover" loading="lazy" />
-          </div>
-          <div className="relative aspect-[4/5] overflow-hidden">
-            <img src={w.gallery[2]} alt="" className="h-full w-full object-cover" loading="lazy" />
-          </div>
-          <div className="relative aspect-[4/5] overflow-hidden md:col-span-2">
-            <img src={w.gallery[3]} alt="" className="h-full w-full object-cover" loading="lazy" />
-          </div>
-          <div className="relative aspect-[3/4] overflow-hidden md:col-span-2">
-            <img src={w.gallery[4]} alt="" className="h-full w-full object-cover" loading="lazy" />
-          </div>
-          <div className="relative aspect-[3/4] overflow-hidden">
-            <img src={w.gallery[5]} alt="" className="h-full w-full object-cover" loading="lazy" />
-          </div>
-        </div>
-      </section>
+      {/* ГАЛЕРЕЯ — кинематическая с табами и лайтбоксом */}
+      <CinematicGallery w={w} />
 
       {/* ЧТО СДЕЛАНО */}
       <section className="px-[6vw] py-32">
@@ -100,31 +79,15 @@ function WorkPage() {
         </div>
       </section>
 
+      {/* EXPLORE — интерактивные аккордеоны по разделам */}
+      <ExploreAccordion w={w} />
+
       {/* ПЕРСОНАЛИЗАЦИЯ — Bespoke configurator */}
       <BespokeConfigurator w={w} />
 
       {/* ПАЛИТРА */}
       <PalettePanel w={w} />
 
-      {/* МАТЕРИАЛЫ */}
-      <section className="bg-obsidian-2 px-[6vw] py-32">
-        <div className="mx-auto max-w-[1280px]">
-          <div className="mb-16 flex items-center gap-5">
-            <span className="font-display text-[14px] text-mute-2">03</span>
-            <span className="h-px flex-1 bg-line" />
-            <span className="eyebrow">Материалы и покрытия</span>
-          </div>
-          <div className="divide-y divide-line">
-            {w.materials.map((m, i) => (
-              <div key={m.name} className="grid gap-6 py-8 md:grid-cols-[60px_320px_1fr] md:items-start">
-                <span className="font-display text-2xl text-ember">{String(i + 1).padStart(2, "0")}</span>
-                <h3 className="font-display text-xl uppercase text-ivory" style={{ letterSpacing: "0.05em" }}>{m.name}</h3>
-                <p className="text-[15px] leading-[1.9] text-mute">{m.note}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* ЦИТАТА */}
       <section className="border-y border-line py-32 text-center">
