@@ -710,5 +710,3 @@ function ExploreAccordion({ w }: { w: Work }) {
     </section>
   );
 }
-
-}
