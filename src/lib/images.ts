@@ -53,5 +53,5 @@ export const LIFESTYLE_IDS = [
 export const carImage = (i: number, w = 1600) => build(CAR_IDS[i % CAR_IDS.length], w);
 export const lifestyleImage = (i: number, w = 1600) => build(LIFESTYLE_IDS[i % LIFESTYLE_IDS.length], w);
 
-export const carGallery = (seed: number, n = 6) =>
-  Array.from({ length: n }, (_, k) => carImage(seed + k * 3 + k));
+export const carGallery = (seed: number, n = 12) =>
+  Array.from({ length: n }, (_, k) => carImage(seed * 3 + k * 5 + (k % 3), 1800));
