@@ -50,16 +50,13 @@ export function SiteHeader() {
           <img src={logo.url} alt="UNIQUE Detailing" className="h-12 w-auto md:h-14" />
         </Link>
 
-        <div className="hidden items-center gap-[10px] text-[11px] tracking-[0.3em] uppercase text-mute md:flex">
-          <span className="h-[6px] w-[6px] rounded-full bg-ember shadow-[0_0_10px_theme(colors.ember)]" />
-          Скоро открытие
-        </div>
         <Link
           to="/kontakty"
-          className="md:hidden text-[10px] tracking-[0.3em] uppercase text-ember"
+          className="text-[10px] tracking-[0.3em] uppercase text-mute transition-colors hover:text-ivory"
         >
-          Скоро
+          Связаться
         </Link>
+
       </header>
 
       {/* Полноэкранное меню */}

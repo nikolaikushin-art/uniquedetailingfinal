@@ -35,12 +35,12 @@ function Index() {
         <div className="absolute inset-0 bg-obsidian/55" />
         <div className="absolute inset-0 plate-scrim" />
 
-        <div className="relative z-10 mx-auto w-full max-w-[1400px] px-[6vw] pt-24">
-          <div className="mb-10 flex items-center gap-4 animate-fade-up">
-            <img src={logo.url} alt="UNIQUE" className="h-12 w-auto md:h-16" />
-            <span className="h-8 w-px bg-line-strong" />
-            <span className="text-[10px] uppercase tracking-[0.4em] text-ember">Скоро открытие</span>
+        <div className="relative z-10 mx-auto w-full max-w-[1400px] px-[6vw] pt-32 md:pt-24">
+          <div className="mb-8 flex items-center gap-4 animate-fade-up">
+            <span className="h-[6px] w-[6px] rounded-full bg-ember shadow-[0_0_12px_theme(colors.ember)]" />
+            <span className="text-[10px] uppercase tracking-[0.4em] text-ember">Скоро открытие · Санкт-Петербург</span>
           </div>
+
           <p className="eyebrow eyebrow-dot animate-fade-up" style={{ animationDelay: ".05s" }}>
             Санкт-Петербург · с 2015 года
           </p>
