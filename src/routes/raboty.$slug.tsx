@@ -1,5 +1,5 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { getWork, relatedWorks, type Work } from "@/lib/works";
 
@@ -7,8 +7,9 @@ export const Route = createFileRoute("/raboty/$slug")({
   loader: ({ params }): { work: Work; related: Work[] } => {
     const work = getWork(params.slug);
     if (!work) throw notFound();
-    return { work, related: relatedWorks(params.slug, 3) };
+    return { work, related: relatedWorks(params.slug, 8) };
   },
+
   head: ({ loaderData }) => {
     const w = loaderData?.work;
     if (!w) return { meta: [{ title: "Работа не найдена — UNIQUE" }] };
