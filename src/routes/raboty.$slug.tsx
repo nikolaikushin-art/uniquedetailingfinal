@@ -481,16 +481,20 @@ function CinematicGallery({ w }: { w: Work }) {
         <button
           type="button"
           onClick={() => setLightbox(active)}
-          className="group relative block aspect-[16/9] w-full overflow-hidden bg-obsidian"
-          aria-label="Открыть в полноэкранном режиме"
+          className="group relative block aspect-[16/9] w-full overflow-hidden bg-obsidian focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ember"
+          aria-label={`Открыть в полноэкранном режиме — ${w.brand} ${w.model}, ${tab.label} ${active + 1} из ${images.length}`}
         >
           <img
             key={featured}
             src={featured}
-            alt={`${w.brand} ${w.model} — ${tab.label}`}
+            srcSet={`${featured.replace(/w=\d+/, "w=960")} 960w, ${featured.replace(/w=\d+/, "w=1400")} 1400w, ${featured} 1800w`}
+            sizes="(min-width: 1500px) 1400px, 92vw"
+            alt={`${w.brand} ${w.model} — ${tab.label}, кадр ${active + 1}`}
+            loading="lazy"
+            decoding="async"
             className="h-full w-full animate-fade-in object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-[1.03]"
           />
-          <div className="absolute inset-0 plate-scrim" />
+          <div className="absolute inset-0 plate-scrim" aria-hidden="true" />
           <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between gap-6 text-ivory">
             <div>
               <p className="text-[10px] uppercase tracking-[0.4em] text-mute">{tab.label} · {String(active + 1).padStart(2, "0")} / {String(images.length).padStart(2, "0")}</p>
@@ -502,49 +506,81 @@ function CinematicGallery({ w }: { w: Work }) {
           </div>
         </button>
 
-        {/* thumbs */}
-        <div className="mt-4 grid grid-cols-3 gap-2 md:grid-cols-6">
+        {/* thumbs — keyboard-navigable list */}
+        <ul
+          className="mt-4 grid list-none grid-cols-3 gap-2 md:grid-cols-6"
+          role="tablist"
+          aria-label={`Кадры галереи · ${tab.label}`}
+          onKeyDown={(e) => {
+            if (e.key === "ArrowRight") { e.preventDefault(); setActive(i => (i + 1) % images.length); }
+            if (e.key === "ArrowLeft")  { e.preventDefault(); setActive(i => (i - 1 + images.length) % images.length); }
+            if (e.key === "Home")       { e.preventDefault(); setActive(0); }
+            if (e.key === "End")        { e.preventDefault(); setActive(images.length - 1); }
+          }}
+        >
           {images.map((src, i) => (
-            <button
-              key={src + i}
-              onClick={() => setActive(i)}
-              className={`relative aspect-[4/3] overflow-hidden border transition-all duration-300 ${
-                active === i ? "border-ember opacity-100" : "border-transparent opacity-55 hover:opacity-90"
-              }`}
-            >
-              <img src={src} alt="" loading="lazy" className="h-full w-full object-cover" />
-            </button>
+            <li key={src + i}>
+              <button
+                type="button"
+                role="tab"
+                aria-selected={active === i}
+                aria-label={`Показать кадр ${i + 1} из ${images.length}`}
+                tabIndex={active === i ? 0 : -1}
+                onClick={() => setActive(i)}
+                className={`relative block aspect-[4/3] w-full overflow-hidden border transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ember ${
+                  active === i ? "border-ember opacity-100" : "border-transparent opacity-55 hover:opacity-90"
+                }`}
+              >
+                <img
+                  src={src.replace(/w=\d+/, "w=480")}
+                  srcSet={`${src.replace(/w=\d+/, "w=320")} 320w, ${src.replace(/w=\d+/, "w=480")} 480w, ${src.replace(/w=\d+/, "w=640")} 640w`}
+                  sizes="(min-width: 768px) 220px, 33vw"
+                  alt=""
+                  loading="lazy"
+                  decoding="async"
+                  className="h-full w-full object-cover"
+                />
+              </button>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
 
       {lightbox !== null && (
         <div
           className="fixed inset-0 z-[100] flex items-center justify-center bg-obsidian/95 p-6 animate-fade-in"
+          role="dialog"
+          aria-modal="true"
+          aria-label={`${w.brand} ${w.model} — ${tab.label}, кадр ${lightbox + 1} из ${images.length}`}
           onClick={() => setLightbox(null)}
         >
           <button
-            className="absolute left-6 top-6 text-[11px] uppercase tracking-[0.35em] text-ivory"
+            type="button"
+            className="absolute left-6 top-6 text-[11px] uppercase tracking-[0.35em] text-ivory focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ember"
             onClick={(e) => { e.stopPropagation(); setLightbox(null); }}
+            aria-label="Закрыть просмотр"
+            autoFocus
           >
             ✕ Закрыть
           </button>
           <button
-            className="absolute left-6 top-1/2 -translate-y-1/2 border border-ivory/40 px-4 py-3 text-ivory hover:bg-ivory hover:text-obsidian"
+            type="button"
+            className="absolute left-6 top-1/2 -translate-y-1/2 border border-ivory/40 px-4 py-3 text-ivory hover:bg-ivory hover:text-obsidian focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ember"
             onClick={(e) => { e.stopPropagation(); setLightbox(v => v === null ? v : (v - 1 + images.length) % images.length); }}
-            aria-label="Предыдущее"
+            aria-label="Предыдущий кадр"
           >←</button>
           <img
             key={lightbox}
             src={images[lightbox]}
-            alt=""
+            alt={`${w.brand} ${w.model} — ${tab.label}, кадр ${lightbox + 1}`}
             className="max-h-[90vh] max-w-[92vw] animate-scale-in object-contain"
             onClick={(e) => e.stopPropagation()}
           />
           <button
-            className="absolute right-6 top-1/2 -translate-y-1/2 border border-ivory/40 px-4 py-3 text-ivory hover:bg-ivory hover:text-obsidian"
+            type="button"
+            className="absolute right-6 top-1/2 -translate-y-1/2 border border-ivory/40 px-4 py-3 text-ivory hover:bg-ivory hover:text-obsidian focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ember"
             onClick={(e) => { e.stopPropagation(); setLightbox(v => v === null ? v : (v + 1) % images.length); }}
-            aria-label="Следующее"
+            aria-label="Следующий кадр"
           >→</button>
           <p className="absolute bottom-6 left-1/2 -translate-x-1/2 text-[11px] uppercase tracking-[0.35em] text-mute">
             {String(lightbox + 1).padStart(2, "0")} / {String(images.length).padStart(2, "0")} · {tab.label}
@@ -553,6 +589,7 @@ function CinematicGallery({ w }: { w: Work }) {
       )}
     </section>
   );
+
 }
 
 /* ─────────── EXPLORE — интерактивные аккордеоны разделов ─────────── */
