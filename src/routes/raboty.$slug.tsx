@@ -1,5 +1,7 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import * as React from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+
 
 import { getWork, relatedWorks, type Work } from "@/lib/works";
 
@@ -7,8 +9,9 @@ export const Route = createFileRoute("/raboty/$slug")({
   loader: ({ params }): { work: Work; related: Work[] } => {
     const work = getWork(params.slug);
     if (!work) throw notFound();
-    return { work, related: relatedWorks(params.slug, 3) };
+    return { work, related: relatedWorks(params.slug, 8) };
   },
+
   head: ({ loaderData }) => {
     const w = loaderData?.work;
     if (!w) return { meta: [{ title: "Работа не найдена — UNIQUE" }] };
@@ -122,36 +125,12 @@ function WorkPage() {
         </div>
       </section>
 
-      {/* ПОХОЖИЕ РАБОТЫ */}
-      <section className="bg-obsidian-2 px-[6vw] py-32">
-        <div className="mx-auto max-w-[1400px]">
-          <div className="mb-16 flex items-end justify-between">
-            <div>
-              <p className="eyebrow">Похожие работы</p>
-              <h2 className="mt-4 font-display uppercase text-ivory" style={{ fontSize: "clamp(24px,3vw,40px)", letterSpacing: "0.05em" }}>Ещё из портфолио</h2>
-            </div>
-            <Link to="/raboty" className="btn-line">Все работы</Link>
-          </div>
-          <div className="grid gap-[2px] bg-line md:grid-cols-3">
-            {related.map(r => (
-              <Link
-                key={r.slug}
-                to="/raboty/$slug"
-                params={{ slug: r.slug }}
-                className="group relative flex aspect-[4/5] flex-col justify-end overflow-hidden bg-obsidian p-8"
-              >
-                <div className="absolute inset-0 bg-cover bg-center transition-transform duration-[1200ms] group-hover:scale-105" style={{ backgroundImage: `url(${r.hero})` }} />
-                <div className="absolute inset-0 plate-scrim" />
-                <div className="relative z-10">
-                  <p className="eyebrow mb-3 text-mute-2">{r.category}</p>
-                  <h3 className="font-display uppercase leading-tight text-ivory" style={{ fontSize: "22px", letterSpacing: "0.06em" }}>{r.brand}</h3>
-                  <p className="mt-1 text-[14px] text-mute">{r.model}</p>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* HERITAGE & CRAFTSMANSHIP — scroll-triggered cinematic storytelling */}
+      <HeritageStory w={w} />
+
+      {/* ПОХОЖИЕ РАБОТЫ — карусель */}
+      <RelatedCarousel current={w} related={related} />
+
 
       {/* CTA */}
       <section className="border-t border-line px-[6vw] py-32 text-center">
@@ -504,16 +483,20 @@ function CinematicGallery({ w }: { w: Work }) {
         <button
           type="button"
           onClick={() => setLightbox(active)}
-          className="group relative block aspect-[16/9] w-full overflow-hidden bg-obsidian"
-          aria-label="Открыть в полноэкранном режиме"
+          className="group relative block aspect-[16/9] w-full overflow-hidden bg-obsidian focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ember"
+          aria-label={`Открыть в полноэкранном режиме — ${w.brand} ${w.model}, ${tab.label} ${active + 1} из ${images.length}`}
         >
           <img
             key={featured}
             src={featured}
-            alt={`${w.brand} ${w.model} — ${tab.label}`}
+            srcSet={`${featured.replace(/w=\d+/, "w=960")} 960w, ${featured.replace(/w=\d+/, "w=1400")} 1400w, ${featured} 1800w`}
+            sizes="(min-width: 1500px) 1400px, 92vw"
+            alt={`${w.brand} ${w.model} — ${tab.label}, кадр ${active + 1}`}
+            loading="lazy"
+            decoding="async"
             className="h-full w-full animate-fade-in object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-[1.03]"
           />
-          <div className="absolute inset-0 plate-scrim" />
+          <div className="absolute inset-0 plate-scrim" aria-hidden="true" />
           <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between gap-6 text-ivory">
             <div>
               <p className="text-[10px] uppercase tracking-[0.4em] text-mute">{tab.label} · {String(active + 1).padStart(2, "0")} / {String(images.length).padStart(2, "0")}</p>
@@ -525,49 +508,81 @@ function CinematicGallery({ w }: { w: Work }) {
           </div>
         </button>
 
-        {/* thumbs */}
-        <div className="mt-4 grid grid-cols-3 gap-2 md:grid-cols-6">
+        {/* thumbs — keyboard-navigable list */}
+        <ul
+          className="mt-4 grid list-none grid-cols-3 gap-2 md:grid-cols-6"
+          role="tablist"
+          aria-label={`Кадры галереи · ${tab.label}`}
+          onKeyDown={(e) => {
+            if (e.key === "ArrowRight") { e.preventDefault(); setActive(i => (i + 1) % images.length); }
+            if (e.key === "ArrowLeft")  { e.preventDefault(); setActive(i => (i - 1 + images.length) % images.length); }
+            if (e.key === "Home")       { e.preventDefault(); setActive(0); }
+            if (e.key === "End")        { e.preventDefault(); setActive(images.length - 1); }
+          }}
+        >
           {images.map((src, i) => (
-            <button
-              key={src + i}
-              onClick={() => setActive(i)}
-              className={`relative aspect-[4/3] overflow-hidden border transition-all duration-300 ${
-                active === i ? "border-ember opacity-100" : "border-transparent opacity-55 hover:opacity-90"
-              }`}
-            >
-              <img src={src} alt="" loading="lazy" className="h-full w-full object-cover" />
-            </button>
+            <li key={src + i}>
+              <button
+                type="button"
+                role="tab"
+                aria-selected={active === i}
+                aria-label={`Показать кадр ${i + 1} из ${images.length}`}
+                tabIndex={active === i ? 0 : -1}
+                onClick={() => setActive(i)}
+                className={`relative block aspect-[4/3] w-full overflow-hidden border transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ember ${
+                  active === i ? "border-ember opacity-100" : "border-transparent opacity-55 hover:opacity-90"
+                }`}
+              >
+                <img
+                  src={src.replace(/w=\d+/, "w=480")}
+                  srcSet={`${src.replace(/w=\d+/, "w=320")} 320w, ${src.replace(/w=\d+/, "w=480")} 480w, ${src.replace(/w=\d+/, "w=640")} 640w`}
+                  sizes="(min-width: 768px) 220px, 33vw"
+                  alt=""
+                  loading="lazy"
+                  decoding="async"
+                  className="h-full w-full object-cover"
+                />
+              </button>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
 
       {lightbox !== null && (
         <div
           className="fixed inset-0 z-[100] flex items-center justify-center bg-obsidian/95 p-6 animate-fade-in"
+          role="dialog"
+          aria-modal="true"
+          aria-label={`${w.brand} ${w.model} — ${tab.label}, кадр ${lightbox + 1} из ${images.length}`}
           onClick={() => setLightbox(null)}
         >
           <button
-            className="absolute left-6 top-6 text-[11px] uppercase tracking-[0.35em] text-ivory"
+            type="button"
+            className="absolute left-6 top-6 text-[11px] uppercase tracking-[0.35em] text-ivory focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ember"
             onClick={(e) => { e.stopPropagation(); setLightbox(null); }}
+            aria-label="Закрыть просмотр"
+            autoFocus
           >
             ✕ Закрыть
           </button>
           <button
-            className="absolute left-6 top-1/2 -translate-y-1/2 border border-ivory/40 px-4 py-3 text-ivory hover:bg-ivory hover:text-obsidian"
+            type="button"
+            className="absolute left-6 top-1/2 -translate-y-1/2 border border-ivory/40 px-4 py-3 text-ivory hover:bg-ivory hover:text-obsidian focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ember"
             onClick={(e) => { e.stopPropagation(); setLightbox(v => v === null ? v : (v - 1 + images.length) % images.length); }}
-            aria-label="Предыдущее"
+            aria-label="Предыдущий кадр"
           >←</button>
           <img
             key={lightbox}
             src={images[lightbox]}
-            alt=""
+            alt={`${w.brand} ${w.model} — ${tab.label}, кадр ${lightbox + 1}`}
             className="max-h-[90vh] max-w-[92vw] animate-scale-in object-contain"
             onClick={(e) => e.stopPropagation()}
           />
           <button
-            className="absolute right-6 top-1/2 -translate-y-1/2 border border-ivory/40 px-4 py-3 text-ivory hover:bg-ivory hover:text-obsidian"
+            type="button"
+            className="absolute right-6 top-1/2 -translate-y-1/2 border border-ivory/40 px-4 py-3 text-ivory hover:bg-ivory hover:text-obsidian focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ember"
             onClick={(e) => { e.stopPropagation(); setLightbox(v => v === null ? v : (v + 1) % images.length); }}
-            aria-label="Следующее"
+            aria-label="Следующий кадр"
           >→</button>
           <p className="absolute bottom-6 left-1/2 -translate-x-1/2 text-[11px] uppercase tracking-[0.35em] text-mute">
             {String(lightbox + 1).padStart(2, "0")} / {String(images.length).padStart(2, "0")} · {tab.label}
@@ -576,6 +591,7 @@ function CinematicGallery({ w }: { w: Work }) {
       )}
     </section>
   );
+
 }
 
 /* ─────────── EXPLORE — интерактивные аккордеоны разделов ─────────── */
@@ -705,6 +721,255 @@ function ExploreAccordion({ w }: { w: Work }) {
               );
             })}
           </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─────────── HERITAGE & CRAFTSMANSHIP — scroll-triggered cinematic ─────────── */
+function useReveal<T extends HTMLElement>() {
+  const ref = useRef<T | null>(null);
+  const [shown, setShown] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (typeof IntersectionObserver === "undefined") { setShown(true); return; }
+    const io = new IntersectionObserver(
+      (entries) => entries.forEach(e => { if (e.isIntersecting) { setShown(true); io.disconnect(); } }),
+      { threshold: 0.18, rootMargin: "0px 0px -10% 0px" },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+  return { ref, shown };
+}
+
+function RevealBlock({
+  children, delay = 0, as: Tag = "div", className = "",
+}: { children: React.ReactNode; delay?: number; as?: React.ElementType; className?: string }) {
+  const { ref, shown } = useReveal<HTMLDivElement>();
+  return (
+    <Tag
+      ref={ref}
+      className={className}
+      style={{
+        opacity: shown ? 1 : 0,
+        transform: shown ? "translateY(0)" : "translateY(28px)",
+        transition: `opacity 900ms cubic-bezier(.2,.7,.15,1) ${delay}ms, transform 1100ms cubic-bezier(.2,.7,.15,1) ${delay}ms`,
+        willChange: "opacity, transform",
+      }}
+    >
+      {children}
+    </Tag>
+  );
+}
+
+function HeritageStory({ w }: { w: Work }) {
+  const chapters = useMemo(() => ([
+    {
+      num: "MMXV",
+      title: "Наследие мастерской",
+      body: `С 2015 года студия UNIQUE ведёт клубный протокол для каждого автомобиля. ${w.brand} ${w.model} — очередной том этой книги, где каждая страница подписана мастером, проведшим работу.`,
+      image: w.gallery[2] ?? w.hero,
+    },
+    {
+      num: "I",
+      title: "Рука мастера",
+      body: "Плёнка режется на кузове, а не по выкройке. Мастер работает с одним автомобилем неделями — швов на видимых зонах не остаётся, потому что швов нет.",
+      image: w.gallery[6] ?? w.hero,
+    },
+    {
+      num: "II",
+      title: "Тишина процесса",
+      body: `${w.hours} чистой работы. Ни звонков, ни спешки, ни второго автомобиля в боксе. Только один экземпляр ${w.brand} и температура, при которой металл принимает плёнку как продолжение лака.`,
+      image: w.gallery[4] ?? w.hero,
+    },
+    {
+      num: "III",
+      title: "Клубная книга",
+      body: "Каждый шов, каждая температура, каждый час зафиксированы в бумажной книге, которую владелец находит в бардачке. Это не сертификат — это летопись автомобиля.",
+      image: w.gallery[9] ?? w.hero,
+    },
+  ]), [w]);
+
+  return (
+    <section className="relative overflow-hidden border-t border-line bg-obsidian px-[6vw] py-32">
+      <div className="pointer-events-none absolute inset-0 opacity-[0.04]"
+        style={{ backgroundImage: "radial-gradient(circle at 20% 10%, #d9c39a 0%, transparent 55%), radial-gradient(circle at 80% 90%, #d9c39a 0%, transparent 55%)" }}
+        aria-hidden="true"
+      />
+      <div className="relative mx-auto max-w-[1400px]">
+        <RevealBlock className="mb-20 max-w-[820px]">
+          <p className="eyebrow eyebrow-dot mb-6">Наследие · Мастерство</p>
+          <h2 className="font-display uppercase leading-[1.02] text-ivory" style={{ fontSize: "clamp(32px,4.4vw,64px)", letterSpacing: "0.045em" }}>
+            История, написанная<br /><span className="text-ember">рукой мастера.</span>
+          </h2>
+          <p className="mt-8 max-w-[620px] text-[15.5px] leading-[1.95] text-mute">
+            Четыре главы этого проекта — не о технологии. О том, как {w.brand} {w.model}
+            прошёл путь от заводского металла до автомобиля, который стал частью клубной коллекции UNIQUE.
+          </p>
+        </RevealBlock>
+
+        <ol className="relative space-y-24 md:space-y-32">
+          {chapters.map((c, i) => (
+            <li key={c.title} className={`relative grid gap-10 md:grid-cols-2 md:items-center ${i % 2 ? "md:[&>*:first-child]:order-2" : ""}`}>
+              <RevealBlock className="relative aspect-[4/5] overflow-hidden md:aspect-[4/5]" delay={80}>
+                <img
+                  src={c.image.replace(/w=\d+/, "w=1200")}
+                  srcSet={`${c.image.replace(/w=\d+/, "w=640")} 640w, ${c.image.replace(/w=\d+/, "w=960")} 960w, ${c.image.replace(/w=\d+/, "w=1280")} 1280w`}
+                  sizes="(min-width: 768px) 42vw, 90vw"
+                  alt={`${w.brand} ${w.model} — глава ${c.num}, ${c.title}`}
+                  loading="lazy"
+                  decoding="async"
+                  className="h-full w-full object-cover"
+                />
+                <div className="absolute inset-0 plate-scrim" aria-hidden="true" />
+                <span className="absolute left-6 top-6 font-display text-[11px] uppercase tracking-[0.4em] text-ivory">
+                  Глава · {c.num}
+                </span>
+              </RevealBlock>
+              <RevealBlock delay={220} className="md:px-4">
+                <p className="font-display text-ember" style={{ fontSize: "clamp(48px,6vw,88px)", letterSpacing: "0.02em" }}>
+                  {c.num}
+                </p>
+                <h3 className="mt-4 font-display uppercase leading-[1.05] text-ivory" style={{ fontSize: "clamp(24px,2.6vw,36px)", letterSpacing: "0.05em" }}>
+                  {c.title}
+                </h3>
+                <div className="mt-6 h-px w-16 bg-ember" aria-hidden="true" />
+                <p className="mt-6 max-w-[520px] text-[15.5px] leading-[1.95] text-mute">
+                  {c.body}
+                </p>
+              </RevealBlock>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+  );
+}
+
+/* ─────────── RELATED CAROUSEL — accessible горизонтальная карусель ─────────── */
+function RelatedCarousel({ current, related }: { current: Work; related: Work[] }) {
+  const trackRef = useRef<HTMLUListElement | null>(null);
+  const [canPrev, setCanPrev] = useState(false);
+  const [canNext, setCanNext] = useState(true);
+
+  const updateEdges = useCallback(() => {
+    const el = trackRef.current;
+    if (!el) return;
+    setCanPrev(el.scrollLeft > 8);
+    setCanNext(el.scrollLeft + el.clientWidth < el.scrollWidth - 8);
+  }, []);
+
+  useEffect(() => {
+    const el = trackRef.current;
+    if (!el) return;
+    updateEdges();
+    el.addEventListener("scroll", updateEdges, { passive: true });
+    window.addEventListener("resize", updateEdges);
+    return () => {
+      el.removeEventListener("scroll", updateEdges);
+      window.removeEventListener("resize", updateEdges);
+    };
+  }, [updateEdges]);
+
+  const scrollByCards = (dir: 1 | -1) => {
+    const el = trackRef.current;
+    if (!el) return;
+    const card = el.querySelector<HTMLElement>("[data-card]");
+    const step = card ? card.offsetWidth + 16 : el.clientWidth * 0.8;
+    el.scrollBy({ left: dir * step, behavior: "smooth" });
+  };
+
+  return (
+    <section className="border-t border-line bg-obsidian-2 px-[6vw] py-32" aria-labelledby="related-heading">
+      <div className="mx-auto max-w-[1500px]">
+        <div className="mb-14 flex flex-wrap items-end justify-between gap-6">
+          <div>
+            <p className="eyebrow eyebrow-dot mb-4">Курированные рекомендации</p>
+            <h2 id="related-heading" className="font-display uppercase leading-tight text-ivory" style={{ fontSize: "clamp(28px,3.6vw,48px)", letterSpacing: "0.05em" }}>
+              Похожие<br /><span className="text-ember">по духу и классу.</span>
+            </h2>
+            <p className="mt-6 max-w-[520px] text-[14.5px] leading-[1.9] text-mute">
+              Автомобили из клубной коллекции UNIQUE, близкие к {current.brand} {current.model}
+              по категории работ, характеру владельца и стилю оклейки.
+            </p>
+          </div>
+          <div className="flex items-center gap-3" role="group" aria-label="Управление каруселью">
+            <button
+              type="button"
+              onClick={() => scrollByCards(-1)}
+              disabled={!canPrev}
+              aria-label="Предыдущий слайд"
+              className="flex h-12 w-12 items-center justify-center border border-line-strong text-ivory transition-colors hover:bg-ivory hover:text-obsidian disabled:cursor-not-allowed disabled:opacity-30 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ember"
+            >←</button>
+            <button
+              type="button"
+              onClick={() => scrollByCards(1)}
+              disabled={!canNext}
+              aria-label="Следующий слайд"
+              className="flex h-12 w-12 items-center justify-center border border-line-strong text-ivory transition-colors hover:bg-ivory hover:text-obsidian disabled:cursor-not-allowed disabled:opacity-30 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ember"
+            >→</button>
+            <Link to="/raboty" className="btn-line ml-2 hidden md:inline-block">Все работы</Link>
+          </div>
+        </div>
+
+        <ul
+          ref={trackRef}
+          className="scroll-px-[6vw] hide-scrollbar -mx-[6vw] flex snap-x snap-mandatory gap-4 overflow-x-auto px-[6vw] pb-4"
+          role="region"
+          aria-roledescription="carousel"
+          aria-label="Похожие автомобили UNIQUE"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === "ArrowRight") { e.preventDefault(); scrollByCards(1); }
+            if (e.key === "ArrowLeft")  { e.preventDefault(); scrollByCards(-1); }
+          }}
+        >
+          {related.map((r, i) => (
+            <li
+              key={r.slug}
+              data-card
+              className="snap-start shrink-0 basis-[86%] sm:basis-[46%] lg:basis-[30%] xl:basis-[24%]"
+              role="group"
+              aria-roledescription="slide"
+              aria-label={`${i + 1} из ${related.length}: ${r.brand} ${r.model}`}
+            >
+              <Link
+                to="/raboty/$slug"
+                params={{ slug: r.slug }}
+                className="group relative flex aspect-[4/5] flex-col justify-end overflow-hidden bg-obsidian p-7 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ember"
+              >
+                <img
+                  src={r.hero.replace(/w=\d+/, "w=1200")}
+                  srcSet={`${r.hero.replace(/w=\d+/, "w=640")} 640w, ${r.hero.replace(/w=\d+/, "w=960")} 960w, ${r.hero.replace(/w=\d+/, "w=1280")} 1280w`}
+                  sizes="(min-width: 1280px) 24vw, (min-width: 640px) 46vw, 86vw"
+                  alt={`${r.brand} ${r.model}`}
+                  loading="lazy"
+                  decoding="async"
+                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-[1.06]"
+                />
+                <div className="absolute inset-0 plate-scrim" aria-hidden="true" />
+                <span className="absolute left-5 top-5 z-10 text-[10px] uppercase tracking-[0.3em] text-mute">
+                  {String(i + 1).padStart(2, "0")} · {r.category}
+                </span>
+                <div className="relative z-10">
+                  <p className="eyebrow mb-3 text-mute-2">{r.hours} · {r.city}</p>
+                  <h3 className="font-display uppercase leading-tight text-ivory" style={{ fontSize: "22px", letterSpacing: "0.06em" }}>
+                    {r.brand}
+                  </h3>
+                  <p className="mt-1 text-[14.5px] text-ivory">{r.model}</p>
+                  <p className="mt-3 line-clamp-2 max-w-[280px] text-[12.5px] leading-[1.7] text-mute">{r.tagline}</p>
+                  <span className="link-more mt-5">Смотреть работу</span>
+                </div>
+              </Link>
+            </li>
+          ))}
+        </ul>
+
+        <div className="mt-8 md:hidden">
+          <Link to="/raboty" className="btn-line inline-block">Все работы</Link>
         </div>
       </div>
     </section>
