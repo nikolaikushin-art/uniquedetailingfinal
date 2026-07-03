@@ -123,36 +123,12 @@ function WorkPage() {
         </div>
       </section>
 
-      {/* ПОХОЖИЕ РАБОТЫ */}
-      <section className="bg-obsidian-2 px-[6vw] py-32">
-        <div className="mx-auto max-w-[1400px]">
-          <div className="mb-16 flex items-end justify-between">
-            <div>
-              <p className="eyebrow">Похожие работы</p>
-              <h2 className="mt-4 font-display uppercase text-ivory" style={{ fontSize: "clamp(24px,3vw,40px)", letterSpacing: "0.05em" }}>Ещё из портфолио</h2>
-            </div>
-            <Link to="/raboty" className="btn-line">Все работы</Link>
-          </div>
-          <div className="grid gap-[2px] bg-line md:grid-cols-3">
-            {related.map(r => (
-              <Link
-                key={r.slug}
-                to="/raboty/$slug"
-                params={{ slug: r.slug }}
-                className="group relative flex aspect-[4/5] flex-col justify-end overflow-hidden bg-obsidian p-8"
-              >
-                <div className="absolute inset-0 bg-cover bg-center transition-transform duration-[1200ms] group-hover:scale-105" style={{ backgroundImage: `url(${r.hero})` }} />
-                <div className="absolute inset-0 plate-scrim" />
-                <div className="relative z-10">
-                  <p className="eyebrow mb-3 text-mute-2">{r.category}</p>
-                  <h3 className="font-display uppercase leading-tight text-ivory" style={{ fontSize: "22px", letterSpacing: "0.06em" }}>{r.brand}</h3>
-                  <p className="mt-1 text-[14px] text-mute">{r.model}</p>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* HERITAGE & CRAFTSMANSHIP — scroll-triggered cinematic storytelling */}
+      <HeritageStory w={w} />
+
+      {/* ПОХОЖИЕ РАБОТЫ — карусель */}
+      <RelatedCarousel current={w} related={related} />
+
 
       {/* CTA */}
       <section className="border-t border-line px-[6vw] py-32 text-center">
