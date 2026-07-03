@@ -53,5 +53,14 @@ export const LIFESTYLE_IDS = [
 export const carImage = (i: number, w = 1600) => build(CAR_IDS[i % CAR_IDS.length], w);
 export const lifestyleImage = (i: number, w = 1600) => build(LIFESTYLE_IDS[i % LIFESTYLE_IDS.length], w);
 
+// Responsive srcset for <img srcSet>. Widths tuned for hero/gallery use.
+export const carImageSrcSet = (i: number, widths: number[] = [640, 960, 1280, 1600, 1920]) =>
+  widths.map(w => `${carImage(i, w)} ${w}w`).join(", ");
+
 export const carGallery = (seed: number, n = 12) =>
   Array.from({ length: n }, (_, k) => carImage(seed * 3 + k * 5 + (k % 3), 1800));
+
+// Parallel array of indices so consumers can build responsive srcsets per image.
+export const carGalleryIndices = (seed: number, n = 12) =>
+  Array.from({ length: n }, (_, k) => (seed * 3 + k * 5 + (k % 3)) % CAR_IDS.length);
+
