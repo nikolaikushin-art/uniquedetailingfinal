@@ -724,3 +724,252 @@ function ExploreAccordion({ w }: { w: Work }) {
     </section>
   );
 }
+
+/* ─────────── HERITAGE & CRAFTSMANSHIP — scroll-triggered cinematic ─────────── */
+function useReveal<T extends HTMLElement>() {
+  const ref = useRef<T | null>(null);
+  const [shown, setShown] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (typeof IntersectionObserver === "undefined") { setShown(true); return; }
+    const io = new IntersectionObserver(
+      (entries) => entries.forEach(e => { if (e.isIntersecting) { setShown(true); io.disconnect(); } }),
+      { threshold: 0.18, rootMargin: "0px 0px -10% 0px" },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+  return { ref, shown };
+}
+
+function RevealBlock({
+  children, delay = 0, as: Tag = "div", className = "",
+}: { children: React.ReactNode; delay?: number; as?: React.ElementType; className?: string }) {
+  const { ref, shown } = useReveal<HTMLDivElement>();
+  return (
+    <Tag
+      ref={ref}
+      className={className}
+      style={{
+        opacity: shown ? 1 : 0,
+        transform: shown ? "translateY(0)" : "translateY(28px)",
+        transition: `opacity 900ms cubic-bezier(.2,.7,.15,1) ${delay}ms, transform 1100ms cubic-bezier(.2,.7,.15,1) ${delay}ms`,
+        willChange: "opacity, transform",
+      }}
+    >
+      {children}
+    </Tag>
+  );
+}
+
+function HeritageStory({ w }: { w: Work }) {
+  const chapters = useMemo(() => ([
+    {
+      num: "MMXV",
+      title: "Наследие мастерской",
+      body: `С 2015 года студия UNIQUE ведёт клубный протокол для каждого автомобиля. ${w.brand} ${w.model} — очередной том этой книги, где каждая страница подписана мастером, проведшим работу.`,
+      image: w.gallery[2] ?? w.hero,
+    },
+    {
+      num: "I",
+      title: "Рука мастера",
+      body: "Плёнка режется на кузове, а не по выкройке. Мастер работает с одним автомобилем неделями — швов на видимых зонах не остаётся, потому что швов нет.",
+      image: w.gallery[6] ?? w.hero,
+    },
+    {
+      num: "II",
+      title: "Тишина процесса",
+      body: `${w.hours} чистой работы. Ни звонков, ни спешки, ни второго автомобиля в боксе. Только один экземпляр ${w.brand} и температура, при которой металл принимает плёнку как продолжение лака.`,
+      image: w.gallery[4] ?? w.hero,
+    },
+    {
+      num: "III",
+      title: "Клубная книга",
+      body: "Каждый шов, каждая температура, каждый час зафиксированы в бумажной книге, которую владелец находит в бардачке. Это не сертификат — это летопись автомобиля.",
+      image: w.gallery[9] ?? w.hero,
+    },
+  ]), [w]);
+
+  return (
+    <section className="relative overflow-hidden border-t border-line bg-obsidian px-[6vw] py-32">
+      <div className="pointer-events-none absolute inset-0 opacity-[0.04]"
+        style={{ backgroundImage: "radial-gradient(circle at 20% 10%, #d9c39a 0%, transparent 55%), radial-gradient(circle at 80% 90%, #d9c39a 0%, transparent 55%)" }}
+        aria-hidden="true"
+      />
+      <div className="relative mx-auto max-w-[1400px]">
+        <RevealBlock className="mb-20 max-w-[820px]">
+          <p className="eyebrow eyebrow-dot mb-6">Наследие · Мастерство</p>
+          <h2 className="font-display uppercase leading-[1.02] text-ivory" style={{ fontSize: "clamp(32px,4.4vw,64px)", letterSpacing: "0.045em" }}>
+            История, написанная<br /><span className="text-ember">рукой мастера.</span>
+          </h2>
+          <p className="mt-8 max-w-[620px] text-[15.5px] leading-[1.95] text-mute">
+            Четыре главы этого проекта — не о технологии. О том, как {w.brand} {w.model}
+            прошёл путь от заводского металла до автомобиля, который стал частью клубной коллекции UNIQUE.
+          </p>
+        </RevealBlock>
+
+        <ol className="relative space-y-24 md:space-y-32">
+          {chapters.map((c, i) => (
+            <li key={c.title} className={`relative grid gap-10 md:grid-cols-2 md:items-center ${i % 2 ? "md:[&>*:first-child]:order-2" : ""}`}>
+              <RevealBlock className="relative aspect-[4/5] overflow-hidden md:aspect-[4/5]" delay={80}>
+                <img
+                  src={c.image.replace(/w=\d+/, "w=1200")}
+                  srcSet={`${c.image.replace(/w=\d+/, "w=640")} 640w, ${c.image.replace(/w=\d+/, "w=960")} 960w, ${c.image.replace(/w=\d+/, "w=1280")} 1280w`}
+                  sizes="(min-width: 768px) 42vw, 90vw"
+                  alt={`${w.brand} ${w.model} — глава ${c.num}, ${c.title}`}
+                  loading="lazy"
+                  decoding="async"
+                  className="h-full w-full object-cover"
+                />
+                <div className="absolute inset-0 plate-scrim" aria-hidden="true" />
+                <span className="absolute left-6 top-6 font-display text-[11px] uppercase tracking-[0.4em] text-ivory">
+                  Глава · {c.num}
+                </span>
+              </RevealBlock>
+              <RevealBlock delay={220} className="md:px-4">
+                <p className="font-display text-ember" style={{ fontSize: "clamp(48px,6vw,88px)", letterSpacing: "0.02em" }}>
+                  {c.num}
+                </p>
+                <h3 className="mt-4 font-display uppercase leading-[1.05] text-ivory" style={{ fontSize: "clamp(24px,2.6vw,36px)", letterSpacing: "0.05em" }}>
+                  {c.title}
+                </h3>
+                <div className="mt-6 h-px w-16 bg-ember" aria-hidden="true" />
+                <p className="mt-6 max-w-[520px] text-[15.5px] leading-[1.95] text-mute">
+                  {c.body}
+                </p>
+              </RevealBlock>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+  );
+}
+
+/* ─────────── RELATED CAROUSEL — accessible горизонтальная карусель ─────────── */
+function RelatedCarousel({ current, related }: { current: Work; related: Work[] }) {
+  const trackRef = useRef<HTMLUListElement | null>(null);
+  const [canPrev, setCanPrev] = useState(false);
+  const [canNext, setCanNext] = useState(true);
+
+  const updateEdges = useCallback(() => {
+    const el = trackRef.current;
+    if (!el) return;
+    setCanPrev(el.scrollLeft > 8);
+    setCanNext(el.scrollLeft + el.clientWidth < el.scrollWidth - 8);
+  }, []);
+
+  useEffect(() => {
+    const el = trackRef.current;
+    if (!el) return;
+    updateEdges();
+    el.addEventListener("scroll", updateEdges, { passive: true });
+    window.addEventListener("resize", updateEdges);
+    return () => {
+      el.removeEventListener("scroll", updateEdges);
+      window.removeEventListener("resize", updateEdges);
+    };
+  }, [updateEdges]);
+
+  const scrollByCards = (dir: 1 | -1) => {
+    const el = trackRef.current;
+    if (!el) return;
+    const card = el.querySelector<HTMLElement>("[data-card]");
+    const step = card ? card.offsetWidth + 16 : el.clientWidth * 0.8;
+    el.scrollBy({ left: dir * step, behavior: "smooth" });
+  };
+
+  return (
+    <section className="border-t border-line bg-obsidian-2 px-[6vw] py-32" aria-labelledby="related-heading">
+      <div className="mx-auto max-w-[1500px]">
+        <div className="mb-14 flex flex-wrap items-end justify-between gap-6">
+          <div>
+            <p className="eyebrow eyebrow-dot mb-4">Курированные рекомендации</p>
+            <h2 id="related-heading" className="font-display uppercase leading-tight text-ivory" style={{ fontSize: "clamp(28px,3.6vw,48px)", letterSpacing: "0.05em" }}>
+              Похожие<br /><span className="text-ember">по духу и классу.</span>
+            </h2>
+            <p className="mt-6 max-w-[520px] text-[14.5px] leading-[1.9] text-mute">
+              Автомобили из клубной коллекции UNIQUE, близкие к {current.brand} {current.model}
+              по категории работ, характеру владельца и стилю оклейки.
+            </p>
+          </div>
+          <div className="flex items-center gap-3" role="group" aria-label="Управление каруселью">
+            <button
+              type="button"
+              onClick={() => scrollByCards(-1)}
+              disabled={!canPrev}
+              aria-label="Предыдущий слайд"
+              className="flex h-12 w-12 items-center justify-center border border-line-strong text-ivory transition-colors hover:bg-ivory hover:text-obsidian disabled:cursor-not-allowed disabled:opacity-30 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ember"
+            >←</button>
+            <button
+              type="button"
+              onClick={() => scrollByCards(1)}
+              disabled={!canNext}
+              aria-label="Следующий слайд"
+              className="flex h-12 w-12 items-center justify-center border border-line-strong text-ivory transition-colors hover:bg-ivory hover:text-obsidian disabled:cursor-not-allowed disabled:opacity-30 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ember"
+            >→</button>
+            <Link to="/raboty" className="btn-line ml-2 hidden md:inline-block">Все работы</Link>
+          </div>
+        </div>
+
+        <ul
+          ref={trackRef}
+          className="scroll-px-[6vw] hide-scrollbar -mx-[6vw] flex snap-x snap-mandatory gap-4 overflow-x-auto px-[6vw] pb-4"
+          role="region"
+          aria-roledescription="carousel"
+          aria-label="Похожие автомобили UNIQUE"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === "ArrowRight") { e.preventDefault(); scrollByCards(1); }
+            if (e.key === "ArrowLeft")  { e.preventDefault(); scrollByCards(-1); }
+          }}
+        >
+          {related.map((r, i) => (
+            <li
+              key={r.slug}
+              data-card
+              className="snap-start shrink-0 basis-[86%] sm:basis-[46%] lg:basis-[30%] xl:basis-[24%]"
+              role="group"
+              aria-roledescription="slide"
+              aria-label={`${i + 1} из ${related.length}: ${r.brand} ${r.model}`}
+            >
+              <Link
+                to="/raboty/$slug"
+                params={{ slug: r.slug }}
+                className="group relative flex aspect-[4/5] flex-col justify-end overflow-hidden bg-obsidian p-7 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ember"
+              >
+                <img
+                  src={r.hero.replace(/w=\d+/, "w=1200")}
+                  srcSet={`${r.hero.replace(/w=\d+/, "w=640")} 640w, ${r.hero.replace(/w=\d+/, "w=960")} 960w, ${r.hero.replace(/w=\d+/, "w=1280")} 1280w`}
+                  sizes="(min-width: 1280px) 24vw, (min-width: 640px) 46vw, 86vw"
+                  alt={`${r.brand} ${r.model}`}
+                  loading="lazy"
+                  decoding="async"
+                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-[1.06]"
+                />
+                <div className="absolute inset-0 plate-scrim" aria-hidden="true" />
+                <span className="absolute left-5 top-5 z-10 text-[10px] uppercase tracking-[0.3em] text-mute">
+                  {String(i + 1).padStart(2, "0")} · {r.category}
+                </span>
+                <div className="relative z-10">
+                  <p className="eyebrow mb-3 text-mute-2">{r.hours} · {r.city}</p>
+                  <h3 className="font-display uppercase leading-tight text-ivory" style={{ fontSize: "22px", letterSpacing: "0.06em" }}>
+                    {r.brand}
+                  </h3>
+                  <p className="mt-1 text-[14.5px] text-ivory">{r.model}</p>
+                  <p className="mt-3 line-clamp-2 max-w-[280px] text-[12.5px] leading-[1.7] text-mute">{r.tagline}</p>
+                  <span className="link-more mt-5">Смотреть работу</span>
+                </div>
+              </Link>
+            </li>
+          ))}
+        </ul>
+
+        <div className="mt-8 md:hidden">
+          <Link to="/raboty" className="btn-line inline-block">Все работы</Link>
+        </div>
+      </div>
+    </section>
+  );
+}
