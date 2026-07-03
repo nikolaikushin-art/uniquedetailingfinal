@@ -228,7 +228,14 @@ export const getWork = (slug: string) => WORKS.find(w => w.slug === slug);
 export const relatedWorks = (slug: string, n = 3) => {
   const idx = WORKS.findIndex(w => w.slug === slug);
   const others = WORKS.filter((_, i) => i !== idx);
-  return Array.from({ length: n }, (_, k) => others[(idx * 5 + k * 7) % others.length]);
+  const seen = new Set<string>();
+  const out: Work[] = [];
+  for (let k = 0; out.length < n && k < others.length * 2; k++) {
+    const cand = others[(idx * 5 + k * 7) % others.length];
+    if (!seen.has(cand.slug)) { seen.add(cand.slug); out.push(cand); }
+  }
+  return out;
 };
+
 
 export const CATEGORIES = ["Все работы", "PPF", "Смена цвета", "Керамика", "Восстановление"] as const;
