@@ -209,7 +209,7 @@ export const WORKS: Work[] = RAW.map((row, i) => {
     ],
     quote: QUOTES[i % QUOTES.length],
     hero: carImage(i, 2200),
-    gallery: carGallery(i + 1, 6),
+    gallery: carGallery(i + 1, 12),
     works: pick(WORKS_POOL, i, 6),
     materials: pick(MATERIALS_POOL, i, 4),
     faqs: pick(FAQS_POOL, i, 4),
