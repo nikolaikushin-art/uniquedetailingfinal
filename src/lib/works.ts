@@ -31,7 +31,7 @@ export type Work = {
 
 type Perf = Work["performance"];
 
-// 42 автомобиля — каждый со своими характеристиками и историей
+// 62 автомобиля — каждый со своими характеристиками и историей
 type Row = [
   brand: string,
   model: string,
