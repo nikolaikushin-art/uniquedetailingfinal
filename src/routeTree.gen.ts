@@ -16,6 +16,7 @@ import { Route as NasledieRouteImport } from './routes/nasledie'
 import { Route as KontaktyRouteImport } from './routes/kontakty'
 import { Route as KlubRouteImport } from './routes/klub'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as RabotyIndexRouteImport } from './routes/raboty.index'
 import { Route as RabotySlugRouteImport } from './routes/raboty.$slug'
 
 const UslugiRoute = UslugiRouteImport.update({
@@ -53,6 +54,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RabotyIndexRoute = RabotyIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => RabotyRoute,
+} as any)
 const RabotySlugRoute = RabotySlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
@@ -68,6 +74,7 @@ export interface FileRoutesByFullPath {
   '/raboty': typeof RabotyRouteWithChildren
   '/uslugi': typeof UslugiRoute
   '/raboty/$slug': typeof RabotySlugRoute
+  '/raboty/': typeof RabotyIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -75,9 +82,9 @@ export interface FileRoutesByTo {
   '/kontakty': typeof KontaktyRoute
   '/nasledie': typeof NasledieRoute
   '/plenka': typeof PlenkaRoute
-  '/raboty': typeof RabotyRouteWithChildren
   '/uslugi': typeof UslugiRoute
   '/raboty/$slug': typeof RabotySlugRoute
+  '/raboty': typeof RabotyIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -89,6 +96,7 @@ export interface FileRoutesById {
   '/raboty': typeof RabotyRouteWithChildren
   '/uslugi': typeof UslugiRoute
   '/raboty/$slug': typeof RabotySlugRoute
+  '/raboty/': typeof RabotyIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -101,6 +109,7 @@ export interface FileRouteTypes {
     | '/raboty'
     | '/uslugi'
     | '/raboty/$slug'
+    | '/raboty/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -108,9 +117,9 @@ export interface FileRouteTypes {
     | '/kontakty'
     | '/nasledie'
     | '/plenka'
-    | '/raboty'
     | '/uslugi'
     | '/raboty/$slug'
+    | '/raboty'
   id:
     | '__root__'
     | '/'
@@ -121,6 +130,7 @@ export interface FileRouteTypes {
     | '/raboty'
     | '/uslugi'
     | '/raboty/$slug'
+    | '/raboty/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -184,6 +194,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/raboty/': {
+      id: '/raboty/'
+      path: '/'
+      fullPath: '/raboty/'
+      preLoaderRoute: typeof RabotyIndexRouteImport
+      parentRoute: typeof RabotyRoute
+    }
     '/raboty/$slug': {
       id: '/raboty/$slug'
       path: '/$slug'
@@ -196,10 +213,12 @@ declare module '@tanstack/react-router' {
 
 interface RabotyRouteChildren {
   RabotySlugRoute: typeof RabotySlugRoute
+  RabotyIndexRoute: typeof RabotyIndexRoute
 }
 
 const RabotyRouteChildren: RabotyRouteChildren = {
   RabotySlugRoute: RabotySlugRoute,
+  RabotyIndexRoute: RabotyIndexRoute,
 }
 
 const RabotyRouteWithChildren =
