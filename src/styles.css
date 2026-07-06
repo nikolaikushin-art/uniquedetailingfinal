@@ -43,6 +43,27 @@ body {
 }
 ::selection { background: var(--color-ember); color: #fff; }
 
+/* Global focus-visible — keyboard users get a consistent, high-contrast ring
+   across every interactive element (links, buttons, tabs, inputs, cards). */
+:focus { outline: none; }
+:focus-visible {
+  outline: 2px solid var(--color-ember);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+a:focus-visible, button:focus-visible, [role="button"]:focus-visible,
+[role="tab"]:focus-visible, [role="link"]:focus-visible,
+input:focus-visible, textarea:focus-visible, select:focus-visible,
+summary:focus-visible {
+  outline: 2px solid var(--color-ember);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 4px rgb(184 32 47 / 0.18);
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-drift, .animate-marquee, .animate-fade-up { animation: none !important; }
+  html { scroll-behavior: auto; }
+}
+
 .font-display { font-family: var(--font-display); font-weight: 400; letter-spacing: 0.06em; }
 .eyebrow {
   font-family: var(--font-sans);
