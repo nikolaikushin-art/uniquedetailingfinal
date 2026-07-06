@@ -3,7 +3,7 @@ import { useMemo, useState } from "react";
 import { WORKS, CATEGORIES } from "@/lib/works";
 import { carImage } from "@/lib/images";
 
-export const Route = createFileRoute("/raboty")({
+export const Route = createFileRoute("/raboty/")({
   head: () => ({
     meta: [
       { title: "Работы — UNIQUE Detailing" },
