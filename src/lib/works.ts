@@ -1,5 +1,5 @@
 // UNIQUE Detailing — портфолио выполненных работ
-import { carImage, carGallery } from "./images";
+import { commonsImage } from "./images";
 
 export type Spec = { label: string; value: string };
 export type Bespoke = { title: string; note: string; options: string[] };
@@ -88,7 +88,7 @@ const RAW: Row[] = [
   ["Rolls-Royce",   "Cullinan Series II",       "PPF",           "Обновлённый Cullinan в прозрачной плёнке UNIQUE — с защитой Illuminated Pantheon и всех порогов ручной работы.",   "108 часов",{ power: "600 л.с.",  torque: "900 Н·м",  zeroTo: "5.2 с", top: "250 км/ч", weight: "2 660 кг" }],
   ["Rolls-Royce",   "Dawn Black Badge",         "Смена цвета",   "Кабриолет Rolls-Royce в двухтональной обёртке — насыщенный оникс поверх бронзы Mulliner, шов проведён по молдингу.", "156 часов",{ power: "601 л.с.", torque: "840 Н·м",  zeroTo: "4.9 с", top: "250 км/ч", weight: "2 560 кг" }],
   ["Rolls-Royce",   "Wraith",                   "Керамика",      "Купе Rolls-Royce Wraith — семь слоёв керамики поверх лака Silver Ghost, финиш зеркальной глубины.",                  "44 часа", { power: "624 л.с.",  torque: "870 Н·м",  zeroTo: "4.4 с", top: "250 км/ч", weight: "2 435 кг" }],
-  ["Bentley",       "Mulliner Batur",           "PPF",           "Купе штучной серии Mulliner — плёнка UNIQUE выполнена по индивидуальному 3D-скану кузова, 12 экземпляров в мире.", "184 часа",{ power: "740 л.с.", torque: "1 000 Н·м",zeroTo: "3.3 с", top: "335 км/ч", weight: "2 220 кг" }],
+  ["Bentley",       "Continental GT Speed Mulliner", "PPF",      "Купе Bentley Continental GT Speed в исполнении Mulliner — плёнка UNIQUE выполнена по индивидуальному 3D-скану кузова.", "118 часов",{ power: "659 л.с.", torque: "900 Н·м", zeroTo: "3.5 с", top: "335 км/ч", weight: "2 273 кг" }],
   ["Bentley",       "Continental GTC Speed",    "PPF",           "Открытый Continental в прозрачной плёнке UNIQUE — с расширенной защитой откидного механизма и внутренних кромок.",  "88 часов",{ power: "659 л.с.", torque: "900 Н·м",  zeroTo: "3.7 с", top: "335 км/ч", weight: "2 414 кг" }],
   ["Ferrari",       "Daytona SP3",              "PPF",           "Icona-серия Ferrari — плёнка UNIQUE PPF раскроена под каждый карбоновый воздуховод, 599 экземпляров в мире.",       "168 часов",{ power: "840 л.с.", torque: "697 Н·м",  zeroTo: "2.85 с",top: "340 км/ч", weight: "1 485 кг" }],
   ["Ferrari",       "296 GTB",                  "Керамика",      "Гибридный V6 Ferrari — девять слоёв керамики поверх Giallo Modena, глубина цвета сохранена на пять лет.",           "40 часов", { power: "830 л.с.",  torque: "740 Н·м",  zeroTo: "2.9 с", top: "330 км/ч", weight: "1 470 кг" }],
@@ -200,6 +200,78 @@ const PALETTE_POOL: Work["palette"] = [
   { name: "Arctic Pearl",         hex: "#e6ecf0", note: "Жемчужный белый с холодным подтоном." },
 ];
 
+// Verified model-matched vehicle imagery. Each file was selected from Wikimedia Commons
+// by exact make/model search so labelled portfolio cards no longer show the wrong marque.
+const VERIFIED_IMAGE_FILES: string[][] = [
+  ["2024 Audi R8 Performance V10.jpg", "Audi R8 V10 Performance.jpg"],
+  ["Aston Martin DBX707 1X7A0203.jpg", "Aston Martin DBX707 1X7A0360.jpg"],
+  ["2020 BMW X6 M Competition - 01.jpg", "BMW X6 M Competition (52950473395).jpg"],
+  ["Mercedes-AMG G 63 (2018) IMG 4370.jpg", "Mercedes-AMG G 63, GIMS 2018, Le Grand-Saconnex (1X7A0541).jpg"],
+  ["Porsche 992 Turbo S 1X7A0413.jpg", "Porsche 992 Turbo S 1X7A0363.jpg"],
+  ["2016 Bentley Continental GT Speed 0703.jpg", "Bentley Continental GT Speed (3rd gen.) IMG 0014.jpg"],
+  ["Lamborghini Urus Performante 1X7A6803.jpg", "Lamborghini Urus Performante 1X7A7426.jpg"],
+  ["Ferrari Roma 1X7A0309.jpg", "Ferrari Roma IMG 9620.jpg"],
+  ["2022 Rolls-Royce Cullinan Black Badge BS O24.jpg", "Rolls-Royce Cullinan Black Badge.jpg"],
+  ["2022 Land Rover Range Rover SV Autobiography.jpg", "Range Rover SV-Autobiography.jpg"],
+  ["2020 McLaren 765LT 4.0.jpg", "McLaren 765LT IMG 3930.jpg"],
+  ["Maserati MC20 IAA 2021 1X7A0087.jpg", "Maserati MC20 Auto Zuerich 2021 IMG 0419.jpg"],
+  ["2017 Audi RS6 Avant performance.jpg", "Audi RS6 Avant C7 Performance (32973748775).jpg"],
+  ["Mercedes-AMG GT 63 S 4MATIC+ at Geneva International Motor Show 2018 (Ank Kumar) 02.jpg", "Mercedes AMG GT 4 Door Coupe 63 S AMG.jpg"],
+  ["2020 Porsche Taycan Turbo S (21742).jpg", "Porsche Taycan IAA 2019 JM 0787.jpg"],
+  ["2020 BMW M8 Gran Coupe Competition First Edition Auto.jpg", "BMW M8 Gran Coupe Competition IMG 3373.jpg"],
+  ["Land Rover Defender (L663) V8 IMG 6604.jpg", "Land Rover Defender 110 V8 (L663) Washington DC Metro Area, USA.jpg"],
+  ["23 Cadillac Escalade-V Base (1).jpg", "23 Cadillac Escalade-V Base - Scottsdale AZ 2024.jpg"],
+  ["Rolls-Royce Ghost Extended II Black (1).jpg", "Rolls-Royce Ghost Extended II Black (2).jpg"],
+  ["Rolls-Royce Spectre IAA 2023 1X7A0749.jpg", "Rolls-Royce Spectre IAA 2023 1X7A0753.jpg"],
+  ["Rolls-Royce Phantom VIII EWB Series II Black (1).jpg", "Rolls-Royce Phantom VIII EWB Series II Dark Emerald (1).jpg"],
+  ["2021 Bentley Bentayga Speed.jpg", "Bentley Bentayga Speed (84020).jpg"],
+  ["Bentley Flying Spur Mulliner (2024) DSC 6973.jpg", "Bentley Flying Spur Mulliner (2024) DSC 6974.jpg"],
+  ["Ferrari SF90, BAS 24, Brussels (P1170486-RR).jpg", "Ferrari SF90, BAS 24, Brussels (P1170502-RR).jpg"],
+  ["Ferrari 812 Superfast IMG 8829.jpg", "Ferrari 812 Superfast, GIMS 2019, Le Grand-Saconnex (GIMS1323).jpg"],
+  ["Ferrari Purosangue IMG 9550.jpg", "Ferrari Purosangue IMG 9554.jpg"],
+  ["Lamborghini Revuelto DSC 6985.jpg", "Lamborghini Revuelto DSC 6987.jpg"],
+  ["Lamborghini Huracan STO 1X7A0297.jpg", "Lamborghini Huracan STO 1X7A7216.jpg"],
+  ["Porsche Cayenne Turbo GT DSC 7899.jpg", "Porsche Cayenne Turbo GT DSC 7901.jpg"],
+  ["Porsche Panamera Turbo S Sport Turismo e-hybrid, 70 Years Porsche Sports Car, Berlin (1X7A3892).jpg", "Porsche 972 Turbo E-Hybrid IMG 0445.jpg"],
+  ["Mercedes-Maybach Z223 680 1X7A5831.jpg", "Mercedes-Maybach Z223 680 IAA 2021 1X7A0287.jpg"],
+  ["Mercedes-Maybach GLS 600.jpg", "Mercedes Maybach GLS 600.jpg"],
+  ["Mercedes-AMG SL 63 (R232) 1X7A7444.jpg", "Mercedes-AMG SL 63 (R232) IMG 0213.jpg"],
+  ["Aston Martin DB12 1X7A1921.jpg", "Aston Martin DB12 1X7A1934.jpg"],
+  ["Aston Martin Vantage (2024) IMG 0002.jpg", "Aston Martin Vantage (2024) IMG 0015.jpg"],
+  ["McLaren Artura 3.jpg", "McLaren Artura IMG 0527.jpg"],
+  ["2023 McLaren 750S Spider.jpg", "McLaren 750S Spider IMG 2458.jpg"],
+  ["Lotus Emira V6 DCT First Edition Type 131 Magma Red (6).jpg", "Lotus Emira V6 MT First Edition Type 131 Cosmos Black (6).jpg"],
+  ["2023 Lotus Eletre R 2.jpg", "Lotus Eletre R Type 132 Blossom Grey (1).jpg"],
+  ["Genesis GV80 Coupe 001.jpg", "Genesis GV80 Coupe 002.jpg"],
+  ["Lucid Air Sapphire GIMS 2024 1X7A2362.jpg", "Lucid Air Sapphire, GIMS 2024, Le Grand-Saconnex (GIMS0024-4).jpg"],
+  ["Rimac Nevera.jpg", "Rimac Nevera R Auto Zuerich 2024 DSC 6340.jpg"],
+  ["2025 Rolls-Royce Cullinan Series II - 01.jpg", "Rolls-Royce Cullinan Series II DSC 9680.jpg"],
+  ["2022 Rolls-Royce Dawn Black Badge.jpg", "Rolls-Royce Dawn Black Badge.jpg"],
+  ["Rolls-Royce Wraith Series I.jpg", "Rolls Royce Wraith , GIMS 2014 (Ank Kumar) 02.jpg"],
+  ["Bentley Continental GT Speed (3rd gen.) IMG 0014.jpg", "Bentley Continental GT (4th gen.) IMG 0553.jpg"],
+  ["Bentley Continental GTC Speed (3rd gen.) 1X7A0377.jpg", "Bentley Continental GTC (4th gen.) DSC 6980.jpg"],
+  ["2024 Ferrari Daytona SP3 rear.jpg", "Ferrari Daytona SP3 front side at CF 2022.jpg"],
+  ["Ferrari 296 GTB DSC 7011.jpg", "Ferrari 296 GTB IMG 8865.jpg"],
+  ["Ferrari F8 Tributo DSC 7013.jpg", "Ferrari F8 Tributo, GIMS 2019, Le Grand-Saconnex (GIMS1318).jpg"],
+  ["2022 Lamborghini Aventador Ultimae LP780-4.jpg", "Lamborghini Aventador LP780-4 Ultimae.jpg"],
+  ["Lamborghini Urus S 1X7A1655.jpg", "Lamborghini Urus S 1X7A6796.jpg"],
+  ["McLaren GT IMG 2431.jpg", "McLaren GT - 07.jpg"],
+  ["Mercedes-AMG GT Black Series IMG 0324.jpg", "Mercedes-AMG GT Black Series IMG 0331.jpg"],
+  ["Mercedes-AMG S 63 E Performance (W223) front.jpg", "Mercedes-AMG S 63 E PERFORMANCE (W223) rear.jpg"],
+  ["BMW M5, IAA 2017, Frankfurt (1Y7A3537).jpg", "BMW M5, IAA 2017, Frankfurt (1Y7A3538).jpg"],
+  ["BMW XM Label Red IMG 0154.jpg", "BMW XM (G09) 1X7A1708.jpg"],
+  ["2022 Porsche 718 Cayman GT4 RS SCD24.jpg", "Manthey Porsche GT4 RS, EMS 23, Essen (P1160647-RR).jpg"],
+  ["Porsche 911 Sport Classic (2022) IAA 2025 DSC 1786.jpg", "Porsche 911 No 1000000, 70 Years Porsche Sports Car, Berlin (1X7A3888).jpg"],
+  ["2023 Aston Martin DBS 770 Ultimate HCC24.jpg", "2023 Aston Martin DBS 770 Ultimate HCC25.jpg"],
+  ["Land Rover Range Rover SV L P615 SV Serenity Exterior L460 Belgravia Green (2).jpg", "Land Rover Range Rover SV L P615 SV Serenity Exterior L460 Belgravia Green (3).jpg"],
+  ["BMW i7 M70 1X7A2463.jpg", "BMW i7 M70 IAA 2023 1X7A0764.jpg"],
+];
+
+const verifiedGallery = (i: number, n = 12) => {
+  const files = VERIFIED_IMAGE_FILES[i] ?? VERIFIED_IMAGE_FILES[0];
+  return Array.from({ length: n }, (_, k) => commonsImage(files[k % files.length], 1800));
+};
+
 export const WORKS: Work[] = RAW.map((row, i) => {
   const [brand, model, category, tagline, hours, perf] = row;
   const bespoke = pick(BESPOKE_TEMPLATES, i, 4);
@@ -229,8 +301,8 @@ export const WORKS: Work[] = RAW.map((row, i) => {
       STORY_C[(i + 2) % STORY_C.length],
     ],
     quote: QUOTES[i % QUOTES.length],
-    hero: carImage(i, 2200),
-    gallery: carGallery(i + 1, 12),
+    hero: commonsImage((VERIFIED_IMAGE_FILES[i] ?? VERIFIED_IMAGE_FILES[0])[0], 2200),
+    gallery: verifiedGallery(i, 12),
     works: pick(WORKS_POOL, i, 6),
     materials: pick(MATERIALS_POOL, i, 4),
     faqs: pick(FAQS_POOL, i, 4),
