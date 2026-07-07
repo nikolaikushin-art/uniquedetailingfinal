@@ -4,6 +4,9 @@
 const build = (id: string, w = 1600, h?: number) =>
   `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&q=80&w=${w}${h ? `&h=${h}` : ""}`;
 
+export const commonsImage = (file: string, w = 1600) =>
+  `https://commons.wikimedia.org/wiki/Special:Redirect/file/${encodeURIComponent(file)}?width=${w}`;
+
 export const CAR_IDS = [
   "1503376780353-7e6692767b70", // Audi R8
   "1494976388531-d1058494cdd8", // black sports
