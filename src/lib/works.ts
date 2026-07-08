@@ -1,7 +1,7 @@
 // UNIQUE Detailing — portfolio data
-// Each portfolio entry uses real automotive photography (hero + gallery),
-// keyed per vehicle so every card and detail page shows genuine cars.
-import { carGallery, carImage } from "./images";
+// Each portfolio entry uses a dedicated photo set generated for that exact
+// vehicle (brand, model, body, paint), stored under /public/portfolio and
+// keyed by slug, so every card and detail page matches its label.
 import { STUDIO_VEHICLES } from "./studio-vehicles";
 
 export type Spec = { label: string; value: string };
@@ -102,7 +102,14 @@ const pick = <T,>(arr: T[], index: number, count: number): T[] =>
 
 export const WORKS: Work[] = STUDIO_VEHICLES.map((vehicle, i) => {
   const film = ["UNIQUE PPF Clear", "UNIQUE PPF Satin", "Ceramic Pro 9H", "UNIQUE PPF Clear + Ceramic"][i % 4];
-  const gallery = carGallery(i + 1, 10);
+  // Per-vehicle photo set: 0 = hero/front 3/4, 1 = rear 3/4, 2 = interior, 3 = detail.
+  const shot = (n: 0 | 1 | 2 | 3) => `/portfolio/${vehicle.slug}-${n}.jpg`;
+  const gallery = [
+    shot(0), shot(1), shot(0), shot(1),
+    shot(2), shot(2), shot(2),
+    shot(3), shot(3), shot(3),
+    shot(1), shot(3),
+  ];
   const specs: Spec[] = [
     { label: "Мощность", value: vehicle.performance.power },
     { label: "Крутящий", value: vehicle.performance.torque },
@@ -125,7 +132,7 @@ export const WORKS: Work[] = STUDIO_VEHICLES.map((vehicle, i) => {
     duration: ["5 дней", "7 дней", "9 дней", "11 дней", "14 дней", "18 дней"][i % 6],
     story: [STORY_A[i % STORY_A.length], STORY_B[(i + 1) % STORY_B.length], STORY_C[(i + 2) % STORY_C.length]],
     quote: QUOTES[i % QUOTES.length],
-    hero: carImage(i, 1600),
+    hero: shot(0),
     gallery,
     works: pick(WORKS_POOL, i, 6),
     materials: pick(MATERIALS_POOL, i, 4),
