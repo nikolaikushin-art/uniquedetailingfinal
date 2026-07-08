@@ -18,6 +18,7 @@ export const Route = createFileRoute("/raboty/$slug")({
     const title = `${w.brand} ${w.model} — ${w.category} · UNIQUE Detailing`;
     const desc = `${w.tagline} ${w.hours} работы мастера, гарантия 10 лет, клубный протокол UNIQUE в Санкт-Петербурге.`;
     const url = `https://uniquedetailingfinal.lovable.app/raboty/${params?.slug ?? w.slug}`;
+    const hasAbsoluteShareImage = w.hero.startsWith("https://");
     return {
       meta: [
         { title },
@@ -27,18 +28,20 @@ export const Route = createFileRoute("/raboty/$slug")({
         { property: "og:description", content: desc },
         { property: "og:type", content: "article" },
         { property: "og:url", content: url },
-        { property: "og:image", content: w.hero },
-        { property: "og:image:alt", content: `${w.brand} ${w.model} — работа UNIQUE Detailing` },
+        ...(hasAbsoluteShareImage ? [
+          { property: "og:image", content: w.hero },
+          { property: "og:image:alt", content: `${w.brand} ${w.model} — работа UNIQUE Detailing` },
+        ] : []),
         { property: "og:site_name", content: "UNIQUE Detailing" },
         { property: "article:section", content: w.category },
         { name: "twitter:card", content: "summary_large_image" },
         { name: "twitter:title", content: title },
         { name: "twitter:description", content: desc },
-        { name: "twitter:image", content: w.hero },
+        ...(hasAbsoluteShareImage ? [{ name: "twitter:image", content: w.hero }] : []),
       ],
       links: [
         { rel: "canonical", href: url },
-        { rel: "preload", as: "image", href: w.hero, fetchpriority: "high" },
+        ...(hasAbsoluteShareImage ? [{ rel: "preload", as: "image", href: w.hero, fetchpriority: "high" }] : []),
       ],
       scripts: [{
         type: "application/ld+json",
@@ -47,7 +50,7 @@ export const Route = createFileRoute("/raboty/$slug")({
           "@type": "Article",
           headline: `${w.brand} ${w.model} — ${w.category}`,
           description: desc,
-          image: [w.hero],
+          ...(hasAbsoluteShareImage ? { image: [w.hero] } : {}),
           author: { "@type": "Organization", name: "UNIQUE Detailing" },
           publisher: { "@type": "Organization", name: "UNIQUE Detailing" },
           datePublished: `${w.year}-01-01`,
