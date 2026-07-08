@@ -1,4 +1,5 @@
 import type { StudioBody, StudioVehicle } from "./studio-vehicles";
+import numberPlateLogo from "@/assets/unique-detailing-numberplate-logo.png.asset.json";
 
 const encode = (svg: string) => `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
 
@@ -89,8 +90,7 @@ const wheel = (cx: number, cy: number, r: number, v: StudioVehicle) => `
 const plateLogo = (x: number, y: number, width = 170, height = 42) => `
   <g>
     <rect x="${x}" y="${y}" width="${width}" height="${height}" rx="7" fill="url(#plate)" stroke="#111" stroke-opacity="0.5"/>
-    <text x="${x + width / 2}" y="${y + 25}" text-anchor="middle" fill="#09090a" font-family="Arial Rounded MT Bold, Jost, Arial" font-weight="700" font-size="20" letter-spacing="2.8">UNIQUE</text>
-    <path d="M${x + 18} ${y + 32} H${x + 52} M${x + width - 52} ${y + 32} H${x + width - 18}" stroke="#e23a46" stroke-width="5" stroke-linecap="round"/>
+    <image href="${numberPlateLogo.url}" x="${x + 18}" y="${y + 9}" width="${width - 36}" height="${height - 18}" preserveAspectRatio="xMidYMid meet"/>
   </g>`;
 
 const frontThree = (v: StudioVehicle) => {
