@@ -1,5 +1,4 @@
 import type { StudioBody, StudioVehicle } from "./studio-vehicles";
-import numberPlateLogo from "@/assets/unique-detailing-numberplate-logo.png.asset.json";
 
 const encode = (svg: string) =>
   `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg).replace(/[!'()*]/g, (char) => `%${char.charCodeAt(0).toString(16).toUpperCase()}`)}`;
@@ -97,7 +96,9 @@ const wheel = (cx: number, cy: number, r: number, v: StudioVehicle) => `
 const plateLogo = (x: number, y: number, width = 170, height = 42) => `
   <g>
     <rect x="${x}" y="${y}" width="${width}" height="${height}" rx="7" fill="url(#plate)" stroke="#111" stroke-opacity="0.5"/>
-    <image href="${numberPlateLogo.url}" x="${x + 18}" y="${y + 9}" width="${width - 36}" height="${height - 18}" preserveAspectRatio="xMidYMid meet"/>
+    <text x="${x + width / 2}" y="${y + 24}" text-anchor="middle" fill="#09090a" font-family="Arial Rounded MT Bold, Jost, Arial" font-weight="700" font-size="19" letter-spacing="2.6">UNIQUE</text>
+    <text x="${x + width / 2}" y="${y + 35}" text-anchor="middle" fill="#09090a" font-family="Jost, Arial" font-weight="700" font-size="6" letter-spacing="4.4">DETAILING</text>
+    <path d="M${x + 18} ${y + 31} H${x + 48} M${x + width - 48} ${y + 31} H${x + width - 18}" stroke="#e23a46" stroke-width="5" stroke-linecap="round"/>
   </g>`;
 
 const frontThree = (v: StudioVehicle) => {
