@@ -184,7 +184,7 @@ function Hero({ w }: { w: Work }) {
     // full-bleed кинематик
     return (
       <section className="relative flex min-h-[92vh] items-center overflow-hidden border-b border-line">
-        <div className="absolute inset-0 animate-drift bg-cover bg-center" style={{ backgroundImage: `url(${w.hero})` }} />
+        <img src={w.hero} alt={`${w.brand} ${w.model}`} className="absolute inset-0 h-full w-full animate-drift object-cover opacity-80" fetchPriority="high" />
         <div className="absolute inset-0 plate-scrim" />
         <div className="relative z-10 mx-auto w-full max-w-[1400px] px-[6vw] pt-28">
           <p className="eyebrow eyebrow-dot mb-6">{w.category} · {w.city}</p>
@@ -212,7 +212,7 @@ function Hero({ w }: { w: Work }) {
           </div>
         </div>
         <div className="relative min-h-[60vh] overflow-hidden">
-          <div className="absolute inset-0 animate-drift bg-cover bg-center" style={{ backgroundImage: `url(${w.hero})` }} />
+          <img src={w.hero} alt={`${w.brand} ${w.model}`} className="absolute inset-0 h-full w-full animate-drift object-cover opacity-80" fetchPriority="high" />
           <div className="absolute inset-0 plate-scrim" />
         </div>
       </section>
@@ -224,7 +224,7 @@ function Hero({ w }: { w: Work }) {
       <section className="relative overflow-hidden border-b border-line bg-obsidian-2">
         <div className="relative min-h-[86vh]">
           <div className="absolute inset-x-[6vw] top-24 bottom-24 overflow-hidden">
-            <div className="absolute inset-0 animate-drift bg-cover bg-center" style={{ backgroundImage: `url(${w.hero})` }} />
+            <img src={w.hero} alt={`${w.brand} ${w.model}`} className="absolute inset-0 h-full w-full animate-drift object-cover opacity-80" fetchPriority="high" />
             <div className="absolute inset-0 plate-scrim" />
           </div>
           <div className="relative z-10 mx-auto w-full max-w-[1400px] px-[6vw] pt-40 pb-24">
@@ -247,7 +247,7 @@ function Hero({ w }: { w: Work }) {
       <div className="grid grid-cols-3 gap-[2px] bg-line">
         {[0, 1, 2].map((i) => (
           <div key={i} className="relative aspect-[3/4] overflow-hidden md:aspect-auto md:h-[70vh]">
-            <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${w.gallery[i] ?? w.hero})` }} />
+            <img src={w.gallery[i] ?? w.hero} alt={`${w.brand} ${w.model} — кадр ${i + 1}`} className="absolute inset-0 h-full w-full object-cover opacity-85" loading={i === 0 ? "eager" : "lazy"} />
             <div className="absolute inset-0 plate-scrim" />
           </div>
         ))}

@@ -74,9 +74,12 @@ function RabotyPage() {
               params={{ slug: w.slug }}
               className="group relative flex aspect-[4/5] flex-col justify-end overflow-hidden bg-obsidian p-8"
             >
-              <div
-                className="absolute inset-0 bg-cover bg-center transition-transform duration-[1200ms] ease-out group-hover:scale-[1.06]"
-                style={{ backgroundImage: `url(${w.hero})` }}
+              <img
+                src={w.hero}
+                alt={`${w.brand} ${w.model}`}
+                className="absolute inset-0 h-full w-full object-cover opacity-85 transition-transform duration-[1200ms] ease-out group-hover:scale-[1.06]"
+                loading="lazy"
+                decoding="async"
               />
               <div className="absolute inset-0 plate-scrim" />
               <div className="absolute left-6 top-6 z-10 text-[10px] uppercase tracking-[0.3em] text-mute">
