@@ -1,7 +1,8 @@
 import type { StudioBody, StudioVehicle } from "./studio-vehicles";
 import numberPlateLogo from "@/assets/unique-detailing-numberplate-logo.png.asset.json";
 
-const encode = (svg: string) => `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+const encode = (svg: string) =>
+  `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg).replace(/[!'()*]/g, (char) => `%${char.charCodeAt(0).toString(16).toUpperCase()}`)}`;
 
 const esc = (value: string) =>
   value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
