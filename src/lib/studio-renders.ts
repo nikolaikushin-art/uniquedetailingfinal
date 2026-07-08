@@ -38,10 +38,15 @@ function studioDefs(v: StudioVehicle) {
         <stop offset="0.44" stop-color="#07080a"/>
         <stop offset="1" stop-color="#17191c"/>
       </linearGradient>
-      <radialGradient id="floor" cx="50%" cy="78%" r="56%">
-        <stop offset="0" stop-color="#2a2d31" stop-opacity="0.72"/>
-        <stop offset="0.52" stop-color="#111315" stop-opacity="0.55"/>
+      <radialGradient id="floor" cx="50%" cy="74%" r="60%">
+        <stop offset="0" stop-color="#5a5f66" stop-opacity="0.82"/>
+        <stop offset="0.42" stop-color="#25282d" stop-opacity="0.72"/>
         <stop offset="1" stop-color="#050607" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="spot" cx="50%" cy="44%" r="48%">
+        <stop offset="0" stop-color="#ffffff" stop-opacity="0.18"/>
+        <stop offset="0.52" stop-color="#ffffff" stop-opacity="0.07"/>
+        <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
       </radialGradient>
       <linearGradient id="paint" x1="0" y1="0" x2="1" y2="1">
         <stop offset="0" stop-color="#ffffff" stop-opacity="0.42"/>
@@ -64,6 +69,7 @@ function studioDefs(v: StudioVehicle) {
 
 const studioBackground = (v: StudioVehicle, view: number) => `
   <rect width="1800" height="1125" fill="url(#bg)"/>
+  <rect width="1800" height="1125" fill="url(#spot)"/>
   <rect y="735" width="1800" height="390" fill="url(#floor)"/>
   <path d="M0 768 H1800" stroke="#eae8e2" stroke-opacity="0.08"/>
   <path d="M260 190 H1540" stroke="#eae8e2" stroke-opacity="0.08"/>
