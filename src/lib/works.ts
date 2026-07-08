@@ -1,7 +1,7 @@
-// UNIQUE Detailing — verified AI studio portfolio
-// Every portfolio entry now uses a controlled studio-render set: same model,
-// same paint, same wheels, 10 matching angles, UNIQUE only on the number plate.
-import { studioGallery, studioImage } from "./studio-renders";
+// UNIQUE Detailing — portfolio data
+// Each portfolio entry uses real automotive photography (hero + gallery),
+// keyed per vehicle so every card and detail page shows genuine cars.
+import { carGallery, carImage } from "./images";
 import { STUDIO_VEHICLES } from "./studio-vehicles";
 
 export type Spec = { label: string; value: string };
@@ -102,7 +102,7 @@ const pick = <T,>(arr: T[], index: number, count: number): T[] =>
 
 export const WORKS: Work[] = STUDIO_VEHICLES.map((vehicle, i) => {
   const film = ["UNIQUE PPF Clear", "UNIQUE PPF Satin", "Ceramic Pro 9H", "UNIQUE PPF Clear + Ceramic"][i % 4];
-  const gallery = studioGallery(vehicle);
+  const gallery = carGallery(i + 1, 10);
   const specs: Spec[] = [
     { label: "Мощность", value: vehicle.performance.power },
     { label: "Крутящий", value: vehicle.performance.torque },
@@ -125,7 +125,7 @@ export const WORKS: Work[] = STUDIO_VEHICLES.map((vehicle, i) => {
     duration: ["5 дней", "7 дней", "9 дней", "11 дней", "14 дней", "18 дней"][i % 6],
     story: [STORY_A[i % STORY_A.length], STORY_B[(i + 1) % STORY_B.length], STORY_C[(i + 2) % STORY_C.length]],
     quote: QUOTES[i % QUOTES.length],
-    hero: studioImage(vehicle, 0),
+    hero: carImage(i, 1600),
     gallery,
     works: pick(WORKS_POOL, i, 6),
     materials: pick(MATERIALS_POOL, i, 4),
