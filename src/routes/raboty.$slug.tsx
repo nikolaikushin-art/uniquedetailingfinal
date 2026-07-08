@@ -459,8 +459,8 @@ function PalettePanel({ w }: { w: Work }) {
 /* ─────────── КИНЕМАТИЧЕСКАЯ ГАЛЕРЕЯ — табы + лайтбокс ─────────── */
 const GALLERY_TABS = [
   { key: "exterior", label: "Экстерьер",   indices: [0, 1, 2, 3] },
-  { key: "interior", label: "Интерьер",    indices: [4, 5, 6] },
-  { key: "detail",   label: "Деталь",      indices: [7, 8, 9] },
+  { key: "interior", label: "Интерьер",    indices: [4, 5, 6, 7, 8] },
+  { key: "detail",   label: "Деталь",      indices: [9, 2, 3] },
   { key: "craft",    label: "Мастерство",  indices: [10, 11, 0] },
 ] as const;
 

@@ -104,11 +104,15 @@ export const WORKS: Work[] = STUDIO_VEHICLES.map((vehicle, i) => {
   const film = ["UNIQUE PPF Clear", "UNIQUE PPF Satin", "Ceramic Pro 9H", "UNIQUE PPF Clear + Ceramic"][i % 4];
   // Per-vehicle photo set: 0 = hero/front 3/4, 1 = rear 3/4, 2 = interior, 3 = detail.
   const shot = (n: 0 | 1 | 2 | 3) => `/portfolio/${vehicle.slug}-${n}.jpg`;
+  // Five distinct interiors per car (original + 4 unique angles), no repeats.
+  const interior = (n: 1 | 2 | 3 | 4) => `/portfolio/${vehicle.slug}-int-${n}.jpg`;
   const gallery = [
-    shot(0), shot(1), shot(0), shot(1),
-    shot(2), shot(2), shot(2),
-    shot(3), shot(3), shot(3),
-    shot(1), shot(3),
+    // 0–3 exterior
+    shot(0), shot(1), shot(3), shot(0),
+    // 4–8 interior (5 distinct)
+    shot(2), interior(1), interior(2), interior(3), interior(4),
+    // 9–11 detail / craft
+    shot(3), shot(1), shot(0),
   ];
   const specs: Spec[] = [
     { label: "Мощность", value: vehicle.performance.power },
