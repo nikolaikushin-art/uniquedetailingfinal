@@ -108,12 +108,16 @@ export const WORKS: Work[] = STUDIO_VEHICLES.map((vehicle, i) => {
   const ext = (n: 1 | 2 | 3) => `/portfolio/${vehicle.slug}-ext-${n}.jpg`;
   // Six distinct interiors per car (original + 5 unique angles), no repeats.
   const interior = (n: 1 | 2 | 3 | 4 | 5) => `/portfolio/${vehicle.slug}-int-${n}.jpg`;
+  // Six unique detail close-ups (wheel/caliper, headlight, grille/badge, mirror/PPF, exhaust, taillight).
+  const detail = (n: 1 | 2 | 3 | 4 | 5 | 6) => `/portfolio/${vehicle.slug}-det-${n}.jpg`;
   const gallery = [
     // 0–5 exterior (6 distinct angles, no repeats)
     shot(0), shot(1), ext(1), ext(2), ext(3), shot(3),
     // 6–11 interior (6 distinct)
     shot(2), interior(1), interior(2), interior(3), interior(4), interior(5),
-    // 12–14 detail / craft
+    // 12–17 detail (6 unique close-ups)
+    detail(1), detail(2), detail(3), detail(4), detail(5), detail(6),
+    // 18–20 craft
     shot(3), shot(1), shot(0),
   ];
   const specs: Spec[] = [
