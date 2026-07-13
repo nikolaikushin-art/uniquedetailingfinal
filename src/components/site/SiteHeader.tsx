@@ -83,18 +83,18 @@ export function SiteHeader() {
         </button>
 
         <nav className="flex w-full flex-col overflow-y-auto border-r border-line md:w-[55%]">
-          <div className="flex min-h-full flex-col justify-center px-[8vw] pt-28 pb-16 md:pt-32">
-            <ul className="space-y-1">
+          <div className="flex min-h-full flex-col justify-center px-[8vw] pt-24 pb-14 md:pt-28">
+            <ul className="space-y-0">
               {NAV.map((n, i) => (
                 <li key={n.to} className="overflow-hidden">
                   <Link
                     to={n.to}
                     onClick={() => setOpen(false)}
-                    className="block font-display uppercase text-mute transition-all duration-300 hover:pl-4 hover:tracking-[0.18em] hover:text-ivory"
+                    className="block font-display uppercase leading-[1.1] text-mute transition-all duration-300 hover:pl-4 hover:tracking-[0.18em] hover:text-ivory"
                     style={{
                       fontSize: "clamp(24px,3vw,40px)",
                       letterSpacing: "0.14em",
-                      padding: "10px 0",
+                      padding: "3px 0",
                       transform: open ? "translateY(0)" : "translateY(110%)",
                       opacity: open ? 1 : 0,
                       transition: `transform .7s cubic-bezier(.2,.8,.2,1) ${i * 0.05 + 0.05}s, opacity .7s ease ${
