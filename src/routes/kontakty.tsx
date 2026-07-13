@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { PageHero } from "@/components/site/PageHero";
-import { carImage } from "@/lib/images";
+
 
 export const Route = createFileRoute("/kontakty")({
   head: () => ({
