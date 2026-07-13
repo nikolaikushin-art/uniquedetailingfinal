@@ -108,6 +108,15 @@ const PPF = {
   installCut: "/ppf/ppf-install-cut.jpg",
   installApply: "/ppf/ppf-install-apply.jpg",
   installInspect: "/ppf/ppf-install-inspect.jpg",
+  // New brand & material photography (official-logo product line)
+  rollsDuo: "/ppf/ppf-rolls-duo.jpg",
+  suite: "/ppf/ppf-suite.jpg",
+  swatches: "/ppf/ppf-swatches.jpg",
+  core: "/ppf/ppf-core.jpg",
+  beading: "/ppf/ppf-beading.jpg",
+  heal2: "/ppf/ppf-heal2.jpg",
+  apply2: "/ppf/ppf-apply2.jpg",
+  knife2: "/ppf/ppf-knife2.jpg",
 } as const;
 
 /* ─────────── Vehicle demonstration data (the 30% — cars proving the film) ─────────── */
@@ -174,30 +183,30 @@ const DEMOS: Demo[] = [
 /* ─────────── Branded packaging showcase ─────────── */
 const PACKAGING = [
   {
-    img: PPF.roll,
-    title: "Рулон UNIQUE PPF",
-    body: "Полиуретановая плёнка на брендированном сердечнике. Каждый метр промаркирован «UNIQUE · Paint Protection Film».",
+    img: PPF.suite,
+    title: "Продуктовая линейка UNIQUE PPF",
+    body: "Короб, рулон и образцы плёнки в единой айдентике — уровень международного производителя защитных материалов.",
     span: true,
+  },
+  {
+    img: PPF.rollsDuo,
+    title: "Рулоны плёнки",
+    body: "Полиуретановая плёнка на брендированном сердечнике с матовой чёрной обёрткой.",
+  },
+  {
+    img: PPF.core,
+    title: "Маркировка рулона",
+    body: "«UNIQUE · Paint Protection Film» — каждый метр промаркирован от сердечника до упаковки.",
   },
   {
     img: PPF.box,
     title: "Люксовая упаковка",
-    body: "Soft-touch матовый чёрный короб с тиснёным логотипом — стандарт международного производителя.",
-  },
-  {
-    img: PPF.caseKit,
-    title: "Инсталляционный кейс",
-    body: "Рулон, стальной ракель, прецизионный нож и перчатки в фирменном кейсе для чистой оклейки.",
-  },
-  {
-    img: PPF.boxes,
-    title: "Продуктовая линейка",
-    body: "Единая айдентика по всей линейке коробов — от компактных до полноформатных рулонов кузова.",
+    body: "Soft-touch матовый короб с тиснёным логотипом — стандарт премиального бренда.",
   },
   {
     img: PPF.shelf,
     title: "Складская витрина студии",
-    body: "Собственный запас плёнки UNIQUE в студии — партии под каждый класс автомобиля.",
+    body: "Собственный запас плёнки UNIQUE — партии под каждый класс автомобиля.",
     span: true,
   },
 ];
@@ -237,6 +246,55 @@ const FINISHES = [
     desc: "Colour-shift и лимитированные финиши для индивидуальных проектов и клубных автомобилей.",
     specs: ["Colour-shift", "Лимитированные партии", "Индивидуальный проект"],
     example: "Bespoke · клубные проекты",
+  },
+];
+
+/* ─────────── Pairing system (Vehicle + Material + Product) ─────────── */
+type Pairing = {
+  n: string;
+  veh: string;
+  brand: string;
+  model: string;
+  material: string;
+  materialName: string;
+  materialTag: string;
+  product: string;
+  note: string;
+};
+
+const PAIRINGS: Pairing[] = [
+  {
+    n: "01",
+    veh: "/portfolio/rolls-royce-phantom-series-ii-0.jpg",
+    brand: "Rolls-Royce",
+    model: "Phantom Series II",
+    material: "/ppf/ppf-gloss.jpg",
+    materialName: "UNIQUE Gloss",
+    materialTag: "Полная оклейка кузова",
+    product: "/ppf/ppf-suite.jpg",
+    note: "Глянцевая плёнка повторяет глубину лака Infinity Black — защита невидима, кузов нетронут.",
+  },
+  {
+    n: "02",
+    veh: "/portfolio/lamborghini-revuelto-0.jpg",
+    brand: "Lamborghini",
+    model: "Revuelto",
+    material: "/ppf/ppf-special.jpg",
+    materialName: "UNIQUE Special",
+    materialTag: "Ударная зона · трек",
+    product: "/ppf/ppf-rolls-duo.jpg",
+    note: "Фронтальная зона и арки под ядром 210 µm — щебень и трек без единого скола.",
+  },
+  {
+    n: "03",
+    veh: "/portfolio/mercedes-benz-g-63-amg-0.jpg",
+    brand: "Mercedes-Benz",
+    model: "G 63 AMG",
+    material: "/ppf/ppf-matte.jpg",
+    materialName: "UNIQUE Stealth",
+    materialTag: "Сатиновое покрытие",
+    product: "/ppf/ppf-swatches.jpg",
+    note: "Graphite Magno в сатине: матовый характер и полная защита кузова одной плёнкой.",
   },
 ];
 
@@ -564,14 +622,9 @@ function PlenkaPage() {
               <span className="text-ember">инженерная защита.</span>
             </h2>
             <p>
-              Мы производим собственную полиуретановую плёнку ограниченными партиями: рецептура
-              топ-коата, эластичного ядра и клеевого слоя отработана на реальных автомобилях в
-              европейском центре. Каждый рулон промаркирован — от сердечника до упаковки.
-            </p>
-            <p>
-              Это уровень международного производителя защитных материалов: прозрачность 99.7%,
-              самовосстановление, гидрофобность и гарантия 10 лет. Ниже — материал, технология,
-              упаковка и портфолио оклеенных автомобилей.
+              Собственная полиуретановая плёнка ограниченными партиями: рецептура топ-коата, ядра и
+              клеевого слоя отработана на реальных автомобилях. Прозрачность 99.7%,
+              самовосстановление, гидрофобность и гарантия 10 лет — уровень международного бренда.
             </p>
           </div>
           <div className="relative aspect-[4/5] overflow-hidden">
@@ -660,6 +713,106 @@ function PlenkaPage() {
         </div>
       </section>
 
+      {/* ═══════════ PREMIUM PAIRING SYSTEM ═══════════ */}
+      <section className="border-b border-line px-[6vw] py-32">
+        <div className="mx-auto max-w-[1500px]">
+          <Rule label="Автомобиль · материал · продукт" />
+          <div className="mb-14 max-w-[860px]">
+            <h2
+              className="font-display uppercase leading-tight text-ivory"
+              style={{ fontSize: "clamp(28px,3.6vw,52px)", letterSpacing: "0.04em" }}
+            >
+              Не услуга,
+              <br />
+              <span className="text-ember">а продуктовая система.</span>
+            </h2>
+            <p className="mt-6 max-w-[560px] text-[15px] leading-[1.9] text-mute">
+              Каждый проект — это связка: автомобиль, конкретный материал UNIQUE PPF и
+              брендированный продукт, из которого он сделан.
+            </p>
+          </div>
+
+          <div className="space-y-2">
+            {PAIRINGS.map((p) => (
+              <div key={p.n} className="grid gap-2 lg:grid-cols-[1.55fr_1fr] lg:items-stretch">
+                {/* Vehicle */}
+                <div className="group relative overflow-hidden bg-obsidian">
+                  <div className="aspect-[16/10] h-full">
+                    <img
+                      src={p.veh}
+                      alt={`${p.brand} ${p.model}`}
+                      loading="lazy"
+                      className="h-full w-full object-cover transition-transform duration-[1600ms] group-hover:scale-105"
+                    />
+                  </div>
+                  <div className="absolute inset-0 plate-scrim" />
+                  <span className="absolute left-5 top-5 border border-ivory/30 bg-obsidian/50 px-3 py-1 text-[9px] uppercase tracking-[0.28em] text-ivory backdrop-blur-sm">
+                    {p.n} · Pairing
+                  </span>
+                  <div className="absolute inset-x-0 bottom-0 p-8">
+                    <h3
+                      className="font-display text-2xl uppercase text-ivory"
+                      style={{ letterSpacing: "0.05em" }}
+                    >
+                      {p.brand} <span className="text-ember">{p.model}</span>
+                    </h3>
+                    <p className="mt-3 max-w-[440px] text-[13px] leading-[1.7] text-mute">
+                      {p.note}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Material + Product */}
+                <div className="grid grid-cols-2 gap-2 lg:grid-cols-1">
+                  <figure className="group relative overflow-hidden bg-obsidian">
+                    <div className="aspect-[16/9] h-full">
+                      <img
+                        src={p.material}
+                        alt={p.materialName}
+                        loading="lazy"
+                        className="h-full w-full object-cover transition-transform duration-[1400ms] group-hover:scale-105"
+                      />
+                    </div>
+                    <div className="absolute inset-0 plate-scrim" />
+                    <figcaption className="absolute inset-x-0 bottom-0 p-5">
+                      <p className="text-[9px] uppercase tracking-[0.28em] text-mute-2">
+                        {p.materialTag}
+                      </p>
+                      <p
+                        className="mt-1 font-display text-lg uppercase text-ivory"
+                        style={{ letterSpacing: "0.05em" }}
+                      >
+                        {p.materialName}
+                      </p>
+                    </figcaption>
+                  </figure>
+                  <figure className="group relative overflow-hidden bg-obsidian">
+                    <div className="aspect-[16/9] h-full">
+                      <img
+                        src={p.product}
+                        alt="Продукт UNIQUE PPF"
+                        loading="lazy"
+                        className="h-full w-full object-cover transition-transform duration-[1400ms] group-hover:scale-105"
+                      />
+                    </div>
+                    <div className="absolute inset-0 plate-scrim" />
+                    <figcaption className="absolute inset-x-0 bottom-0 p-5">
+                      <p className="text-[9px] uppercase tracking-[0.28em] text-mute-2">Продукт</p>
+                      <p
+                        className="mt-1 font-display text-lg uppercase text-ivory"
+                        style={{ letterSpacing: "0.05em" }}
+                      >
+                        UNIQUE PPF
+                      </p>
+                    </figcaption>
+                  </figure>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ═══════════ MATERIAL TECHNOLOGY ═══════════ */}
       <section className="px-[6vw] py-32">
         <div className="mx-auto max-w-[1500px]">
@@ -731,16 +884,16 @@ function PlenkaPage() {
           <div className="grid gap-2 md:grid-cols-2">
             {[
               {
-                img: PPF.hydrophobic,
+                img: PPF.beading,
                 tag: "Гидрофобность",
                 title: "Вода скатывается сама",
-                body: "Топ-коат превращает воду в плотные капли: они скатываются с поверхности, унося грязь, пыль и дорожные реагенты. Автомобиль дольше остаётся чистым.",
+                body: "Топ-коат превращает воду в плотные капли — они скатываются, унося грязь и реагенты.",
               },
               {
-                img: PPF.selfheal,
+                img: PPF.heal2,
                 tag: "Самовосстановление",
                 title: "Царапины исчезают от тепла",
-                body: "Мелкие царапины, следы моек и завихрения затягиваются при нагреве от 40 °C — от солнца, тёплой воды или фена. Поверхность возвращается к идеалу.",
+                body: "Мелкие царапины и следы моек затягиваются при нагреве от 40 °C — от солнца, воды или фена.",
               },
             ].map((d) => (
               <figure key={d.tag} className="group relative overflow-hidden">
@@ -1025,22 +1178,22 @@ function PlenkaPage() {
           <div className="grid gap-2 md:grid-cols-3">
             {[
               {
-                img: PPF.installCut,
+                img: PPF.knife2,
                 step: "01",
                 title: "Прецизионный раскрой",
-                body: "Лекала под конкретную модель и ручная подрезка кромок для незаметных стыков.",
+                body: "Лекала под модель и ручная подрезка кромок для незаметных стыков.",
               },
               {
-                img: PPF.installApply,
+                img: PPF.apply2,
                 step: "02",
                 title: "Укладка плёнки",
-                body: "Влажный монтаж, вытеснение воды и пузырей, работа по сложной геометрии кузова.",
+                body: "Влажный монтаж, вытеснение воды и пузырей по сложной геометрии кузова.",
               },
               {
                 img: PPF.installInspect,
                 step: "03",
                 title: "Контроль качества",
-                body: "Проверка каждой кромки и поверхности под ярким инспекционным светом.",
+                body: "Проверка каждой кромки под ярким инспекционным светом.",
               },
             ].map((s) => (
               <figure key={s.step} className="group relative overflow-hidden bg-obsidian">
