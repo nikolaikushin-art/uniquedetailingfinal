@@ -299,3 +299,53 @@ summary:focus-visible {
   .max-w-\[1280px\] { max-width: 1360px; }
 }
 
+/* ============================================================
+ * Premium monochrome map (Leaflet + CARTO)
+ * Grayscale basemap, no traffic/vendor chrome, single UNIQUE
+ * red marker + refined dark controls. Matches the luxury identity.
+ * ============================================================ */
+.leaflet-container {
+  background: #0a0b0d;
+  font-family: var(--font-sans);
+  outline: none;
+}
+/* Grayscale only the tiles so the red marker keeps its accent colour. */
+.leaflet-tile-pane { filter: grayscale(1) contrast(1.05) brightness(0.8); }
+.leaflet-control-zoom { border: none !important; box-shadow: none !important; margin: 16px !important; }
+.leaflet-control-zoom a {
+  background: rgba(16, 18, 21, 0.85) !important;
+  color: var(--color-ivory) !important;
+  border: 1px solid var(--color-line-strong) !important;
+  width: 34px; height: 34px; line-height: 32px;
+  backdrop-filter: blur(6px);
+  transition: background .3s ease, color .3s ease, border-color .3s ease;
+}
+.leaflet-control-zoom a:first-child { border-bottom: none !important; }
+.leaflet-control-zoom a:hover {
+  background: var(--color-ember) !important; color: #fff !important; border-color: var(--color-ember) !important;
+}
+.leaflet-control-attribution {
+  background: rgba(8, 9, 11, 0.55) !important;
+  color: var(--color-mute-2) !important;
+  font-size: 9px !important; letter-spacing: 0.05em;
+  padding: 2px 8px !important; margin: 0 !important;
+}
+.leaflet-control-attribution a { color: var(--color-mute) !important; }
+.uq-pin { position: relative; display: block; width: 18px; height: 18px; }
+.uq-pin::before {
+  content: ''; position: absolute; inset: 0; border-radius: 50%;
+  background: var(--color-ember);
+  box-shadow: 0 0 0 4px rgb(184 32 47 / 0.28), 0 2px 10px rgb(0 0 0 / 0.6);
+}
+.uq-pin::after {
+  content: ''; position: absolute; left: 50%; top: 50%;
+  width: 18px; height: 18px; transform: translate(-50%, -50%);
+  border-radius: 50%; border: 1px solid var(--color-ember);
+  animation: uqpulse 2.6s ease-out infinite;
+}
+@keyframes uqpulse {
+  0% { transform: translate(-50%, -50%) scale(1); opacity: 0.7; }
+  100% { transform: translate(-50%, -50%) scale(3.4); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) { .uq-pin::after { animation: none; } }
+

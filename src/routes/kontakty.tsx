@@ -1,6 +1,90 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { PageHero } from "@/components/site/PageHero";
+
+const STUDIO_LAT = 59.849;
+const STUDIO_LON = 30.74;
+
+/* eslint-disable @typescript-eslint/no-explicit-any -- Leaflet is loaded from
+   a CDN at runtime and ships no bundled types in this project. */
+/* Premium monochrome map — Leaflet + CARTO tiles loaded client-side only.
+ * No traffic layers or vendor chrome; a single UNIQUE red marker on a
+ * grayscale basemap, consistent with the luxury identity. */
+function PremiumMap() {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    let map: any;
+    let cancelled = false;
+
+    const ensureLeaflet = (): Promise<any> => {
+      const w = window as any;
+      if (w.L) return Promise.resolve(w.L);
+      if (!document.getElementById("leaflet-css")) {
+        const css = document.createElement("link");
+        css.id = "leaflet-css";
+        css.rel = "stylesheet";
+        css.href = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css";
+        document.head.appendChild(css);
+      }
+      return new Promise((resolve, reject) => {
+        const existing = document.getElementById("leaflet-js") as HTMLScriptElement | null;
+        if (existing) {
+          existing.addEventListener("load", () => resolve((window as any).L));
+          existing.addEventListener("error", reject);
+          return;
+        }
+        const s = document.createElement("script");
+        s.id = "leaflet-js";
+        s.src = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js";
+        s.async = true;
+        s.onload = () => resolve((window as any).L);
+        s.onerror = reject;
+        document.head.appendChild(s);
+      });
+    };
+
+    ensureLeaflet()
+      .then((L) => {
+        if (cancelled || !ref.current || (ref.current as any)._leaflet_id) return;
+        map = L.map(ref.current, {
+          center: [STUDIO_LAT, STUDIO_LON],
+          zoom: 14,
+          zoomControl: false,
+          scrollWheelZoom: false,
+          attributionControl: false,
+          dragging: true,
+        });
+        L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
+          maxZoom: 19,
+          subdomains: "abcd",
+        }).addTo(map);
+        L.control.zoom({ position: "bottomright" }).addTo(map);
+        L.control
+          .attribution({ position: "bottomleft", prefix: false })
+          .addAttribution("© OpenStreetMap · CARTO")
+          .addTo(map);
+        const icon = L.divIcon({
+          className: "uq-pin-wrap",
+          html: '<span class="uq-pin"></span>',
+          iconSize: [18, 18],
+          iconAnchor: [9, 9],
+        });
+        L.marker([STUDIO_LAT, STUDIO_LON], { icon, keyboard: false }).addTo(map);
+      })
+      .catch(() => {});
+
+    return () => {
+      cancelled = true;
+      if (map) map.remove();
+    };
+  }, []);
+
+  return (
+    <div ref={ref} className="absolute inset-0 h-full w-full" aria-label="Карта студии UNIQUE" />
+  );
+}
+/* eslint-enable @typescript-eslint/no-explicit-any */
 
 export const Route = createFileRoute("/kontakty")({
   head: () => ({
@@ -37,6 +121,25 @@ function KontaktyPage() {
         lede="Рассчитаем стоимость, согласуем сроки и подберём удобное время для приезда в клубную студию UNIQUE."
         image="/portfolio/audi-r8-v10-performance-0.jpg"
       />
+
+      {/* ЗАЯВЛЕНИЕ О КОНФИДЕНЦИАЛЬНОСТИ ВЛАДЕЛЬЦА */}
+      <section className="px-[6vw] pt-16 md:pt-24">
+        <div className="mx-auto max-w-[1280px]">
+          <div className="flex max-w-[860px] items-start gap-6">
+            <span className="mt-[14px] hidden h-px w-14 shrink-0 bg-ember/70 md:block" />
+            <div>
+              <p className="eyebrow mb-4">Конфиденциальность</p>
+              <p
+                className="font-display leading-[1.4] text-ivory/90"
+                style={{ fontSize: "clamp(20px,2.4vw,30px)", letterSpacing: "0.02em" }}
+              >
+                Никакая заявка и ни один автомобиль не публикуются без письменного согласия
+                владельца.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* КОНТАКТЫ + ФОРМА */}
       <section className="px-[6vw] py-32">
@@ -84,8 +187,8 @@ function KontaktyPage() {
             <div>
               <p className="eyebrow mb-4">Дискретность</p>
               <p className="text-[15px] leading-[1.85] text-mute">
-                Никакая заявка и ни один автомобиль не публикуются без письменного согласия
-                владельца.
+                Закрытый приём, отдельный бокс и полная конфиденциальность на каждом этапе работы с
+                вашим автомобилем.
               </p>
             </div>
           </aside>
@@ -209,8 +312,8 @@ function KontaktyPage() {
               </h2>
             </div>
             <p className="max-w-[360px] text-[13.5px] leading-[1.85] text-mute">
-              Живая карта с учётом пробок. Постройте маршрут в один клик — от вашего местоположения
-              до дверей студии UNIQUE.
+              Монохромная карта студии без лишних элементов. Постройте маршрут в один клик — от
+              вашего местоположения до дверей UNIQUE.
             </p>
           </div>
 
@@ -222,19 +325,12 @@ function KontaktyPage() {
             <span className="pointer-events-none absolute bottom-0 right-0 z-20 h-8 w-8 border-b-2 border-r-2 border-ember/70" />
 
             <div className="grid md:grid-cols-[1fr_360px]">
-              <div className="relative min-h-[440px] md:min-h-[580px]">
-                <iframe
-                  title="UNIQUE Detailing — Санкт-Петербург, Петрозаводская улица 33 (карта с пробками)"
-                  src="https://yandex.ru/map-widget/v1/?ll=30.740%2C59.849&z=14&l=map%2Ctrf&pt=30.740%2C59.849%2Cpm2rdm"
-                  className="absolute inset-0 h-full w-full contrast-[1.05] saturate-[1.05]"
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                  allowFullScreen
-                />
-                <div className="pointer-events-none absolute inset-0 shadow-[inset_0_0_120px_rgba(8,9,11,0.65)]" />
-                <span className="pointer-events-none absolute left-5 top-5 z-10 flex items-center gap-2 rounded-sm bg-obsidian/80 px-3 py-1.5 text-[10px] uppercase tracking-[0.3em] text-ivory backdrop-blur">
+              <div className="relative min-h-[440px] md:min-h-[580px] bg-obsidian">
+                <PremiumMap />
+                <div className="pointer-events-none absolute inset-0 z-[400] shadow-[inset_0_0_120px_rgba(8,9,11,0.7)]" />
+                <span className="pointer-events-none absolute left-5 top-5 z-[500] flex items-center gap-2 rounded-sm bg-obsidian/80 px-3 py-1.5 text-[10px] uppercase tracking-[0.3em] text-ivory backdrop-blur">
                   <span className="h-[6px] w-[6px] rounded-full bg-ember shadow-[0_0_10px_theme(colors.ember)]" />
-                  Пробки · live
+                  UNIQUE · Овцино
                 </span>
               </div>
 
