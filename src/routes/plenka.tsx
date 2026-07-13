@@ -2,6 +2,69 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Rule } from "@/components/site/PageHero";
 import { STUDIO_VEHICLES } from "@/lib/studio-vehicles";
+import logo from "@/assets/logo.png.asset.json";
+
+/* ─────────── Coverage packages ─────────── */
+const PACKAGES = [
+  {
+    name: "Фронт-пакет",
+    tag: "Базовая защита зон удара",
+    items: ["Капот (частично)", "Передний бампер", "Крылья · зеркала", "Фары"],
+    note: "Оптимально для города",
+  },
+  {
+    name: "Трек-пакет",
+    tag: "Расширенная фронтальная зона",
+    items: ["Капот полностью", "Бампер и крылья", "Зеркала · пороги", "Зона за арками"],
+    note: "Для активной езды",
+    featured: true,
+  },
+  {
+    name: "Полный кузов",
+    tag: "Максимальная защита",
+    items: ["Весь кузов целиком", "Оптика и пороги", "Зоны погрузки", "Гарантия 10 лет"],
+    note: "Клубный стандарт",
+  },
+  {
+    name: "Bespoke",
+    tag: "Индивидуальный проект",
+    items: [
+      "Матовые и цветные плёнки",
+      "Комбинация с керамикой",
+      "Дизайн-акценты",
+      "Личный протокол",
+    ],
+    note: "По согласованию",
+  },
+];
+
+/* ─────────── FAQ ─────────── */
+const FAQ = [
+  [
+    "Чем плёнка UNIQUE отличается от обычной PPF?",
+    "Собственная рецептура топ-коата и полиуретанового ядра: эластичность 320%, прозрачность 99.7%, улучшенное самовосстановление и гарантия 10 лет вместо стандартных пяти.",
+  ],
+  [
+    "Плёнку видно на кузове?",
+    "Нет. Глянцевая плёнка оптически прозрачна и повторяет глубину лака. Кромки заводятся под панели, поэтому переходов не видно даже вблизи.",
+  ],
+  [
+    "Нужно ли разбирать автомобиль?",
+    "Нет. Мы работаем без снятия оптики, ручек и эмблем — плёнка укладывается по месту с заводом под кромки.",
+  ],
+  [
+    "Сколько времени занимает оклейка?",
+    "От 2–3 дней для фронт-пакета до 7–10 дней для полного кузова. Точный срок зависит от модели и состояния ЛКП.",
+  ],
+  [
+    "Как ухаживать за плёнкой?",
+    "Обычная бесконтактная мойка. Мелкие царапины затягиваются при нагреве. Раз в год — бесплатная клубная ревизия покрытия.",
+  ],
+  [
+    "Можно ли снять плёнку без вреда для лака?",
+    "Да. Клеевой слой paint-safe: плёнка снимается без остатков клея и следов на заводском лакокрасочном покрытии.",
+  ],
+];
 
 export const Route = createFileRoute("/plenka")({
   head: () => ({
@@ -578,6 +641,25 @@ function PlenkaPage() {
         </div>
       </section>
 
+      {/* ═══════════ BRAND IDENTITY BAND ═══════════ */}
+      <section className="relative overflow-hidden border-y border-line bg-obsidian px-[6vw] py-24 md:py-28">
+        <div
+          className="pointer-events-none absolute inset-0 opacity-[0.06]"
+          style={{
+            backgroundImage:
+              "repeating-linear-gradient(90deg,rgba(234,232,226,0.6) 0 1px,transparent 1px 44px)",
+          }}
+        />
+        <div className="relative mx-auto flex max-w-[1100px] flex-col items-center text-center">
+          <img src={logo.url} alt="UNIQUE Detailing" className="h-16 w-auto md:h-20" />
+          <div className="mt-8 h-px w-16 bg-ember" />
+          <p className="mt-8 max-w-[680px] text-[15px] leading-[1.95] text-mute">
+            UNIQUE PPF — собственный бренд защитных плёнок. Единая айдентика от рулона и упаковки до
+            оклеенного автомобиля: материал, произведённый и нанесённый под одним именем.
+          </p>
+        </div>
+      </section>
+
       {/* ═══════════ MATERIAL TECHNOLOGY ═══════════ */}
       <section className="px-[6vw] py-32">
         <div className="mx-auto max-w-[1500px]">
@@ -1034,6 +1116,86 @@ function PlenkaPage() {
                 <span>{b}</span>
                 <span className="text-ember">{c}</span>
               </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════ COVERAGE PACKAGES ═══════════ */}
+      <section className="border-t border-line px-[6vw] py-32">
+        <div className="mx-auto max-w-[1500px]">
+          <Rule label="Пакеты защиты" num="10" />
+          <div className="mb-12 flex flex-wrap items-end justify-between gap-6">
+            <h2
+              className="max-w-[760px] font-display uppercase leading-tight text-ivory"
+              style={{ fontSize: "clamp(28px,3.6vw,50px)", letterSpacing: "0.04em" }}
+            >
+              Зоны оклейки
+              <br />
+              <span className="text-ember">под ваш сценарий.</span>
+            </h2>
+            <p className="max-w-[380px] text-[13.5px] leading-[1.85] text-mute">
+              От защиты фронтальных зон удара до полной оклейки кузова и индивидуальных проектов.
+              Точный состав согласуем на диагностике.
+            </p>
+          </div>
+          <div className="grid gap-2 md:grid-cols-2 lg:grid-cols-4">
+            {PACKAGES.map((p) => (
+              <div
+                key={p.name}
+                className={`flex flex-col border p-8 ${
+                  p.featured ? "border-ember bg-obsidian-2" : "border-line bg-obsidian"
+                }`}
+              >
+                <p className="text-[10px] uppercase tracking-[0.3em] text-mute-2">{p.tag}</p>
+                <h3
+                  className={`mt-4 font-display text-2xl uppercase ${
+                    p.featured ? "text-ember" : "text-ivory"
+                  }`}
+                  style={{ letterSpacing: "0.05em" }}
+                >
+                  {p.name}
+                </h3>
+                <ul className="mt-6 flex-1 space-y-3">
+                  {p.items.map((it) => (
+                    <li
+                      key={it}
+                      className="flex items-start gap-3 text-[13.5px] leading-[1.6] text-mute"
+                    >
+                      <span className="mt-2 h-px w-4 shrink-0 bg-ember" />
+                      {it}
+                    </li>
+                  ))}
+                </ul>
+                <p className="mt-8 border-t border-line pt-5 text-[11px] uppercase tracking-[0.28em] text-mute">
+                  {p.note}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════ FAQ ═══════════ */}
+      <section className="border-t border-line bg-obsidian-2 px-[6vw] py-32">
+        <div className="mx-auto max-w-[1000px]">
+          <Rule label="Частые вопросы" num="11" />
+          <div className="divide-y divide-line border-y border-line">
+            {FAQ.map(([q, a]) => (
+              <details key={q} className="group">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-6 py-7">
+                  <span
+                    className="font-display text-lg uppercase text-ivory md:text-xl"
+                    style={{ letterSpacing: "0.03em" }}
+                  >
+                    {q}
+                  </span>
+                  <span className="text-xl text-ember transition-transform duration-300 group-open:rotate-45">
+                    +
+                  </span>
+                </summary>
+                <p className="max-w-[760px] pb-7 text-[14.5px] leading-[1.9] text-mute">{a}</p>
+              </details>
             ))}
           </div>
         </div>
