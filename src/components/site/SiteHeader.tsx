@@ -3,11 +3,11 @@ import { useEffect, useState } from "react";
 import logo from "@/assets/logo.png.asset.json";
 
 const NAV = [
-  { to: "/uslugi",   label: "Услуги" },
-  { to: "/plenka",   label: "Пленка Unique" },
-  { to: "/raboty",   label: "Работы" },
+  { to: "/uslugi", label: "Услуги" },
+  { to: "/plenka", label: "Пленка Unique" },
+  { to: "/raboty", label: "Работы" },
   { to: "/nasledie", label: "Наследие" },
-  { to: "/klub",     label: "Клуб Unique" },
+  { to: "/klub", label: "Клуб Unique" },
   { to: "/kontakty", label: "Контакты" },
 ] as const;
 
@@ -33,34 +33,40 @@ export function SiteHeader() {
           open ? "pointer-events-none opacity-0" : "opacity-100"
         } ${
           scrolled
-            ? "py-3 md:py-4 bg-obsidian/90 backdrop-blur border-b border-line"
-            : "py-4 md:py-6"
+            ? "py-2.5 md:py-3 bg-obsidian/90 backdrop-blur border-b border-line"
+            : "py-3 md:py-4"
         }`}
       >
         <button
           onClick={() => setOpen(true)}
-          className="flex items-center gap-3 text-[11px] md:text-[13px] tracking-[0.35em] uppercase text-ivory"
+          className="flex flex-1 items-center gap-2.5 text-[10px] md:text-[11px] tracking-[0.3em] uppercase text-ivory"
           aria-label="Открыть меню"
         >
-          <span className="flex w-[22px] md:w-[26px] flex-col gap-[5px]">
+          <span className="flex w-[19px] md:w-[21px] flex-col gap-[4px]">
             <span className="block h-px bg-ivory" />
-            <span className="block h-px w-[70%] bg-ivory" />
+            <span className="block h-px w-[65%] bg-ivory" />
             <span className="block h-px bg-ivory" />
           </span>
           Меню
         </button>
 
-        <Link to="/" className="flex items-center gap-3" aria-label="UNIQUE Detailing">
-          <img src={logo.url} alt="UNIQUE Detailing" className="h-11 w-auto md:h-16" />
-        </Link>
-
         <Link
-          to="/kontakty"
-          className="text-[10px] md:text-[12px] tracking-[0.3em] uppercase text-mute transition-colors hover:text-ivory"
+          to="/"
+          className="flex shrink-0 items-center justify-center"
+          aria-label="UNIQUE Detailing"
         >
-          Связаться
+          <img src={logo.url} alt="UNIQUE Detailing" className="h-9 w-auto md:h-[46px]" />
         </Link>
 
+        <div className="flex flex-1 items-center justify-end">
+          <Link
+            to="/kontakty"
+            className="group inline-flex items-center gap-2 text-[10px] md:text-[11px] tracking-[0.3em] uppercase text-mute transition-colors hover:text-ivory"
+          >
+            <span className="hidden h-px w-5 bg-mute-2 transition-all duration-300 group-hover:w-7 group-hover:bg-ember md:inline-block" />
+            Связаться
+          </Link>
+        </div>
       </header>
 
       {/* Полноэкранное меню */}
@@ -95,11 +101,11 @@ export function SiteHeader() {
                     <Link
                       to={n.to}
                       onClick={() => setOpen(false)}
-                      className="block font-display uppercase leading-[1.1] text-mute transition-all duration-300 hover:pl-4 hover:tracking-[0.18em] hover:text-ivory"
+                      className="block font-display uppercase leading-[1.15] text-mute transition-all duration-300 hover:pl-4 hover:tracking-[0.16em] hover:text-ivory"
                       style={{
-                        fontSize: "clamp(24px,3vw,40px)",
-                        letterSpacing: "0.14em",
-                        padding: "3px 0",
+                        fontSize: "clamp(20px,2.4vw,32px)",
+                        letterSpacing: "0.12em",
+                        padding: "4px 0",
                         transform: open ? "translateY(0)" : "translateY(110%)",
                         opacity: open ? 1 : 0,
                         transition: `transform .7s cubic-bezier(.2,.8,.2,1) ${i * 0.05 + 0.05}s, opacity .7s ease ${
@@ -139,7 +145,9 @@ export function SiteHeader() {
           <div className="absolute bottom-10 left-10 right-10">
             <img src={logo.url} alt="" className="mb-6 h-10 w-auto opacity-90" />
             <p className="font-display text-2xl uppercase leading-tight tracking-[0.08em] text-ivory">
-              Европейский стандарт<br/>детейлинга и оклейки.
+              Европейский стандарт
+              <br />
+              детейлинга и оклейки.
             </p>
           </div>
         </div>
