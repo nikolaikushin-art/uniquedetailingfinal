@@ -305,12 +305,14 @@ summary:focus-visible {
  * red marker + refined dark controls. Matches the luxury identity.
  * ============================================================ */
 .leaflet-container {
-  background: #0a0b0d;
+  background: #191c20;
   font-family: var(--font-sans);
   outline: none;
 }
-/* Grayscale only the tiles so the red marker keeps its accent colour. */
-.leaflet-tile-pane { filter: grayscale(1) contrast(1.05) brightness(0.8); }
+/* Grayscale only the tiles so the red marker keeps its accent colour.
+   Lifted brightness + contrast give subtle grey tones and readable roads,
+   landmarks and labels while keeping the premium monochrome aesthetic. */
+.leaflet-tile-pane { filter: grayscale(1) brightness(1.7) contrast(1.32); }
 .leaflet-control-zoom { border: none !important; box-shadow: none !important; margin: 16px !important; }
 .leaflet-control-zoom a {
   background: rgba(16, 18, 21, 0.85) !important;
