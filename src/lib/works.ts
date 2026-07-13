@@ -115,11 +115,14 @@ export const WORKS: Work[] = STUDIO_VEHICLES.map((vehicle, i) => {
   const gallery = [
     // 0–5 exterior (6 distinct angles, no repeats)
     shot(0), shot(1), ext(1), ext(2), ext(3), shot(3),
-    // 6–11 interior (6 distinct)
-    shot(2), interior(1), interior(2), interior(3), interior(4), interior(5),
-    // 12–17 detail (6 unique close-ups)
+    // 6–10 interior (5 purpose-shot angles). The core "-2" interior is
+    // intentionally omitted here: it reuses the same front-cabin framing as
+    // one of the int-* shots, which produced a duplicate / colour-mismatched
+    // second tile on many cars.
+    interior(1), interior(2), interior(3), interior(4), interior(5),
+    // 11–16 detail (6 unique close-ups)
     detail(1), detail(2), detail(3), detail(4), detail(5), detail(6),
-    // 18–23 craft (6 unique detailing stages)
+    // 17–22 craft (6 unique detailing stages)
     craft(1),
     craft(2),
     craft(3),
