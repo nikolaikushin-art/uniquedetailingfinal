@@ -1,33 +1,193 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Rule } from "@/components/site/PageHero";
 import { STUDIO_VEHICLES } from "@/lib/studio-vehicles";
 
 export const Route = createFileRoute("/plenka")({
   head: () => ({
     meta: [
-      { title: "Плёнка UNIQUE — премиальное портфолио оклейки PPF" },
+      { title: "Плёнка UNIQUE — премиальная защитная плёнка PPF" },
       {
         name: "description",
         content:
-          "Мировое портфолио защитной оклейки PPF студии UNIQUE: суперкары, люксовые седаны, внедорожники, матовые и специальные покрытия. Собственная плёнка, эластичность 320%, гарантия 10 лет.",
+          "UNIQUE PPF — премиальная полиуретановая защитная плёнка: технология материала, брендированная упаковка, гидрофобность и самовосстановление, коллекция покрытий и портфолио оклеенных автомобилей.",
       },
-      { property: "og:title", content: "Плёнка UNIQUE — премиальное портфолио PPF" },
+      { property: "og:title", content: "Плёнка UNIQUE — премиальная защитная плёнка PPF" },
       {
         property: "og:description",
         content:
-          "Полный showcase проектов защитной оклейки UNIQUE PPF: от суперкаров до внедорожников.",
+          "Материал, технология, упаковка и портфолио защитной плёнки UNIQUE PPF мирового уровня.",
       },
     ],
   }),
   component: PlenkaPage,
 });
 
-/* ─────────── PPF portfolio data ───────────
- * Built from the studio catalogue. Every card uses a distinct angle
- * (rear 3/4 · side · front detail) so none of these frames repeat the
- * hero shots used elsewhere on the site. */
+/* ═══════════════ UNIQUE PPF product / technology imagery ═══════════════
+ * Studio-generated brand & material photography under /public/ppf.
+ * Every branded shot carries the physical «UNIQUE · DETAILING» wordmark. */
+const PPF = {
+  hero: "/ppf/ppf-hero.jpg",
+  clarity: "/ppf/ppf-clarity.jpg",
+  hydrophobic: "/ppf/ppf-hydrophobic.jpg",
+  selfheal: "/ppf/ppf-selfheal.jpg",
+  layers: "/ppf/ppf-layers.jpg",
+  roll: "/ppf/ppf-roll.jpg",
+  box: "/ppf/ppf-box.jpg",
+  boxes: "/ppf/ppf-boxes.jpg",
+  caseKit: "/ppf/ppf-case.jpg",
+  shelf: "/ppf/ppf-shelf.jpg",
+  gloss: "/ppf/ppf-gloss.jpg",
+  matte: "/ppf/ppf-matte.jpg",
+  special: "/ppf/ppf-special.jpg",
+  before: "/ppf/ppf-before.jpg",
+  after: "/ppf/ppf-after.jpg",
+  installCut: "/ppf/ppf-install-cut.jpg",
+  installApply: "/ppf/ppf-install-apply.jpg",
+  installInspect: "/ppf/ppf-install-inspect.jpg",
+} as const;
 
+/* ─────────── Vehicle demonstration data (the 30% — cars proving the film) ─────────── */
+type Demo = {
+  slug: string;
+  brand: string;
+  model: string;
+  finish: string;
+  hero: string;
+  details: { img: string; label: string }[];
+};
+
+const DEMOS: Demo[] = [
+  {
+    slug: "lamborghini-revuelto",
+    brand: "Lamborghini",
+    model: "Revuelto",
+    finish: "Full Body PPF · Arancio Borealis",
+    hero: "/portfolio/lamborghini-revuelto-0.jpg",
+    details: [
+      { img: "/portfolio/lamborghini-revuelto-det-4.jpg", label: "Передний сплиттер" },
+      { img: "/portfolio/lamborghini-revuelto-det-2.jpg", label: "Оптика · защита фар" },
+      { img: "/portfolio/lamborghini-revuelto-det-1.jpg", label: "Изгиб кузова" },
+    ],
+  },
+  {
+    slug: "ferrari-sf90-stradale",
+    brand: "Ferrari",
+    model: "SF90 Stradale",
+    finish: "Full Body PPF · Rosso Corsa",
+    hero: "/portfolio/ferrari-sf90-stradale-0.jpg",
+    details: [
+      { img: "/portfolio/ferrari-sf90-stradale-det-4.jpg", label: "Капот и решётка" },
+      { img: "/portfolio/ferrari-sf90-stradale-det-5.jpg", label: "Зеркало и кромка" },
+      { img: "/portfolio/ferrari-sf90-stradale-det-1.jpg", label: "Колесо и арка" },
+    ],
+  },
+  {
+    slug: "rolls-royce-phantom-series-ii",
+    brand: "Rolls-Royce",
+    model: "Phantom Series II",
+    finish: "Full Body PPF · Infinity Black",
+    hero: "/portfolio/rolls-royce-phantom-series-ii-0.jpg",
+    details: [
+      { img: "/portfolio/rolls-royce-phantom-series-ii-det-4.jpg", label: "Капот и кромки" },
+      { img: "/portfolio/rolls-royce-phantom-series-ii-det-2.jpg", label: "Оптика" },
+      { img: "/portfolio/rolls-royce-phantom-series-ii-det-5.jpg", label: "Зеркало" },
+    ],
+  },
+  {
+    slug: "mercedes-benz-g-63-amg",
+    brand: "Mercedes-Benz",
+    model: "G 63 AMG",
+    finish: "Full Body PPF · Graphite Magno",
+    hero: "/portfolio/mercedes-benz-g-63-amg-0.jpg",
+    details: [
+      { img: "/portfolio/mercedes-benz-g-63-amg-det-4.jpg", label: "Фронтальная зона" },
+      { img: "/portfolio/mercedes-benz-g-63-amg-det-2.jpg", label: "Оптика" },
+      { img: "/portfolio/mercedes-benz-g-63-amg-det-1.jpg", label: "Колесо и арка" },
+    ],
+  },
+];
+
+/* ─────────── Branded packaging showcase ─────────── */
+const PACKAGING = [
+  {
+    img: PPF.roll,
+    title: "Рулон UNIQUE PPF",
+    body: "Полиуретановая плёнка на брендированном сердечнике. Каждый метр промаркирован «UNIQUE · Paint Protection Film».",
+    span: true,
+  },
+  {
+    img: PPF.box,
+    title: "Люксовая упаковка",
+    body: "Soft-touch матовый чёрный короб с тиснёным логотипом — стандарт международного производителя.",
+  },
+  {
+    img: PPF.caseKit,
+    title: "Инсталляционный кейс",
+    body: "Рулон, стальной ракель, прецизионный нож и перчатки в фирменном кейсе для чистой оклейки.",
+  },
+  {
+    img: PPF.boxes,
+    title: "Продуктовая линейка",
+    body: "Единая айдентика по всей линейке коробов — от компактных до полноформатных рулонов кузова.",
+  },
+  {
+    img: PPF.shelf,
+    title: "Складская витрина студии",
+    body: "Собственный запас плёнки UNIQUE в студии — партии под каждый класс автомобиля.",
+    span: true,
+  },
+];
+
+/* ─────────── Material technology (protection concepts) ─────────── */
+const PROTECTION = [
+  ["Самовосстановление", "Мелкие царапины и следы моек исчезают при нагреве от 40 °C."],
+  ["Стойкость к сколам", "Полиуретан 210 µm поглощает удары щебня, песка и гравия."],
+  ["UV-защита", "Стабилизаторы не дают лаку выгорать и желтеть под солнцем."],
+  ["Гидрофобность", "Вода собирается в капли и скатывается, унося грязь и реагенты."],
+  ["Химическая стойкость", "Не реагирует на битум, антигололёд, насекомых и кислотные осадки."],
+  ["Защита от загрязнений", "Гладкий топ-коат не даёт грязи закрепляться на поверхности."],
+];
+
+/* ─────────── Finish collection ─────────── */
+const FINISHES = [
+  {
+    img: PPF.gloss,
+    name: "UNIQUE Gloss",
+    tag: "Глянцевая защита",
+    desc: "Зеркальные отражения и максимальная глубина лака. Плёнка усиливает цвет и делает поверхность визуально «мокрой».",
+    specs: ["Прозрачность 99.7%", "Эффект глубины лака", "Максимальный глянец"],
+    example: "Ferrari · Rolls-Royce · Porsche",
+  },
+  {
+    img: PPF.matte,
+    name: "UNIQUE Stealth",
+    tag: "Матовое / сатиновое покрытие",
+    desc: "Превращает глянцевый лак в благородный сатин без потери защиты. Эксклюзивный сдержанный характер.",
+    specs: ["Сатиновая текстура", "Стелс-эффект", "Полная защита кузова"],
+    example: "BMW M · Audi Sport · G-Class",
+  },
+  {
+    img: PPF.special,
+    name: "UNIQUE Special",
+    tag: "Специальные покрытия",
+    desc: "Colour-shift и лимитированные финиши для индивидуальных проектов и клубных автомобилей.",
+    specs: ["Colour-shift", "Лимитированные партии", "Индивидуальный проект"],
+    example: "Bespoke · клубные проекты",
+  },
+];
+
+const LAYERS = [
+  ["01", "Топ-коат", "Самовосстанавливающийся слой — глянец, гидрофобность, стойкость к химии."],
+  [
+    "02",
+    "Полиуретан 210 µm",
+    "Эластичное ядро 320% — поглощает удары и повторяет геометрию кузова.",
+  ],
+  ["03", "Клеевой слой", "Paint-safe адгезив с воздушными каналами — снимается без следа на лаке."],
+];
+
+/* ─────────── Vehicle portfolio (filterable gallery) ─────────── */
 const PPF_CATEGORIES = [
   "Все проекты",
   "Full Body PPF",
@@ -45,7 +205,6 @@ type Project = {
   finish: string;
   category: Exclude<PpfCategory, "Все проекты">;
   img: string;
-  span?: boolean;
 };
 
 const categoryFor = (paintName: string, body: string, brand: string): Project["category"] => {
@@ -65,7 +224,6 @@ const FINISH_LABEL: Record<Project["category"], string> = {
   "Front Protection": "Защита фронтальной зоны",
 };
 
-// One distinctive exterior angle per catalogue vehicle (rear 3/4).
 const EXTERIOR_PROJECTS: Project[] = STUDIO_VEHICLES.map((v) => {
   const category = categoryFor(v.paintName, v.body, v.brand);
   return {
@@ -77,7 +235,6 @@ const EXTERIOR_PROJECTS: Project[] = STUDIO_VEHICLES.map((v) => {
   };
 });
 
-// Curated front-end / clear-bra close-ups (unique detail frames).
 const FRONT_PROJECTS: Project[] = [
   {
     brand: "Ferrari",
@@ -125,9 +282,6 @@ const FRONT_PROJECTS: Project[] = [
 
 const PROJECTS: Project[] = [...EXTERIOR_PROJECTS, ...FRONT_PROJECTS];
 
-const HERO_IMG = "/portfolio/lamborghini-hurac-n-sto-0.jpg";
-const MANIFESTO_IMG = "/portfolio/mclaren-750s-spider-ext-2.jpg";
-
 const PROPERTIES = [
   [
     "Эластичность 320%",
@@ -154,6 +308,95 @@ const PROPERTIES = [
     "Три слоя — топ-коат, полиуретан и клеевой слой с воздушными каналами для идеальной укладки.",
   ],
 ];
+
+/* ═══════════════ Before / After comparison slider ═══════════════ */
+function BeforeAfter() {
+  const [pos, setPos] = useState(50);
+  const [width, setWidth] = useState(0);
+  const ref = useRef<HTMLDivElement>(null);
+  const dragging = useRef(false);
+
+  const setFromClientX = useCallback((clientX: number) => {
+    const el = ref.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const p = ((clientX - rect.left) / rect.width) * 100;
+    setPos(Math.max(0, Math.min(100, p)));
+  }, []);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const update = () => setWidth(el.clientWidth);
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const move = (e: PointerEvent) => {
+      if (!dragging.current) return;
+      setFromClientX(e.clientX);
+    };
+    const up = () => {
+      dragging.current = false;
+    };
+    window.addEventListener("pointermove", move);
+    window.addEventListener("pointerup", up);
+    return () => {
+      window.removeEventListener("pointermove", move);
+      window.removeEventListener("pointerup", up);
+    };
+  }, [setFromClientX]);
+
+  return (
+    <div
+      ref={ref}
+      className="relative aspect-[16/9] w-full cursor-ew-resize select-none overflow-hidden border border-line"
+      onPointerDown={(e) => {
+        dragging.current = true;
+        setFromClientX(e.clientX);
+      }}
+    >
+      {/* AFTER — protected surface (full width base) */}
+      <img
+        src={PPF.after}
+        alt="После — поверхность под защитой UNIQUE PPF"
+        className="absolute inset-0 h-full w-full object-cover"
+        draggable={false}
+      />
+      <span className="absolute bottom-4 right-4 z-10 border border-ivory/30 bg-obsidian/60 px-3 py-1 text-[10px] uppercase tracking-[0.3em] text-ivory backdrop-blur-sm">
+        После · UNIQUE PPF
+      </span>
+
+      {/* BEFORE — original paint, clipped */}
+      <div className="absolute inset-0 overflow-hidden" style={{ width: `${pos}%` }}>
+        <img
+          src={PPF.before}
+          alt="До — незащищённый лак со следами эксплуатации"
+          className="absolute inset-0 h-full max-w-none object-cover"
+          style={{ width: width || "100%" }}
+          draggable={false}
+        />
+        <span className="absolute bottom-4 left-4 z-10 border border-ivory/30 bg-obsidian/60 px-3 py-1 text-[10px] uppercase tracking-[0.3em] text-ivory backdrop-blur-sm">
+          До
+        </span>
+      </div>
+
+      {/* Handle */}
+      <div
+        className="absolute inset-y-0 z-20 flex items-center"
+        style={{ left: `${pos}%`, transform: "translateX(-50%)" }}
+      >
+        <span className="absolute inset-y-0 left-1/2 w-px -translate-x-1/2 bg-ivory/80" />
+        <span className="relative flex h-11 w-11 items-center justify-center rounded-full border border-ivory/60 bg-obsidian/80 text-ivory backdrop-blur">
+          <span className="text-[13px] tracking-tight">‹ ›</span>
+        </span>
+      </div>
+    </div>
+  );
+}
 
 function PlenkaPage() {
   const [cat, setCat] = useState<PpfCategory>("Все проекты");
@@ -194,35 +437,35 @@ function PlenkaPage() {
 
   return (
     <div>
-      {/* ─────────── CINEMATIC HERO ─────────── */}
+      {/* ═══════════ CINEMATIC HERO ═══════════ */}
       <section className="relative flex min-h-screen items-end overflow-hidden border-b border-line">
         <img
-          src={HERO_IMG}
-          alt="UNIQUE PPF — защитная оклейка"
+          src={PPF.hero}
+          alt="UNIQUE PPF — премиальная защитная плёнка"
           className="absolute inset-0 h-full w-full animate-drift object-cover"
           fetchPriority="high"
         />
         <div className="absolute inset-0 plate-scrim" />
-        <div className="absolute inset-0 bg-gradient-to-r from-obsidian/80 via-obsidian/20 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-obsidian/85 via-obsidian/30 to-transparent" />
         <div className="relative z-10 mx-auto w-full max-w-[1500px] px-[6vw] pb-24 pt-40">
-          <p className="eyebrow eyebrow-dot mb-6">Плёнка UNIQUE · Paint Protection Film</p>
+          <p className="eyebrow eyebrow-dot mb-6">UNIQUE PPF · Paint Protection Film</p>
           <h1
             className="max-w-[1200px] font-display uppercase leading-[0.96] text-ivory"
             style={{ fontSize: "clamp(44px,7.6vw,132px)", letterSpacing: "0.02em" }}
           >
-            Защита
+            Невидимая
             <br />
-            мирового
+            защита
             <br />
-            <span className="text-ember">уровня.</span>
+            <span className="text-ember">высшего класса.</span>
           </h1>
-          <p className="mt-8 max-w-[620px] text-[16px] leading-[1.9] text-mute">
-            Собственная полиуретановая плёнка UNIQUE PPF и ручная оклейка без разбора автомобиля.
-            Портфолио проектов — от суперкаров до внедорожников, каждый в единой студийной серии.
+          <p className="mt-8 max-w-[640px] text-[16px] leading-[1.9] text-mute">
+            UNIQUE PPF — это не услуга, а премиальный материал: собственная полиуретановая плёнка,
+            инженерная технология, брендированная упаковка и ручная оклейка люксовых автомобилей.
           </p>
           <div className="mt-12 grid max-w-[720px] grid-cols-2 gap-px border border-line bg-line md:grid-cols-4">
             {[
-              ["500+", "проектов"],
+              ["99.7%", "прозрачность"],
               ["320%", "эластичность"],
               ["210 µm", "толщина плёнки"],
               ["10 лет", "гарантия"],
@@ -240,55 +483,371 @@ function PlenkaPage() {
           </div>
         </div>
         <div className="absolute bottom-8 right-[6vw] z-10 hidden items-center gap-3 text-[10px] uppercase tracking-[0.4em] text-mute-2 md:flex">
-          <span>Листайте портфолио</span>
+          <span>Материал · технология · портфолио</span>
           <span className="h-px w-12 bg-gradient-to-r from-transparent to-mute-2" />
         </div>
       </section>
 
-      {/* ─────────── MANIFESTO ─────────── */}
+      {/* ═══════════ BRAND MANIFESTO ═══════════ */}
       <section className="px-[6vw] py-32">
         <div className="mx-auto grid max-w-[1400px] gap-16 md:grid-cols-[1.1fr_0.9fr] md:items-center">
           <div className="space-y-6 text-[15.5px] leading-[1.95] text-mute">
-            <p className="eyebrow eyebrow-dot">Международный стандарт оклейки</p>
+            <p className="eyebrow eyebrow-dot">Материал, а не просто услуга</p>
             <h2
               className="font-display uppercase leading-[1.05] text-ivory"
               style={{ fontSize: "clamp(30px,3.8vw,54px)", letterSpacing: "0.04em" }}
             >
-              Каждый автомобиль —<br />
-              <span className="text-ember">отдельный проект.</span>
+              UNIQUE PPF —<br />
+              <span className="text-ember">инженерная защита.</span>
             </h2>
             <p>
-              Плёнка UNIQUE — результат десяти лет практики в европейском центре, где каждая
-              рецептура клеевого слоя и топ-коата отрабатывалась на реальных автомобилях. Мы
-              производим её ограниченными партиями и используем только в собственной студии.
+              Мы производим собственную полиуретановую плёнку ограниченными партиями: рецептура
+              топ-коата, эластичного ядра и клеевого слоя отработана на реальных автомобилях в
+              европейском центре. Каждый рулон промаркирован — от сердечника до упаковки.
             </p>
             <p>
-              Ручной раскрой без выкроек, укладка без разбора, прогрев каждого шва и финальный
-              контроль под тремя источниками света. Ниже — кураторская подборка проектов по классам
-              автомобилей и типам защиты.
+              Это уровень международного производителя защитных материалов: прозрачность 99.7%,
+              самовосстановление, гидрофобность и гарантия 10 лет. Ниже — материал, технология,
+              упаковка и портфолио оклеенных автомобилей.
             </p>
           </div>
           <div className="relative aspect-[4/5] overflow-hidden">
             <img
-              src={MANIFESTO_IMG}
-              alt="Оклейка плёнкой UNIQUE"
+              src={PPF.clarity}
+              alt="Макро прозрачной плёнки UNIQUE PPF"
               className="h-full w-full object-cover transition-transform duration-[1600ms] hover:scale-105"
               loading="lazy"
             />
             <div className="absolute inset-0 plate-scrim" />
             <p className="absolute bottom-6 left-6 text-[10px] uppercase tracking-[0.35em] text-ivory">
-              UNIQUE PPF · студия
+              Топ-коат · оптическая чистота
             </p>
           </div>
         </div>
       </section>
 
-      {/* ─────────── PORTFOLIO ─────────── */}
+      {/* ═══════════ BRANDED PACKAGING SHOWCASE ═══════════ */}
+      <section className="border-t border-line bg-obsidian-2 px-[6vw] py-32">
+        <div className="mx-auto max-w-[1500px]">
+          <Rule label="Брендированный продукт UNIQUE PPF" num="01" />
+          <div className="mb-12 flex flex-wrap items-end justify-between gap-6">
+            <h2
+              className="max-w-[820px] font-display uppercase leading-tight text-ivory"
+              style={{ fontSize: "clamp(28px,3.6vw,52px)", letterSpacing: "0.04em" }}
+            >
+              Упаковка уровня
+              <br />
+              <span className="text-ember">международного бренда.</span>
+            </h2>
+            <p className="max-w-[380px] text-[13.5px] leading-[1.85] text-mute">
+              Рулоны, короба и инсталляционные кейсы с фирменной айдентикой — matte black,
+              минимальная типографика и логотип «UNIQUE · DETAILING», нанесённый на каждый продукт.
+            </p>
+          </div>
+          <div className="grid gap-2 md:grid-cols-6">
+            {PACKAGING.map((p) => (
+              <figure
+                key={p.title}
+                className={`group relative overflow-hidden bg-obsidian ${
+                  p.span ? "md:col-span-3" : "md:col-span-2"
+                }`}
+              >
+                <div className={p.span ? "aspect-[16/10]" : "aspect-[4/5]"}>
+                  <img
+                    src={p.img}
+                    alt={p.title}
+                    loading="lazy"
+                    className="h-full w-full object-cover transition-transform duration-[1400ms] group-hover:scale-105"
+                  />
+                </div>
+                <div className="absolute inset-0 plate-scrim" />
+                <figcaption className="absolute inset-x-0 bottom-0 p-6">
+                  <h3
+                    className="font-display text-lg uppercase text-ivory"
+                    style={{ letterSpacing: "0.05em" }}
+                  >
+                    {p.title}
+                  </h3>
+                  <p className="mt-2 max-w-[420px] text-[12.5px] leading-[1.7] text-mute">
+                    {p.body}
+                  </p>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════ MATERIAL TECHNOLOGY ═══════════ */}
+      <section className="px-[6vw] py-32">
+        <div className="mx-auto max-w-[1500px]">
+          <Rule label="Технология материала" num="02" />
+          <div className="grid gap-16 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
+            <div className="relative aspect-[16/11] overflow-hidden border border-line">
+              <img
+                src={PPF.layers}
+                alt="Многослойная структура плёнки UNIQUE PPF"
+                loading="lazy"
+                className="h-full w-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-obsidian/70 to-transparent" />
+              <p className="absolute bottom-5 left-5 text-[10px] uppercase tracking-[0.35em] text-ivory">
+                Топ-коат · полиуретан · клей
+              </p>
+            </div>
+            <div>
+              <h2
+                className="font-display uppercase leading-tight text-ivory"
+                style={{ fontSize: "clamp(26px,3.2vw,44px)", letterSpacing: "0.04em" }}
+              >
+                Три слоя <span className="text-ember">инженерии.</span>
+              </h2>
+              <p className="mt-6 max-w-[560px] text-[15px] leading-[1.9] text-mute">
+                Плёнка UNIQUE PPF — это не покрытие «поверх», а точно рассчитанный сэндвич из трёх
+                функциональных слоёв, каждый со своей задачей.
+              </p>
+              <div className="mt-10 divide-y divide-line border-y border-line">
+                {LAYERS.map(([n, t, d]) => (
+                  <div key={n} className="flex gap-6 py-6">
+                    <span className="font-display text-2xl text-ember">{n}</span>
+                    <div>
+                      <h3
+                        className="font-display text-lg uppercase text-ivory"
+                        style={{ letterSpacing: "0.05em" }}
+                      >
+                        {t}
+                      </h3>
+                      <p className="mt-2 text-[13.5px] leading-[1.8] text-mute">{d}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Protection concept grid */}
+          <div className="mt-16 grid gap-[2px] bg-line sm:grid-cols-2 lg:grid-cols-3">
+            {PROTECTION.map(([t, d]) => (
+              <div key={t} className="bg-obsidian p-8">
+                <h3
+                  className="font-display text-base uppercase text-ivory"
+                  style={{ letterSpacing: "0.05em" }}
+                >
+                  {t}
+                </h3>
+                <p className="mt-4 text-[13.5px] leading-[1.8] text-mute">{d}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════ HYDROPHOBIC & SELF-HEALING DEMO ═══════════ */}
+      <section className="border-y border-line bg-obsidian-2 px-[6vw] py-32">
+        <div className="mx-auto max-w-[1500px]">
+          <Rule label="Демонстрация технологий" num="03" />
+          <div className="grid gap-2 md:grid-cols-2">
+            {[
+              {
+                img: PPF.hydrophobic,
+                tag: "Гидрофобность",
+                title: "Вода скатывается сама",
+                body: "Топ-коат превращает воду в плотные капли: они скатываются с поверхности, унося грязь, пыль и дорожные реагенты. Автомобиль дольше остаётся чистым.",
+              },
+              {
+                img: PPF.selfheal,
+                tag: "Самовосстановление",
+                title: "Царапины исчезают от тепла",
+                body: "Мелкие царапины, следы моек и завихрения затягиваются при нагреве от 40 °C — от солнца, тёплой воды или фена. Поверхность возвращается к идеалу.",
+              },
+            ].map((d) => (
+              <figure key={d.tag} className="group relative overflow-hidden">
+                <div className="aspect-[16/10]">
+                  <img
+                    src={d.img}
+                    alt={d.title}
+                    loading="lazy"
+                    className="h-full w-full object-cover transition-transform duration-[1600ms] group-hover:scale-105"
+                  />
+                </div>
+                <div className="absolute inset-0 plate-scrim" />
+                <figcaption className="absolute inset-x-0 bottom-0 p-8">
+                  <p className="eyebrow eyebrow-dot mb-3">{d.tag}</p>
+                  <h3
+                    className="font-display text-xl uppercase text-ivory"
+                    style={{ letterSpacing: "0.05em" }}
+                  >
+                    {d.title}
+                  </h3>
+                  <p className="mt-3 max-w-[440px] text-[13.5px] leading-[1.8] text-mute">
+                    {d.body}
+                  </p>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════ FINISH COLLECTION ═══════════ */}
+      <section className="px-[6vw] py-32">
+        <div className="mx-auto max-w-[1500px]">
+          <Rule label="Коллекция покрытий UNIQUE" num="04" />
+          <div className="mb-12 max-w-[720px]">
+            <h2
+              className="font-display uppercase leading-tight text-ivory"
+              style={{ fontSize: "clamp(28px,3.6vw,50px)", letterSpacing: "0.04em" }}
+            >
+              Три характера
+              <br />
+              <span className="text-ember">одной защиты.</span>
+            </h2>
+          </div>
+          <div className="grid gap-2 lg:grid-cols-3">
+            {FINISHES.map((f) => (
+              <article key={f.name} className="group flex flex-col border border-line bg-obsidian">
+                <div className="relative aspect-[4/3] overflow-hidden">
+                  <img
+                    src={f.img}
+                    alt={f.name}
+                    loading="lazy"
+                    className="h-full w-full object-cover transition-transform duration-[1400ms] group-hover:scale-105"
+                  />
+                  <span className="absolute left-4 top-4 border border-ivory/30 bg-obsidian/50 px-2.5 py-1 text-[9px] uppercase tracking-[0.28em] text-ivory backdrop-blur-sm">
+                    {f.tag}
+                  </span>
+                </div>
+                <div className="flex flex-1 flex-col p-8">
+                  <h3
+                    className="font-display text-2xl uppercase text-ivory"
+                    style={{ letterSpacing: "0.05em" }}
+                  >
+                    {f.name}
+                  </h3>
+                  <p className="mt-4 text-[13.5px] leading-[1.8] text-mute">{f.desc}</p>
+                  <ul className="mt-6 space-y-2">
+                    {f.specs.map((s) => (
+                      <li
+                        key={s}
+                        className="flex items-center gap-3 text-[12px] uppercase tracking-[0.2em] text-mute-2"
+                      >
+                        <span className="h-px w-4 bg-ember" />
+                        {s}
+                      </li>
+                    ))}
+                  </ul>
+                  <p className="mt-auto pt-8 text-[11px] uppercase tracking-[0.28em] text-mute">
+                    Применение: <span className="text-ivory">{f.example}</span>
+                  </p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════ BEFORE / AFTER ═══════════ */}
+      <section className="border-y border-line bg-obsidian-2 px-[6vw] py-32">
+        <div className="mx-auto max-w-[1200px]">
+          <Rule label="До и после защиты" num="05" />
+          <div className="mb-10 flex flex-wrap items-end justify-between gap-6">
+            <h2
+              className="font-display uppercase leading-tight text-ivory"
+              style={{ fontSize: "clamp(26px,3.2vw,46px)", letterSpacing: "0.04em" }}
+            >
+              Потяните ползунок
+            </h2>
+            <p className="max-w-[360px] text-[13.5px] leading-[1.85] text-mute">
+              Слева — незащищённый лак со следами эксплуатации. Справа — поверхность под плёнкой
+              UNIQUE PPF: глубже, глянцевее, защищённее.
+            </p>
+          </div>
+          <BeforeAfter />
+        </div>
+      </section>
+
+      {/* ═══════════ VEHICLE DEMONSTRATION PORTFOLIO ═══════════ */}
+      <section className="px-[6vw] py-32">
+        <div className="mx-auto max-w-[1500px]">
+          <Rule label="Автомобили под защитой UNIQUE" num="06" />
+          <div className="mb-14 max-w-[760px]">
+            <h2
+              className="font-display uppercase leading-tight text-ivory"
+              style={{ fontSize: "clamp(28px,3.6vw,50px)", letterSpacing: "0.04em" }}
+            >
+              Плёнка на реальных
+              <br />
+              <span className="text-ember">люксовых проектах.</span>
+            </h2>
+            <p className="mt-6 text-[15px] leading-[1.9] text-mute">
+              Каждый проект — полная оклейка и детальные кадры зон защиты: капот, фронтальная зона,
+              оптика, зеркала, кромки и изгибы кузова. Плёнка невидима, глянец сохранён.
+            </p>
+          </div>
+
+          <div className="space-y-16">
+            {DEMOS.map((d, di) => (
+              <div key={d.slug} className="grid gap-2 lg:grid-cols-[1.35fr_1fr] lg:items-stretch">
+                <Link
+                  to="/raboty/$slug"
+                  params={{ slug: d.slug }}
+                  className="group relative block overflow-hidden bg-obsidian"
+                >
+                  <div className="aspect-[16/10] h-full">
+                    <img
+                      src={d.hero}
+                      alt={`${d.brand} ${d.model}`}
+                      loading="lazy"
+                      className="h-full w-full object-cover transition-transform duration-[1600ms] group-hover:scale-105"
+                    />
+                  </div>
+                  <div className="absolute inset-0 plate-scrim" />
+                  <span className="absolute left-5 top-5 border border-ivory/30 bg-obsidian/50 px-3 py-1 text-[9px] uppercase tracking-[0.28em] text-ivory backdrop-blur-sm">
+                    {String(di + 1).padStart(2, "0")} · Demonstration
+                  </span>
+                  <div className="absolute inset-x-0 bottom-0 p-8">
+                    <h3
+                      className="font-display text-2xl uppercase text-ivory"
+                      style={{ letterSpacing: "0.05em" }}
+                    >
+                      {d.brand} <span className="text-ember">{d.model}</span>
+                    </h3>
+                    <p className="mt-2 text-[12px] uppercase tracking-[0.28em] text-mute">
+                      {d.finish}
+                    </p>
+                  </div>
+                </Link>
+
+                <div className="grid grid-cols-3 gap-2 lg:grid-cols-1">
+                  {d.details.map((det) => (
+                    <figure key={det.img} className="group relative overflow-hidden bg-obsidian">
+                      <div className="aspect-[4/3] lg:aspect-[16/9]">
+                        <img
+                          src={det.img}
+                          alt={`${d.brand} ${d.model} — ${det.label}`}
+                          loading="lazy"
+                          className="h-full w-full object-cover transition-transform duration-[1400ms] group-hover:scale-110"
+                        />
+                      </div>
+                      <div className="absolute inset-0 plate-scrim" />
+                      <figcaption className="absolute bottom-3 left-4 text-[10px] uppercase tracking-[0.28em] text-ivory">
+                        {det.label}
+                      </figcaption>
+                    </figure>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════ FILTERABLE PORTFOLIO ═══════════ */}
       <section className="border-t border-line bg-obsidian-2 px-[6vw] py-28">
         <div className="mx-auto max-w-[1600px]">
           <div className="mb-10 flex flex-wrap items-end justify-between gap-6">
             <div>
-              <p className="eyebrow eyebrow-dot mb-4">Портфолио защиты PPF</p>
+              <p className="eyebrow eyebrow-dot mb-4">Полный каталог применений</p>
               <h2
                 className="font-display uppercase leading-tight text-ivory"
                 style={{ fontSize: "clamp(28px,3.6vw,50px)", letterSpacing: "0.04em" }}
@@ -363,10 +922,75 @@ function PlenkaPage() {
         </div>
       </section>
 
-      {/* ─────────── TECHNICAL PROPERTIES ─────────── */}
+      {/* ═══════════ INSTALLATION & CRAFTSMANSHIP ═══════════ */}
       <section className="px-[6vw] py-32">
+        <div className="mx-auto max-w-[1500px]">
+          <Rule label="Установка и мастерство" num="07" />
+          <div className="mb-12 flex flex-wrap items-end justify-between gap-6">
+            <h2
+              className="max-w-[760px] font-display uppercase leading-tight text-ivory"
+              style={{ fontSize: "clamp(28px,3.6vw,50px)", letterSpacing: "0.04em" }}
+            >
+              Оклейка вручную,
+              <br />
+              <span className="text-ember">без права на ошибку.</span>
+            </h2>
+            <p className="max-w-[380px] text-[13.5px] leading-[1.85] text-mute">
+              Прецизионный раскрой, укладка без разбора автомобиля, прогрев каждого шва и финальный
+              контроль под инспекционным светом.
+            </p>
+          </div>
+          <div className="grid gap-2 md:grid-cols-3">
+            {[
+              {
+                img: PPF.installCut,
+                step: "01",
+                title: "Прецизионный раскрой",
+                body: "Лекала под конкретную модель и ручная подрезка кромок для незаметных стыков.",
+              },
+              {
+                img: PPF.installApply,
+                step: "02",
+                title: "Укладка плёнки",
+                body: "Влажный монтаж, вытеснение воды и пузырей, работа по сложной геометрии кузова.",
+              },
+              {
+                img: PPF.installInspect,
+                step: "03",
+                title: "Контроль качества",
+                body: "Проверка каждой кромки и поверхности под ярким инспекционным светом.",
+              },
+            ].map((s) => (
+              <figure key={s.step} className="group relative overflow-hidden bg-obsidian">
+                <div className="aspect-[4/5]">
+                  <img
+                    src={s.img}
+                    alt={s.title}
+                    loading="lazy"
+                    className="h-full w-full object-cover transition-transform duration-[1500ms] group-hover:scale-105"
+                  />
+                </div>
+                <div className="absolute inset-0 plate-scrim" />
+                <figcaption className="absolute inset-x-0 bottom-0 p-7">
+                  <p className="font-display text-2xl text-ember">{s.step}</p>
+                  <h3
+                    className="mt-3 font-display text-lg uppercase text-ivory"
+                    style={{ letterSpacing: "0.05em" }}
+                  >
+                    {s.title}
+                  </h3>
+                  <p className="mt-3 text-[12.5px] leading-[1.7] text-mute">{s.body}</p>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════ TECHNICAL PROPERTIES ═══════════ */}
+      <section className="border-t border-line bg-obsidian-2 px-[6vw] py-32">
         <div className="mx-auto max-w-[1400px]">
-          <Rule label="Технические свойства плёнки" num="01" />
+          <Rule label="Технические свойства плёнки" num="08" />
           <div className="grid gap-[2px] bg-line md:grid-cols-3">
             {PROPERTIES.map(([t, c], i) => (
               <div key={t} className="bg-obsidian p-10">
@@ -384,10 +1008,10 @@ function PlenkaPage() {
         </div>
       </section>
 
-      {/* ─────────── COMPARISON ─────────── */}
-      <section className="border-y border-line bg-obsidian-2 px-[6vw] py-32">
+      {/* ═══════════ COMPARISON ═══════════ */}
+      <section className="border-b border-line px-[6vw] py-32">
         <div className="mx-auto max-w-[1100px]">
-          <Rule label="UNIQUE PPF в сравнении" num="02" />
+          <Rule label="UNIQUE PPF в сравнении" num="09" />
           <div className="border border-line">
             <div className="grid grid-cols-3 border-b border-line bg-obsidian px-8 py-6 text-[10px] uppercase tracking-[0.3em] text-mute-2">
               <span>Характеристика</span>
@@ -415,14 +1039,15 @@ function PlenkaPage() {
         </div>
       </section>
 
-      {/* ─────────── CTA ─────────── */}
+      {/* ═══════════ CTA ═══════════ */}
       <section className="px-[6vw] py-32 text-center">
         <h2
           className="mx-auto max-w-[760px] font-display uppercase leading-tight text-ivory"
           style={{ fontSize: "clamp(26px,3.6vw,46px)", letterSpacing: "0.06em" }}
         >
-          Добавьте свой автомобиль
-          <br />в коллекцию UNIQUE.
+          Защитите свой автомобиль
+          <br />
+          плёнкой UNIQUE.
         </h2>
         <div className="mt-10 flex flex-wrap justify-center gap-4">
           <Link to="/kontakty" className="btn-line btn-ember">
@@ -434,7 +1059,7 @@ function PlenkaPage() {
         </div>
       </section>
 
-      {/* ─────────── LIGHTBOX ─────────── */}
+      {/* ═══════════ LIGHTBOX ═══════════ */}
       {lightbox !== null && list[lightbox] && (
         <div
           className="fixed inset-0 z-[100] flex items-center justify-center bg-obsidian/95 p-6 animate-fade-in"
