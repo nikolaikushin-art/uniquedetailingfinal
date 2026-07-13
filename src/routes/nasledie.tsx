@@ -1,6 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageHero, Rule } from "@/components/site/PageHero";
-import { carImage, lifestyleImage } from "@/lib/images";
 
 export const Route = createFileRoute("/nasledie")({
   head: () => ({
@@ -21,8 +20,7 @@ function NasleiePage() {
         eyebrow="Наследие · Мастерство · Клуб"
         title={<>Пять глав<br />клубного стандарта.</>}
         lede="Мы собрали редакционные материалы о том, из чего складывается UNIQUE — от истоков ремесла до персонального шофёра клубной программы."
-        seed={9}
-        mode="car"
+        image="/portfolio/rolls-royce-cullinan-black-badge-0.jpg"
       />
 
       {/* НАСЛЕДИЕ */}
@@ -39,7 +37,7 @@ function NasleiePage() {
               <p>Наследие — это не годы на стене. Это привычка не спешить.</p>
             </div>
             <div className="relative aspect-[4/5] overflow-hidden">
-              <img src={carImage(11, 1600)} alt="Наследие" className="h-full w-full object-cover" loading="lazy" />
+              <img src="/portfolio/rolls-royce-ghost-extended-0.jpg" alt="Наследие" className="h-full w-full object-cover" loading="lazy" />
               <div className="absolute inset-0 plate-scrim" />
             </div>
           </div>
@@ -78,7 +76,7 @@ function NasleiePage() {
           <Rule num="03" label="Bespoke · Индивидуальный заказ" />
           <div className="grid gap-16 md:grid-cols-[1.1fr_0.9fr] md:items-center">
             <div className="relative aspect-[16/10] overflow-hidden">
-              <img src={lifestyleImage(3, 1600)} alt="Bespoke" className="h-full w-full object-cover" loading="lazy" />
+              <img src="/portfolio/aston-martin-db12-int-2.jpg" alt="Bespoke" className="h-full w-full object-cover" loading="lazy" />
               <div className="absolute inset-0 plate-scrim" />
             </div>
             <div className="space-y-6 text-[16px] leading-[1.95] text-mute">
@@ -128,7 +126,7 @@ function NasleiePage() {
               <p>Мы согласовываем маршрут, тайминг и стиль вождения. Ваш день — ваш ритм; автомобиль остаётся в клубной кондиции.</p>
             </div>
             <div className="relative aspect-[16/10] overflow-hidden">
-              <img src={carImage(17, 1600)} alt="Chauffeur" className="h-full w-full object-cover" loading="lazy" />
+              <img src="/portfolio/mercedes-maybach-s-680-0.jpg" alt="Chauffeur" className="h-full w-full object-cover" loading="lazy" />
               <div className="absolute inset-0 plate-scrim" />
             </div>
           </div>

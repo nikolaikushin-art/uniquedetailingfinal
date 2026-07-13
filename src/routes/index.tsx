@@ -1,16 +1,31 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { WORKS } from "@/lib/works";
-import { carImage, lifestyleImage } from "@/lib/images";
 import heroVideo from "@/assets/hero.mov.asset.json";
 import logo from "@/assets/logo.png.asset.json";
+
+// Unique, curated imagery for the home page (no image is reused elsewhere).
+const HOME = {
+  heroPoster: "/portfolio/mercedes-benz-g-63-amg-0.jpg",
+  studio: "/portfolio/rolls-royce-phantom-series-ii-craft-1.jpg",
+  services: "/portfolio/porsche-911-turbo-s-craft-3.jpg",
+  film: "/portfolio/lamborghini-revuelto-craft-2.jpg",
+  quote: "/portfolio/ferrari-roma-det-6.jpg",
+};
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "UNIQUE Detailing — Европейский стандарт детейлинга и оклейки PPF" },
-      { name: "description", content: "Премиальная детейлинг-студия UNIQUE в Санкт-Петербурге. Оклейка PPF без разбора автомобиля, собственная плёнка Unique, керамика и клубный сервис. Более 10 лет опыта." },
+      {
+        name: "description",
+        content:
+          "Премиальная детейлинг-студия UNIQUE в Санкт-Петербурге. Оклейка PPF без разбора автомобиля, собственная плёнка Unique, керамика и клубный сервис. Более 10 лет опыта.",
+      },
       { property: "og:title", content: "UNIQUE Detailing — Европейский стандарт" },
-      { property: "og:description", content: "Оклейка PPF, керамика и клубный сервис. Скоро открытие в Санкт-Петербурге." },
+      {
+        property: "og:description",
+        content: "Оклейка PPF, керамика и клубный сервис. Скоро открытие в Санкт-Петербурге.",
+      },
     ],
   }),
   component: Index,
@@ -30,7 +45,7 @@ function Index() {
           loop
           playsInline
           className="absolute inset-0 h-full w-full object-cover"
-          poster={carImage(0, 2400)}
+          poster={HOME.heroPoster}
         />
         <div className="absolute inset-0 bg-obsidian/55" />
         <div className="absolute inset-0 plate-scrim" />
@@ -38,22 +53,42 @@ function Index() {
         <div className="relative z-10 mx-auto w-full max-w-[1400px] px-[6vw] pt-32 md:pt-24">
           <div className="mb-8 flex items-center gap-4 animate-fade-up">
             <span className="h-[6px] w-[6px] rounded-full bg-ember shadow-[0_0_12px_theme(colors.ember)]" />
-            <span className="text-[10px] uppercase tracking-[0.4em] text-ember">Скоро открытие · Санкт-Петербург</span>
+            <span className="text-[10px] uppercase tracking-[0.4em] text-ember">
+              Скоро открытие · Санкт-Петербург
+            </span>
           </div>
 
           <h1
             className="mt-6 max-w-[1100px] font-display uppercase leading-[1.02] text-ivory animate-fade-up"
-            style={{ fontSize: "clamp(40px,7.4vw,116px)", letterSpacing: "0.03em", animationDelay: ".1s" }}
+            style={{
+              fontSize: "clamp(40px,7.4vw,116px)",
+              letterSpacing: "0.03em",
+              animationDelay: ".1s",
+            }}
           >
-            Европейский<br/>стандарт<br/>детейлинга.
+            Европейский
+            <br />
+            стандарт
+            <br />
+            детейлинга.
           </h1>
-          <p className="mt-8 max-w-[560px] text-[16px] leading-[1.9] text-mute animate-fade-up" style={{ animationDelay: ".2s" }}>
-            Более 10 лет опыта, клубная атмосфера и сервис, в который хочется возвращаться.
-            Вы уникальны — и ваш автомобиль тоже.
+          <p
+            className="mt-8 max-w-[560px] text-[16px] leading-[1.9] text-mute animate-fade-up"
+            style={{ animationDelay: ".2s" }}
+          >
+            Более 10 лет опыта, клубная атмосфера и сервис, в который хочется возвращаться. Вы
+            уникальны — и ваш автомобиль тоже.
           </p>
-          <div className="mt-12 flex flex-wrap gap-4 animate-fade-up" style={{ animationDelay: ".3s" }}>
-            <Link to="/kontakty" className="btn-line btn-ember">Рассчитать стоимость</Link>
-            <Link to="/raboty" className="btn-line">Наши работы</Link>
+          <div
+            className="mt-12 flex flex-wrap gap-4 animate-fade-up"
+            style={{ animationDelay: ".3s" }}
+          >
+            <Link to="/kontakty" className="btn-line btn-ember">
+              Рассчитать стоимость
+            </Link>
+            <Link to="/raboty" className="btn-line">
+              Наши работы
+            </Link>
           </div>
         </div>
 
@@ -64,26 +99,37 @@ function Index() {
       </section>
 
       {/* О СТУДИИ */}
-      <Section num="01" title="О студии" heading="Мы не просто выполняем работу — мы создаём результат.">
+      <Section
+        num="01"
+        title="О студии"
+        heading="Мы не просто выполняем работу — мы создаём результат."
+      >
         <div className="grid gap-24 md:grid-cols-[0.9fr_1.1fr] md:items-center">
           <div className="relative aspect-[4/5] overflow-hidden">
-            <img src={carImage(6, 1400)} alt="Студия UNIQUE" className="h-full w-full object-cover" loading="lazy" />
+            <img
+              src={HOME.studio}
+              alt="Студия UNIQUE"
+              className="h-full w-full object-cover"
+              loading="lazy"
+            />
             <div className="absolute inset-0 plate-scrim" />
-            <p className="absolute bottom-6 left-6 text-[10px] uppercase tracking-[0.35em] text-ivory">Внутри студии</p>
+            <p className="absolute bottom-6 left-6 text-[10px] uppercase tracking-[0.35em] text-ivory">
+              Внутри студии
+            </p>
           </div>
           <div className="space-y-6 text-[15.5px] leading-[1.95] text-mute">
             <p>
-              UNIQUE — это премиальная детейлинг-студия с европейским уровнем сервиса.
-              Мы работаем по единым высоким стандартам качества и технологическим картам,
-              которые уже проверены временем в Европе.
+              UNIQUE — это премиальная детейлинг-студия с европейским уровнем сервиса. Мы работаем
+              по единым высоким стандартам качества и технологическим картам, которые уже проверены
+              временем в Европе.
             </p>
             <p>
-              Более 10 лет реального опыта, сотни выполненных проектов и команда,
-              которая действительно любит автомобили.
+              Более 10 лет реального опыта, сотни выполненных проектов и команда, которая
+              действительно любит автомобили.
             </p>
             <p>
-              Мы не просто выполняем работу — мы создаём результат,
-              в который хочется возвращаться снова и снова.
+              Мы не просто выполняем работу — мы создаём результат, в который хочется возвращаться
+              снова и снова.
             </p>
           </div>
         </div>
@@ -93,13 +139,32 @@ function Index() {
       <section className="border-y border-line bg-obsidian-2 px-[6vw] py-24">
         <div className="mx-auto grid max-w-[1280px] gap-[2px] bg-line md:grid-cols-3">
           {[
-            ["Идеальная оклейка", "без разбора автомобиля", "Технология европейского центра — плёнка заводится под кромки без снятия оптики, ручек и эмблем."],
-            ["Собственная плёнка UNIQUE", "с уникальными свойствами", "Разработана нашим центром — эластичность 320%, самовосстановление и глубина цвета выше стандарта."],
-            ["Действующий премиум-центр", "в Европе", "Более 10 лет практики в европейской студии — стандарты и мастера, привезённые сюда без компромиссов."],
+            [
+              "Идеальная оклейка",
+              "без разбора автомобиля",
+              "Технология европейского центра — плёнка заводится под кромки без снятия оптики, ручек и эмблем.",
+            ],
+            [
+              "Собственная плёнка UNIQUE",
+              "с уникальными свойствами",
+              "Разработана нашим центром — эластичность 320%, самовосстановление и глубина цвета выше стандарта.",
+            ],
+            [
+              "Действующий премиум-центр",
+              "в Европе",
+              "Более 10 лет практики в европейской студии — стандарты и мастера, привезённые сюда без компромиссов.",
+            ],
           ].map(([h1, h2, copy], i) => (
             <div key={h1} className="bg-obsidian p-10">
-              <span className="font-display text-xs uppercase tracking-[0.3em] text-ember">{String(i + 1).padStart(2, "0")}</span>
-              <h3 className="mt-8 font-display text-2xl uppercase leading-tight text-ivory" style={{ letterSpacing: "0.05em" }}>{h1}</h3>
+              <span className="font-display text-xs uppercase tracking-[0.3em] text-ember">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <h3
+                className="mt-8 font-display text-2xl uppercase leading-tight text-ivory"
+                style={{ letterSpacing: "0.05em" }}
+              >
+                {h1}
+              </h3>
               <p className="text-[11px] uppercase tracking-[0.3em] text-mute-2 mt-2">{h2}</p>
               <p className="mt-6 text-[14.5px] leading-[1.85] text-mute">{copy}</p>
             </div>
@@ -112,19 +177,32 @@ function Index() {
         <div className="grid gap-16 md:grid-cols-[1.1fr_0.9fr] md:items-start">
           <div className="space-y-[2px]">
             {SERVICES_HOME.map((s, i) => (
-              <details key={s.title} className="group border-t border-line bg-obsidian" open={i === 0}>
+              <details
+                key={s.title}
+                className="group border-t border-line bg-obsidian"
+                open={i === 0}
+              >
                 <summary className="flex cursor-pointer items-center justify-between px-6 py-6 list-none">
                   <div>
-                    <span className="font-display text-[13px] text-mute-2 mr-4">{String(i + 1).padStart(2, "0")}</span>
-                    <span className="font-display text-[18px] uppercase text-ivory" style={{ letterSpacing: "0.05em" }}>{s.title}</span>
+                    <span className="font-display text-[13px] text-mute-2 mr-4">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <span
+                      className="font-display text-[18px] uppercase text-ivory"
+                      style={{ letterSpacing: "0.05em" }}
+                    >
+                      {s.title}
+                    </span>
                   </div>
-                  <span className="text-ember text-xl group-open:rotate-45 transition-transform">+</span>
+                  <span className="text-ember text-xl group-open:rotate-45 transition-transform">
+                    +
+                  </span>
                 </summary>
                 <div className="px-6 pb-8 pl-16 text-[14.5px] leading-[1.85] text-mute">
                   <p>{s.copy}</p>
                   {s.bullets && (
                     <ul className="mt-4 space-y-2">
-                      {s.bullets.map(b => (
+                      {s.bullets.map((b) => (
                         <li key={b} className="flex gap-3">
                           <span className="mt-2 h-px w-4 bg-ember" />
                           <span>{b}</span>
@@ -136,11 +214,18 @@ function Index() {
               </details>
             ))}
             <div className="border-t border-line pt-8">
-              <Link to="/uslugi" className="btn-line">Все услуги</Link>
+              <Link to="/uslugi" className="btn-line">
+                Все услуги
+              </Link>
             </div>
           </div>
           <div className="relative aspect-[4/5] overflow-hidden">
-            <img src={carImage(3, 1600)} alt="Работа в студии" className="h-full w-full object-cover" loading="lazy" />
+            <img
+              src={HOME.services}
+              alt="Работа в студии"
+              className="h-full w-full object-cover"
+              loading="lazy"
+            />
             <div className="absolute inset-0 plate-scrim" />
           </div>
         </div>
@@ -168,7 +253,10 @@ function Index() {
                 <p className="eyebrow mb-3 text-mute-2">
                   {String(i + 1).padStart(2, "0")} · {w.category}
                 </p>
-                <h3 className="font-display uppercase leading-tight text-ivory" style={{ fontSize: "26px", letterSpacing: "0.06em" }}>
+                <h3
+                  className="font-display uppercase leading-tight text-ivory"
+                  style={{ fontSize: "26px", letterSpacing: "0.06em" }}
+                >
                   {w.brand}
                 </h3>
                 <p className="mt-1 text-[15px] text-mute">{w.model}</p>
@@ -178,7 +266,9 @@ function Index() {
           ))}
         </div>
         <div className="mt-16 text-center">
-          <Link to="/raboty" className="btn-line">Все работы</Link>
+          <Link to="/raboty" className="btn-line">
+            Все работы
+          </Link>
         </div>
       </Section>
 
@@ -186,26 +276,36 @@ function Index() {
       <section className="border-y border-line bg-obsidian-2">
         <div className="grid md:grid-cols-2">
           <div className="relative min-h-[60vh]">
-            <img src={carImage(9, 1600)} alt="Плёнка UNIQUE" className="absolute inset-0 h-full w-full object-cover" loading="lazy" />
+            <img
+              src={HOME.film}
+              alt="Плёнка UNIQUE"
+              className="absolute inset-0 h-full w-full object-cover"
+              loading="lazy"
+            />
             <div className="absolute inset-0 plate-scrim" />
           </div>
           <div className="flex items-center px-[8vw] py-24">
             <div className="max-w-[520px]">
               <p className="eyebrow mb-6">Эксклюзивная плёнка Unique</p>
-              <h2 className="font-display uppercase leading-tight text-ivory" style={{ fontSize: "clamp(30px,3.4vw,46px)", letterSpacing: "0.05em" }}>
+              <h2
+                className="font-display uppercase leading-tight text-ivory"
+                style={{ fontSize: "clamp(30px,3.4vw,46px)", letterSpacing: "0.05em" }}
+              >
                 Особые свойства, которые вы почувствуете.
               </h2>
               <p className="mt-8 text-[15.5px] leading-[1.95] text-mute">
-                Мы разработали и используем собственную плёнку с уникальными характеристиками.
-                Она обеспечивает максимальную защиту, сохраняет насыщенность цвета
-                и обладает повышенной эластичностью.
+                Мы разработали и используем собственную плёнку с уникальными характеристиками. Она
+                обеспечивает максимальную защиту, сохраняет насыщенность цвета и обладает повышенной
+                эластичностью.
               </p>
               <p className="mt-4 text-[15.5px] leading-[1.95] text-mute">
-                Идеально ложится на любые поверхности без необходимости разбора автомобиля.
-                Качество и долговечность, которые подтверждаются реальными кейсами.
+                Идеально ложится на любые поверхности без необходимости разбора автомобиля. Качество
+                и долговечность, которые подтверждаются реальными кейсами.
               </p>
               <div className="mt-10">
-                <Link to="/plenka" className="btn-line btn-ember">Узнать о плёнке</Link>
+                <Link to="/plenka" className="btn-line btn-ember">
+                  Узнать о плёнке
+                </Link>
               </div>
             </div>
           </div>
@@ -216,13 +316,18 @@ function Index() {
       <Section num="04" title="Цифры" heading="Более десяти лет — и каждая цифра честная.">
         <div className="grid gap-[2px] bg-line md:grid-cols-4">
           {[
-            ["10+", "лет опыта",           "В европейском и российском детейлинге."],
-            ["500+","автомобилей",         "Обработано за годы практики."],
-            ["10",  "лет гарантии",        "На собственную плёнку UNIQUE PPF."],
-            ["9",   "мастеров в команде", "Каждый — со своей узкой специализацией."],
+            ["10+", "лет опыта", "В европейском и российском детейлинге."],
+            ["500+", "автомобилей", "Обработано за годы практики."],
+            ["10", "лет гарантии", "На собственную плёнку UNIQUE PPF."],
+            ["9", "мастеров в команде", "Каждый — со своей узкой специализацией."],
           ].map(([n, l, c]) => (
             <div key={l} className="bg-obsidian p-10 text-center md:text-left">
-              <p className="font-display text-ember" style={{ fontSize: "clamp(56px,6vw,88px)", letterSpacing: "0.02em" }}>{n}</p>
+              <p
+                className="font-display text-ember"
+                style={{ fontSize: "clamp(56px,6vw,88px)", letterSpacing: "0.02em" }}
+              >
+                {n}
+              </p>
               <p className="mt-2 text-[11px] uppercase tracking-[0.3em] text-ivory">{l}</p>
               <p className="mt-4 text-[13.5px] leading-[1.8] text-mute">{c}</p>
             </div>
@@ -232,10 +337,16 @@ function Index() {
 
       {/* ЦИТАТА */}
       <section className="relative overflow-hidden border-y border-line py-40 text-center">
-        <div className="absolute inset-0 bg-cover bg-center opacity-25" style={{ backgroundImage: `url(${lifestyleImage(1, 1800)})` }} />
+        <div
+          className="absolute inset-0 bg-cover bg-center opacity-25"
+          style={{ backgroundImage: `url(${HOME.quote})` }}
+        />
         <div className="absolute inset-0 bg-gradient-to-b from-obsidian via-obsidian/70 to-obsidian" />
         <blockquote className="relative z-10 mx-auto max-w-[900px] px-[6vw]">
-          <p className="font-display uppercase leading-[1.2] text-ivory" style={{ fontSize: "clamp(26px,3.4vw,42px)", letterSpacing: "0.06em" }}>
+          <p
+            className="font-display uppercase leading-[1.2] text-ivory"
+            style={{ fontSize: "clamp(26px,3.4vw,42px)", letterSpacing: "0.06em" }}
+          >
             «Идеальная оклейка — та, о которой не думаешь. Плёнка UNIQUE делает своё дело тихо.»
           </p>
           <footer className="mt-10 text-[11px] uppercase tracking-[0.4em] text-mute">
@@ -248,42 +359,89 @@ function Index() {
       <Section num="05" title="Клуб Unique" heading="Не просто клиент. Часть закрытого клуба.">
         <div className="grid gap-14 md:grid-cols-3">
           {[
-            ["Персональный менеджер",   "Прямая линия с мастером, который вёл ваш автомобиль от первого дня."],
-            ["Ежегодная ревизия",       "Раз в год — бесплатная проверка плёнки и покрытия по клубной программе."],
-            ["Закрытые мероприятия",    "Приглашения на клубные встречи, тест-драйвы и партнёрские события."],
+            [
+              "Персональный менеджер",
+              "Прямая линия с мастером, который вёл ваш автомобиль от первого дня.",
+            ],
+            [
+              "Ежегодная ревизия",
+              "Раз в год — бесплатная проверка плёнки и покрытия по клубной программе.",
+            ],
+            [
+              "Закрытые мероприятия",
+              "Приглашения на клубные встречи, тест-драйвы и партнёрские события.",
+            ],
           ].map(([t, c], i) => (
             <div key={t} className="border-t border-line pt-10">
               <p className="font-display text-3xl text-mute-2">{String(i + 1).padStart(2, "0")}</p>
-              <h3 className="mt-8 font-display text-2xl uppercase text-ivory" style={{ letterSpacing: "0.05em" }}>{t}</h3>
+              <h3
+                className="mt-8 font-display text-2xl uppercase text-ivory"
+                style={{ letterSpacing: "0.05em" }}
+              >
+                {t}
+              </h3>
               <p className="mt-6 text-[14.5px] leading-[1.85] text-mute">{c}</p>
             </div>
           ))}
         </div>
         <div className="mt-16 text-center">
-          <Link to="/klub" className="btn-line">Подробнее о клубе</Link>
+          <Link to="/klub" className="btn-line">
+            Подробнее о клубе
+          </Link>
         </div>
       </Section>
 
       {/* ПАРТНЁРЫ — маркетинговая полоса */}
       <div className="overflow-hidden border-y border-line bg-obsidian-2 py-8">
         <div className="flex w-max animate-marquee gap-16 whitespace-nowrap font-display text-2xl uppercase tracking-[0.35em] text-mute-2">
-          {["AUDI","ASTON MARTIN","BMW","BENTLEY","MERCEDES-BENZ","PORSCHE","LAMBORGHINI","FERRARI","ROLLS-ROYCE","RANGE ROVER","MCLAREN","MASERATI","AUDI","ASTON MARTIN","BMW","BENTLEY","MERCEDES-BENZ","PORSCHE"].map((c, i) => (
-            <span key={c + i} className="opacity-70">{c}</span>
+          {[
+            "AUDI",
+            "ASTON MARTIN",
+            "BMW",
+            "BENTLEY",
+            "MERCEDES-BENZ",
+            "PORSCHE",
+            "LAMBORGHINI",
+            "FERRARI",
+            "ROLLS-ROYCE",
+            "RANGE ROVER",
+            "MCLAREN",
+            "MASERATI",
+            "AUDI",
+            "ASTON MARTIN",
+            "BMW",
+            "BENTLEY",
+            "MERCEDES-BENZ",
+            "PORSCHE",
+          ].map((c, i) => (
+            <span key={c + i} className="opacity-70">
+              {c}
+            </span>
           ))}
         </div>
       </div>
 
       {/* CTA */}
       <section className="relative border-y border-line px-[6vw] py-40 text-center">
-        <h2 className="mx-auto max-w-[900px] font-display uppercase leading-tight text-ivory" style={{ fontSize: "clamp(28px,4vw,52px)", letterSpacing: "0.06em" }}>
-          Ваш автомобиль уже<br/>ждёт трансформации.
+        <h2
+          className="mx-auto max-w-[900px] font-display uppercase leading-tight text-ivory"
+          style={{ fontSize: "clamp(28px,4vw,52px)", letterSpacing: "0.06em" }}
+        >
+          Ваш автомобиль уже
+          <br />
+          ждёт трансформации.
         </h2>
         <p className="mx-auto mt-8 max-w-[520px] text-[15px] leading-[1.9] text-mute">
-          Оставьте заявку — мы рассчитаем стоимость и предложим удобное время в клубной студии UNIQUE.
+          Оставьте заявку — мы рассчитаем стоимость и предложим удобное время в клубной студии
+          UNIQUE.
         </p>
         <div className="mt-12 flex flex-wrap justify-center gap-4">
-          <Link to="/kontakty" className="btn-line btn-ember">Рассчитать стоимость</Link>
-          <Link to="/raboty" className="btn-line">Посмотреть работы</Link>
+          <Link to="/kontakty" className="btn-line btn-ember">
+            Рассчитать стоимость
+          </Link>
+          <Link to="/raboty" className="btn-line">
+            Посмотреть работы
+          </Link>
         </div>
       </section>
     </div>
@@ -311,10 +469,7 @@ const SERVICES_HOME = [
   {
     title: "Керамическая защита кузова, дисков и стёкол",
     copy: "Керамическое покрытие 9H создаёт кристаллическую защитную плёнку на лаке. Дополняет PPF или используется самостоятельно — для гидрофобности, глубины цвета и лёгкой мойки.",
-    bullets: [
-      "Защита кузова, колёсных дисков и стёкол.",
-      "Гарантия сохранения свойств до 5 лет.",
-    ],
+    bullets: ["Защита кузова, колёсных дисков и стёкол.", "Гарантия сохранения свойств до 5 лет."],
   },
   {
     title: "Комплекс «Восстановление + защита»",
@@ -345,7 +500,10 @@ function Section({
           <span className="h-px flex-1 bg-line" />
           <span className="eyebrow">{title}</span>
         </div>
-        <h2 className="mb-16 max-w-[900px] font-display uppercase leading-[1.1] text-ivory" style={{ fontSize: "clamp(28px,4vw,52px)", letterSpacing: "0.05em" }}>
+        <h2
+          className="mb-16 max-w-[900px] font-display uppercase leading-[1.1] text-ivory"
+          style={{ fontSize: "clamp(28px,4vw,52px)", letterSpacing: "0.05em" }}
+        >
           {heading}
         </h2>
         {children}

@@ -1,6 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageHero, Rule } from "@/components/site/PageHero";
-import { carImage, lifestyleImage } from "@/lib/images";
 
 export const Route = createFileRoute("/klub")({
   head: () => ({
@@ -36,11 +35,10 @@ function KlubPage() {
   return (
     <div>
       <PageHero
-        mode="lifestyle"
         eyebrow="Клуб Unique"
         title={<>Не просто клиент.<br />Часть клуба.</>}
         lede="После первой работы вы автоматически становитесь членом клуба UNIQUE — с персональным менеджером, ежегодной ревизией и приглашениями на закрытые события."
-        seed={3}
+        image="/portfolio/maserati-mc20-cielo-0.jpg"
       />
 
       {/* ИНТРО */}
@@ -110,7 +108,7 @@ function KlubPage() {
 
       {/* ЦИТАТА */}
       <section className="relative overflow-hidden border-y border-line py-32 text-center">
-        <div className="absolute inset-0 bg-cover bg-center opacity-25" style={{ backgroundImage: `url(${lifestyleImage(5, 1800)})` }} />
+        <div className="absolute inset-0 bg-cover bg-center opacity-25" style={{ backgroundImage: `url(/portfolio/maserati-grecale-trofeo-craft-6.jpg)` }} />
         <div className="absolute inset-0 bg-gradient-to-b from-obsidian via-obsidian/70 to-obsidian" />
         <blockquote className="relative z-10 mx-auto max-w-[860px] px-[6vw]">
           <p className="font-display uppercase leading-[1.2] text-ivory" style={{ fontSize: "clamp(24px,3.2vw,40px)", letterSpacing: "0.06em" }}>
