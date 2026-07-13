@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { PageHero } from "@/components/site/PageHero";
-import { carImage } from "@/lib/images";
+
 
 export const Route = createFileRoute("/kontakty")({
   head: () => ({
@@ -63,10 +63,16 @@ function KontaktyPage() {
               </p>
             </div>
 
-            <div className="relative aspect-[16/10] overflow-hidden">
-              <img src={carImage(6, 1400)} alt="Студия UNIQUE" className="h-full w-full object-cover" loading="lazy" />
-              <div className="absolute inset-0 plate-scrim" />
-              <p className="absolute bottom-4 left-4 text-[10px] uppercase tracking-[0.3em] text-ivory">Внутри студии</p>
+            <div className="relative aspect-[16/10] overflow-hidden border border-line">
+              <iframe
+                title="UNIQUE Detailing — Санкт-Петербург, Петрозаводская улица 33"
+                src="https://yandex.ru/map-widget/v1/?ll=30.740%2C59.849&z=13&pt=30.740,59.849,pm2rdm&l=map"
+                className="h-full w-full grayscale contrast-125"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+              <div className="pointer-events-none absolute inset-0 bg-obsidian/10 mix-blend-multiply" />
+              <p className="pointer-events-none absolute bottom-4 left-4 rounded-sm bg-obsidian/80 px-3 py-1.5 text-[10px] uppercase tracking-[0.3em] text-ivory">Клубная студия UNIQUE</p>
             </div>
           </aside>
 

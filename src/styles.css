@@ -260,3 +260,21 @@ summary:focus-visible {
   -ms-overflow-style: none;
   &::-webkit-scrollbar { display: none; }
 }
+
+/* ============================================================
+ * Desktop-only refinements — larger typography, tighter rhythm.
+ * Mobile untouched to preserve existing composition.
+ * ============================================================ */
+@media (min-width: 1024px) {
+  body { font-size: 17px; line-height: 1.75; }
+  .eyebrow { font-size: 12px; letter-spacing: 0.34em; }
+  /* Slightly compress oversized vertical padding on desktop for a denser,
+     more editorial rhythm without crowding content. */
+  section.py-32 { padding-top: 6rem; padding-bottom: 6rem; }
+  section.py-24 { padding-top: 5rem; padding-bottom: 5rem; }
+  section.py-20 { padding-top: 4.5rem; padding-bottom: 4.5rem; }
+}
+@media (min-width: 1280px) {
+  body { font-size: 18px; }
+}
+
