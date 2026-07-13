@@ -30,15 +30,17 @@ export function SiteHeader() {
     <>
       <header
         className={`fixed inset-x-0 top-0 z-50 flex items-center justify-between px-[5vw] transition-all duration-500 ${
-          scrolled ? "py-3 bg-obsidian/90 backdrop-blur border-b border-line" : "py-6"
+          scrolled
+            ? "py-3 md:py-5 bg-obsidian/90 backdrop-blur border-b border-line"
+            : "py-6 md:py-10"
         }`}
       >
         <button
           onClick={() => setOpen(true)}
-          className="flex items-center gap-3 text-[11px] tracking-[0.35em] uppercase text-ivory"
+          className="flex items-center gap-3 text-[11px] md:text-[13px] tracking-[0.35em] uppercase text-ivory"
           aria-label="Открыть меню"
         >
-          <span className="flex w-[22px] flex-col gap-[5px]">
+          <span className="flex w-[22px] md:w-[26px] flex-col gap-[5px]">
             <span className="block h-px bg-ivory" />
             <span className="block h-px w-[70%] bg-ivory" />
             <span className="block h-px bg-ivory" />
@@ -47,12 +49,12 @@ export function SiteHeader() {
         </button>
 
         <Link to="/" className="flex items-center gap-3" aria-label="UNIQUE Detailing">
-          <img src={logo.url} alt="UNIQUE Detailing" className="h-12 w-auto md:h-14" />
+          <img src={logo.url} alt="UNIQUE Detailing" className="h-12 w-auto md:h-20" />
         </Link>
 
         <Link
           to="/kontakty"
-          className="text-[10px] tracking-[0.3em] uppercase text-mute transition-colors hover:text-ivory"
+          className="text-[10px] md:text-[12px] tracking-[0.3em] uppercase text-mute transition-colors hover:text-ivory"
         >
           Связаться
         </Link>
