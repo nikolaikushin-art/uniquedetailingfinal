@@ -300,6 +300,20 @@ summary:focus-visible {
 }
 
 /* ============================================================
+ * Mobile refinements (≤767px) — bespoke spacing & rhythm.
+ * Compresses oversized desktop vertical padding so sections feel
+ * intentionally composed for phones rather than a squeezed desktop,
+ * removing tall dead space while preserving premium breathing room.
+ * ============================================================ */
+@media (max-width: 767px) {
+  section.py-40 { padding-top: 4rem; padding-bottom: 4rem; }
+  section.py-32 { padding-top: 3.5rem; padding-bottom: 3.5rem; }
+  section.py-28 { padding-top: 3.25rem; padding-bottom: 3.25rem; }
+  section.py-24 { padding-top: 3rem; padding-bottom: 3rem; }
+  section.py-20 { padding-top: 2.75rem; padding-bottom: 2.75rem; }
+}
+
+/* ============================================================
  * Premium monochrome map (Leaflet + CARTO)
  * Grayscale basemap, no traffic/vendor chrome, single UNIQUE
  * red marker + refined dark controls. Matches the luxury identity.

@@ -5,9 +5,16 @@ export const Route = createFileRoute("/uslugi")({
   head: () => ({
     meta: [
       { title: "Услуги — UNIQUE Detailing" },
-      { name: "description", content: "Полная и зональная оклейка PPF, смена цвета плёнкой, керамика, восстановление ЛКП. Работа без разбора автомобиля по европейскому стандарту." },
+      {
+        name: "description",
+        content:
+          "Полная и зональная оклейка PPF, смена цвета плёнкой, керамика, восстановление ЛКП. Работа без разбора автомобиля по европейскому стандарту.",
+      },
       { property: "og:title", content: "Услуги — UNIQUE Detailing" },
-      { property: "og:description", content: "PPF, керамика, смена цвета и восстановление ЛКП в студии UNIQUE." },
+      {
+        property: "og:description",
+        content: "PPF, керамика, смена цвета и восстановление ЛКП в студии UNIQUE.",
+      },
     ],
   }),
   component: UslugiPage,
@@ -103,29 +110,48 @@ function UslugiPage() {
     <div>
       <PageHero
         eyebrow="Услуги центра"
-        title={<>Шесть направлений.<br />Один стандарт качества.</>}
+        title={
+          <>
+            Шесть направлений.
+            <br />
+            Один стандарт качества.
+          </>
+        }
         lede="Мы работаем по единым технологическим картам, отработанным в европейском центре UNIQUE. Каждая услуга — с гарантией, договором и клубной книгой владельца."
         image="/portfolio/mclaren-765lt-0.jpg"
       />
 
       {/* УСЛУГИ — чередующиеся блоки */}
       <section className="px-[6vw] py-32">
-        <div className="mx-auto max-w-[1400px] space-y-32">
+        <div className="mx-auto max-w-[1400px] space-y-20 md:space-y-32">
           {SERVICES.map((s, i) => (
-            <article key={s.num} className={`grid gap-16 md:grid-cols-2 md:items-center ${i % 2 === 1 ? "md:[&>div:first-child]:order-2" : ""}`}>
+            <article
+              key={s.num}
+              className={`grid gap-16 md:grid-cols-2 md:items-center ${i % 2 === 1 ? "md:[&>div:first-child]:order-2" : ""}`}
+            >
               <div className="relative aspect-[4/5] overflow-hidden">
-                <img src={s.img} alt={s.title} className="h-full w-full object-cover" loading="lazy" />
+                <img
+                  src={s.img}
+                  alt={s.title}
+                  className="h-full w-full object-cover"
+                  loading="lazy"
+                />
                 <div className="absolute inset-0 plate-scrim" />
-                <p className="absolute bottom-6 left-6 font-display text-6xl text-ivory opacity-90">{s.num}</p>
+                <p className="absolute bottom-6 left-6 font-display text-6xl text-ivory opacity-90">
+                  {s.num}
+                </p>
               </div>
               <div>
                 <p className="eyebrow mb-6">Услуга · {s.num}</p>
-                <h2 className="font-display uppercase leading-tight text-ivory" style={{ fontSize: "clamp(24px,2.6vw,36px)", letterSpacing: "0.05em" }}>
+                <h2
+                  className="font-display uppercase leading-tight text-ivory"
+                  style={{ fontSize: "clamp(24px,2.6vw,36px)", letterSpacing: "0.05em" }}
+                >
                   {s.title}
                 </h2>
                 <p className="mt-8 text-[15.5px] leading-[1.95] text-mute">{s.copy}</p>
                 <ul className="mt-8 space-y-3">
-                  {s.bullets.map(b => (
+                  {s.bullets.map((b) => (
                     <li key={b} className="flex gap-4 text-[14.5px] text-mute">
                       <span className="mt-2 h-px w-5 flex-shrink-0 bg-ember" />
                       <span>{b}</span>
@@ -141,7 +167,9 @@ function UslugiPage() {
                     <p className="text-[10px] uppercase tracking-[0.3em] text-mute-2">Стоимость</p>
                     <p className="mt-2 font-display text-xl uppercase text-ember">{s.from}</p>
                   </div>
-                  <Link to="/kontakty" className="btn-line ml-auto">Записаться</Link>
+                  <Link to="/kontakty" className="btn-line ml-auto">
+                    Записаться
+                  </Link>
                 </div>
               </div>
             </article>
@@ -155,14 +183,33 @@ function UslugiPage() {
           <Rule label="Как проходит работа" num="07" />
           <div className="grid gap-[2px] bg-line md:grid-cols-4">
             {[
-              ["Диагностика",  "Осмотр под контрольным светом, замеры толщины ЛКП, согласование сроков и стоимости."],
-              ["Подготовка",   "Многочасовая мойка, деконтаминация, глиняная обработка, мягкая полировка кузова."],
-              ["Оклейка",      "Ручной раскрой плёнки UNIQUE без выкроек, укладка без разбора автомобиля, прогрев швов."],
-              ["Контроль",     "Проверка под тремя источниками света, выдача клубной книги и гарантийного сертификата."],
+              [
+                "Диагностика",
+                "Осмотр под контрольным светом, замеры толщины ЛКП, согласование сроков и стоимости.",
+              ],
+              [
+                "Подготовка",
+                "Многочасовая мойка, деконтаминация, глиняная обработка, мягкая полировка кузова.",
+              ],
+              [
+                "Оклейка",
+                "Ручной раскрой плёнки UNIQUE без выкроек, укладка без разбора автомобиля, прогрев швов.",
+              ],
+              [
+                "Контроль",
+                "Проверка под тремя источниками света, выдача клубной книги и гарантийного сертификата.",
+              ],
             ].map(([t, c], i) => (
               <div key={t} className="bg-obsidian p-10">
-                <p className="font-display text-2xl text-mute-2">{String(i + 1).padStart(2, "0")}</p>
-                <h3 className="mt-8 font-display text-2xl uppercase leading-tight text-ivory" style={{ letterSpacing: "0.05em" }}>{t}</h3>
+                <p className="font-display text-2xl text-mute-2">
+                  {String(i + 1).padStart(2, "0")}
+                </p>
+                <h3
+                  className="mt-8 font-display text-2xl uppercase leading-tight text-ivory"
+                  style={{ letterSpacing: "0.05em" }}
+                >
+                  {t}
+                </h3>
                 <p className="mt-6 text-[14px] leading-[1.85] text-mute">{c}</p>
               </div>
             ))}
@@ -172,10 +219,17 @@ function UslugiPage() {
 
       {/* CTA */}
       <section className="border-t border-line px-[6vw] py-32 text-center">
-        <h2 className="mx-auto max-w-[720px] font-display uppercase leading-tight text-ivory" style={{ fontSize: "clamp(26px,3.6vw,44px)", letterSpacing: "0.06em" }}>
+        <h2
+          className="mx-auto max-w-[720px] font-display uppercase leading-tight text-ivory"
+          style={{ fontSize: "clamp(26px,3.6vw,44px)", letterSpacing: "0.06em" }}
+        >
           Готовы рассчитать стоимость?
         </h2>
-        <div className="mt-10"><Link to="/kontakty" className="btn-line btn-ember">Оставить заявку</Link></div>
+        <div className="mt-10">
+          <Link to="/kontakty" className="btn-line btn-ember">
+            Оставить заявку
+          </Link>
+        </div>
       </section>
     </div>
   );
