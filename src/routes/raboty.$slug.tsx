@@ -671,21 +671,20 @@ function CinematicGallery({ w }: { w: Work }) {
             decoding="async"
             className="h-full w-full animate-fade-in object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-[1.03]"
           />
-          <div className="absolute inset-0 plate-scrim" aria-hidden="true" />
-          <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between gap-6 text-ivory">
-            <div>
+          <div className="absolute inset-x-4 bottom-4 flex flex-col items-start gap-3 text-ivory sm:inset-x-6 sm:bottom-6 sm:flex-row sm:items-end sm:justify-between sm:gap-6">
+            <div className="min-w-0">
               <p className="text-[10px] uppercase tracking-[0.4em] text-mute">
                 {tab.label} · {String(active + 1).padStart(2, "0")} /{" "}
                 {String(images.length).padStart(2, "0")}
               </p>
               <p
-                className="mt-2 font-display text-2xl uppercase"
+                className="mt-2 font-display text-xl uppercase sm:text-2xl"
                 style={{ letterSpacing: "0.05em" }}
               >
                 {w.category}
               </p>
             </div>
-            <span className="border border-ivory/60 px-4 py-2 text-[10px] uppercase tracking-[0.3em] backdrop-blur-sm transition-colors group-hover:bg-ivory group-hover:text-obsidian">
+            <span className="shrink-0 whitespace-nowrap border border-ivory/60 px-4 py-2 text-[10px] uppercase tracking-[0.3em] backdrop-blur-sm transition-colors group-hover:bg-ivory group-hover:text-obsidian">
               Увеличить
             </span>
           </div>
