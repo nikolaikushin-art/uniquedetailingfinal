@@ -31,8 +31,8 @@ export function SiteHeader() {
       <header
         className={`fixed inset-x-0 top-0 z-50 flex items-center justify-between px-[5vw] transition-all duration-500 ${
           scrolled
-            ? "py-3 md:py-6 bg-obsidian/90 backdrop-blur border-b border-line"
-            : "py-6 md:py-14"
+            ? "py-3 md:py-5 bg-obsidian/90 backdrop-blur border-b border-line"
+            : "py-6 md:py-10"
         }`}
       >
         <button
@@ -49,7 +49,7 @@ export function SiteHeader() {
         </button>
 
         <Link to="/" className="flex items-center gap-3" aria-label="UNIQUE Detailing">
-          <img src={logo.url} alt="UNIQUE Detailing" className="h-12 w-auto md:h-24" />
+          <img src={logo.url} alt="UNIQUE Detailing" className="h-12 w-auto md:h-20" />
         </Link>
 
         <Link
