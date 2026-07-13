@@ -643,7 +643,7 @@ function ExploreAccordion({ w }: { w: Work }) {
 
   const content: Record<ExploreCat, { image: string; items: { title: string; body: string }[] }> = {
     exterior: {
-      image: w.gallery[1] ?? w.hero,
+      image: w.gallery[0] ?? w.hero,
       items: [
         { title: "Плёнка UNIQUE PPF",          body: "Полиуретан толщиной 200 микрон с эластичностью 320 %. Плёнка заводится под кромки без снятия оптики, ручек и молдингов." },
         { title: "Ручной раскрой без выкроек", body: "Каждая панель раскраивается непосредственно на кузове — швов на видимых зонах не остаётся." },
@@ -652,7 +652,7 @@ function ExploreAccordion({ w }: { w: Work }) {
       ],
     },
     interior: {
-      image: w.gallery[5] ?? w.hero,
+      image: w.gallery[6] ?? w.hero,
       items: [
         { title: "Кожа и алькантара",   body: "UNIQUE Interior Coat — водооталкивающий состав для натуральной кожи, замши и алькантары. Впитывание запахов снижено на 80 %." },
         { title: "Дерево и карбон",     body: "Полировка декоративных вставок с последующей керамической защитой — глубина рисунка сохраняется годами." },
@@ -661,11 +661,11 @@ function ExploreAccordion({ w }: { w: Work }) {
       ],
     },
     materials: {
-      image: w.gallery[3] ?? w.hero,
+      image: w.gallery[16] ?? w.hero,
       items: w.materials.map(m => ({ title: m.name, body: m.note })),
     },
     craft: {
-      image: w.gallery[7] ?? w.hero,
+      image: w.gallery[18] ?? w.hero,
       items: [
         { title: "Клубный протокол приёма",   body: "Опись, диагностика при трёх источниках света и десятистраничная карта работ до старта проекта." },
         { title: "Температурная выдержка",    body: "Автомобиль проводит 48 часов в тёплом боксе перед оклейкой — металл должен принять комнатную температуру." },
@@ -811,13 +811,13 @@ function HeritageStory({ w }: { w: Work }) {
       num: "I",
       title: "Рука мастера",
       body: "Плёнка режется на кузове, а не по выкройке. Мастер работает с одним автомобилем неделями — швов на видимых зонах не остаётся, потому что швов нет.",
-      image: w.gallery[6] ?? w.hero,
+      image: w.gallery[19] ?? w.hero,
     },
     {
       num: "II",
       title: "Тишина процесса",
       body: `${w.hours} чистой работы. Ни звонков, ни спешки, ни второго автомобиля в боксе. Только один экземпляр ${w.brand} и температура, при которой металл принимает плёнку как продолжение лака.`,
-      image: w.gallery[4] ?? w.hero,
+      image: w.gallery[21] ?? w.hero,
     },
     {
       num: "III",
