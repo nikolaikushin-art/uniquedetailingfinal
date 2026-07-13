@@ -6,9 +6,16 @@ export const Route = createFileRoute("/raboty/")({
   head: () => ({
     meta: [
       { title: "Работы — UNIQUE Detailing" },
-      { name: "description", content: "Портфолио выполненных работ студии UNIQUE. Оклейка PPF, смена цвета и керамика для Audi, Aston Martin, BMW, Porsche, Bentley и других премиум-автомобилей." },
+      {
+        name: "description",
+        content:
+          "Портфолио выполненных работ студии UNIQUE. Оклейка PPF, смена цвета и керамика для Audi, Aston Martin, BMW, Porsche, Bentley и других премиум-автомобилей.",
+      },
       { property: "og:title", content: "Работы — UNIQUE Detailing" },
-      { property: "og:description", content: "Больше 500 автомобилей за 10 лет. Портфолио студии UNIQUE." },
+      {
+        property: "og:description",
+        content: "Больше 500 автомобилей за 10 лет. Портфолио студии UNIQUE.",
+      },
     ],
   }),
   component: RabotyPage,
@@ -17,7 +24,7 @@ export const Route = createFileRoute("/raboty/")({
 function RabotyPage() {
   const [cat, setCat] = useState<(typeof CATEGORIES)[number]>("Все работы");
   const list = useMemo(
-    () => (cat === "Все работы" ? WORKS : WORKS.filter(w => w.category === cat)),
+    () => (cat === "Все работы" ? WORKS : WORKS.filter((w) => w.category === cat)),
     [cat],
   );
 
@@ -25,16 +32,26 @@ function RabotyPage() {
     <div>
       {/* HERO */}
       <section className="relative flex min-h-[78vh] items-center overflow-hidden border-b border-line pt-28">
-        <div className="absolute inset-0 animate-drift bg-cover bg-center opacity-70" style={{ backgroundImage: `url(/portfolio/bentley-continental-gt-speed-0.jpg)` }} />
+        <div
+          className="absolute inset-0 animate-drift bg-cover bg-center opacity-70"
+          style={{ backgroundImage: `url(/portfolio/bentley-continental-gt-speed-0.jpg)` }}
+        />
         <div className="absolute inset-0 plate-scrim" />
         <div className="relative z-10 mx-auto w-full max-w-[1400px] px-[6vw]">
           <p className="eyebrow eyebrow-dot mb-6">Выполненные работы</p>
-          <h1 className="max-w-[1100px] font-display uppercase leading-[1.02] text-ivory" style={{ fontSize: "clamp(42px,7vw,108px)", letterSpacing: "0.03em" }}>
-            Больше пятисот<br />автомобилей.<br />Каждый — уникален.
+          <h1
+            className="max-w-[1100px] font-display uppercase leading-[1.02] text-ivory"
+            style={{ fontSize: "clamp(42px,7vw,108px)", letterSpacing: "0.03em" }}
+          >
+            Больше пятисот
+            <br />
+            автомобилей.
+            <br />
+            Каждый — уникален.
           </h1>
           <p className="mt-8 max-w-[560px] text-[16px] leading-[1.9] text-mute">
-            Портфолио студии UNIQUE теперь собрано как точный studio-render каталог:
-            каждая модель показана в своей спецификации, с одним цветом, одними дисками и десятью согласованными ракурсами.
+            Избранные проекты студии UNIQUE — от полной оклейки суперкаров и люксовых седанов до
+            смены цвета плёнкой и керамической защиты. Каждый автомобиль под клубной гарантией.
           </p>
         </div>
       </section>
@@ -43,7 +60,7 @@ function RabotyPage() {
       <div className="border-b border-line bg-obsidian-2 px-[6vw]">
         <div className="mx-auto flex max-w-[1400px] flex-wrap items-center justify-between gap-6 py-6">
           <div className="flex flex-wrap gap-2">
-            {CATEGORIES.map(c => (
+            {CATEGORIES.map((c) => (
               <button
                 key={c}
                 onClick={() => setCat(c)}
@@ -85,12 +102,19 @@ function RabotyPage() {
                 {String(i + 1).padStart(2, "0")} · {w.category}
               </div>
               <div className="relative z-10">
-                <p className="eyebrow mb-3 text-mute-2">{w.hours} · {w.city}</p>
-                <h3 className="font-display uppercase leading-tight text-ivory" style={{ fontSize: "24px", letterSpacing: "0.06em" }}>
+                <p className="eyebrow mb-3 text-mute-2">
+                  {w.hours} · {w.city}
+                </p>
+                <h3
+                  className="font-display uppercase leading-tight text-ivory"
+                  style={{ fontSize: "24px", letterSpacing: "0.06em" }}
+                >
                   {w.brand}
                 </h3>
                 <p className="mt-1 text-[15px] text-ivory">{w.model}</p>
-                <p className="mt-3 max-w-[300px] text-[13px] leading-[1.7] text-mute line-clamp-2">{w.tagline}</p>
+                <p className="mt-3 max-w-[300px] text-[13px] leading-[1.7] text-mute line-clamp-2">
+                  {w.tagline}
+                </p>
                 <span className="link-more mt-5">Подробнее</span>
               </div>
             </Link>
