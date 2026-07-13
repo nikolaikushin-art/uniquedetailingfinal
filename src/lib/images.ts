@@ -3,9 +3,6 @@
 // generic vehicles remain anywhere on the site — every hero, preview and
 // background is a real UNIQUE studio car that also appears in the portfolio.
 
-export const commonsImage = (file: string, w = 1600) =>
-  `https://commons.wikimedia.org/wiki/Special:Redirect/file/${encodeURIComponent(file)}?width=${w}`;
-
 // Curated exterior / hero shots — a diverse spread of the studio's flagship
 // vehicles, used for hero backgrounds, section imagery and previews.
 export const CAR_IMAGES = [
