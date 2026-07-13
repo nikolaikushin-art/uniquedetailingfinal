@@ -2,7 +2,6 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import * as React from "react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-
 import { getWork, relatedWorks, type Work } from "@/lib/works";
 
 export const Route = createFileRoute("/raboty/$slug")({
@@ -14,7 +13,13 @@ export const Route = createFileRoute("/raboty/$slug")({
 
   head: ({ loaderData, params }) => {
     const w = loaderData?.work;
-    if (!w) return { meta: [{ title: "Работа не найдена — UNIQUE Detailing" }, { name: "robots", content: "noindex" }] };
+    if (!w)
+      return {
+        meta: [
+          { title: "Работа не найдена — UNIQUE Detailing" },
+          { name: "robots", content: "noindex" },
+        ],
+      };
     const title = `${w.brand} ${w.model} — ${w.category} · UNIQUE Detailing`;
     const desc = `${w.tagline} ${w.hours} работы мастера, гарантия 10 лет, клубный протокол UNIQUE в Санкт-Петербурге.`;
     const url = `https://uniquedetailingfinal.lovable.app/raboty/${params?.slug ?? w.slug}`;
@@ -23,15 +28,23 @@ export const Route = createFileRoute("/raboty/$slug")({
       meta: [
         { title },
         { name: "description", content: desc },
-        { name: "keywords", content: `${w.brand}, ${w.model}, ${w.category}, детейлинг, PPF, оклейка, керамика, UNIQUE Detailing, Санкт-Петербург` },
+        {
+          name: "keywords",
+          content: `${w.brand}, ${w.model}, ${w.category}, детейлинг, PPF, оклейка, керамика, UNIQUE Detailing, Санкт-Петербург`,
+        },
         { property: "og:title", content: title },
         { property: "og:description", content: desc },
         { property: "og:type", content: "article" },
         { property: "og:url", content: url },
-        ...(hasAbsoluteShareImage ? [
-          { property: "og:image", content: w.hero },
-          { property: "og:image:alt", content: `${w.brand} ${w.model} — работа UNIQUE Detailing` },
-        ] : []),
+        ...(hasAbsoluteShareImage
+          ? [
+              { property: "og:image", content: w.hero },
+              {
+                property: "og:image:alt",
+                content: `${w.brand} ${w.model} — работа UNIQUE Detailing`,
+              },
+            ]
+          : []),
         { property: "og:site_name", content: "UNIQUE Detailing" },
         { property: "article:section", content: w.category },
         { name: "twitter:card", content: "summary_large_image" },
@@ -41,22 +54,26 @@ export const Route = createFileRoute("/raboty/$slug")({
       ],
       links: [
         { rel: "canonical", href: url },
-        ...(hasAbsoluteShareImage ? [{ rel: "preload", as: "image", href: w.hero, fetchpriority: "high" }] : []),
+        ...(hasAbsoluteShareImage
+          ? [{ rel: "preload", as: "image", href: w.hero, fetchpriority: "high" }]
+          : []),
       ],
-      scripts: [{
-        type: "application/ld+json",
-        children: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "Article",
-          headline: `${w.brand} ${w.model} — ${w.category}`,
-          description: desc,
-          ...(hasAbsoluteShareImage ? { image: [w.hero] } : {}),
-          author: { "@type": "Organization", name: "UNIQUE Detailing" },
-          publisher: { "@type": "Organization", name: "UNIQUE Detailing" },
-          datePublished: `${w.year}-01-01`,
-          about: `${w.brand} ${w.model}`,
-        }),
-      }],
+      scripts: [
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Article",
+            headline: `${w.brand} ${w.model} — ${w.category}`,
+            description: desc,
+            ...(hasAbsoluteShareImage ? { image: [w.hero] } : {}),
+            author: { "@type": "Organization", name: "UNIQUE Detailing" },
+            publisher: { "@type": "Organization", name: "UNIQUE Detailing" },
+            datePublished: `${w.year}-01-01`,
+            about: `${w.brand} ${w.model}`,
+          }),
+        },
+      ],
     };
   },
   component: WorkPage,
@@ -64,7 +81,9 @@ export const Route = createFileRoute("/raboty/$slug")({
     <div className="flex min-h-screen items-center justify-center px-6 text-center">
       <div>
         <h1 className="font-display text-4xl uppercase text-ivory">Работа не найдена</h1>
-        <Link to="/raboty" className="btn-line mt-8 inline-block">Все работы</Link>
+        <Link to="/raboty" className="btn-line mt-8 inline-block">
+          Все работы
+        </Link>
       </div>
     </div>
   ),
@@ -126,14 +145,18 @@ function WorkPage() {
       {/* ПАЛИТРА */}
       <PalettePanel w={w} />
 
-
       {/* ЦИТАТА */}
       <section className="border-y border-line py-32 text-center">
         <blockquote className="mx-auto max-w-[880px] px-[6vw]">
-          <p className="font-display uppercase leading-[1.2] text-ivory" style={{ fontSize: "clamp(24px,3.2vw,40px)", letterSpacing: "0.06em" }}>
+          <p
+            className="font-display uppercase leading-[1.2] text-ivory"
+            style={{ fontSize: "clamp(24px,3.2vw,40px)", letterSpacing: "0.06em" }}
+          >
             «{w.quote}»
           </p>
-          <footer className="mt-8 text-[11px] uppercase tracking-[0.4em] text-mute">— Мастер студии UNIQUE</footer>
+          <footer className="mt-8 text-[11px] uppercase tracking-[0.4em] text-mute">
+            — Мастер студии UNIQUE
+          </footer>
         </blockquote>
       </section>
 
@@ -149,8 +172,15 @@ function WorkPage() {
             {w.faqs.map((f, i) => (
               <details key={i} className="group py-6">
                 <summary className="flex cursor-pointer items-center justify-between text-left list-none">
-                  <span className="font-display text-xl uppercase text-ivory pr-8" style={{ letterSpacing: "0.03em" }}>{f.q}</span>
-                  <span className="text-ember text-2xl group-open:rotate-45 transition-transform">+</span>
+                  <span
+                    className="font-display text-xl uppercase text-ivory pr-8"
+                    style={{ letterSpacing: "0.03em" }}
+                  >
+                    {f.q}
+                  </span>
+                  <span className="text-ember text-2xl group-open:rotate-45 transition-transform">
+                    +
+                  </span>
                 </summary>
                 <p className="mt-6 max-w-[720px] text-[15px] leading-[1.9] text-mute">{f.a}</p>
               </details>
@@ -165,13 +195,21 @@ function WorkPage() {
       {/* ПОХОЖИЕ РАБОТЫ — карусель */}
       <RelatedCarousel current={w} related={related} />
 
-
       {/* CTA */}
       <section className="border-t border-line px-[6vw] py-32 text-center">
-        <h2 className="mx-auto max-w-[720px] font-display uppercase leading-tight text-ivory" style={{ fontSize: "clamp(26px,3.6vw,44px)", letterSpacing: "0.06em" }}>
-          Ваш автомобиль уже<br />ждёт трансформации.
+        <h2
+          className="mx-auto max-w-[720px] font-display uppercase leading-tight text-ivory"
+          style={{ fontSize: "clamp(26px,3.6vw,44px)", letterSpacing: "0.06em" }}
+        >
+          Ваш автомобиль уже
+          <br />
+          ждёт трансформации.
         </h2>
-        <div className="mt-10"><Link to="/kontakty" className="btn-line btn-ember">Рассчитать стоимость</Link></div>
+        <div className="mt-10">
+          <Link to="/kontakty" className="btn-line btn-ember">
+            Рассчитать стоимость
+          </Link>
+        </div>
       </section>
     </div>
   );
@@ -184,12 +222,24 @@ function Hero({ w }: { w: Work }) {
     // full-bleed кинематик
     return (
       <section className="relative flex min-h-[92vh] items-center overflow-hidden border-b border-line">
-        <img src={w.hero} alt={`${w.brand} ${w.model}`} className="absolute inset-0 h-full w-full animate-drift object-cover opacity-80" fetchPriority="high" />
+        <img
+          src={w.hero}
+          alt={`${w.brand} ${w.model}`}
+          className="absolute inset-0 h-full w-full animate-drift object-cover opacity-80"
+          fetchPriority="high"
+        />
         <div className="absolute inset-0 plate-scrim" />
         <div className="relative z-10 mx-auto w-full max-w-[1400px] px-[6vw] pt-28">
-          <p className="eyebrow eyebrow-dot mb-6">{w.category} · {w.city}</p>
-          <h1 className="max-w-[1100px] font-display uppercase leading-[0.98] text-ivory" style={{ fontSize: "clamp(48px,9vw,140px)", letterSpacing: "0.03em" }}>
-            {w.brand}<br /><span className="text-ember">{w.model}</span>
+          <p className="eyebrow eyebrow-dot mb-6">
+            {w.category} · {w.city}
+          </p>
+          <h1
+            className="max-w-[1100px] font-display uppercase leading-[0.98] text-ivory"
+            style={{ fontSize: "clamp(48px,9vw,140px)", letterSpacing: "0.03em" }}
+          >
+            {w.brand}
+            <br />
+            <span className="text-ember">{w.model}</span>
           </h1>
           <p className="mt-8 max-w-[600px] text-[16px] leading-[1.9] text-mute">{w.tagline}</p>
           <HeroSpecsRow w={w} />
@@ -203,16 +253,28 @@ function Hero({ w }: { w: Work }) {
       <section className="grid min-h-[92vh] grid-cols-1 border-b border-line md:grid-cols-[0.9fr_1.1fr]">
         <div className="relative flex items-center bg-obsidian px-[6vw] pt-28 pb-16">
           <div className="max-w-[540px]">
-            <p className="eyebrow eyebrow-dot mb-6">{w.category} · {w.city}</p>
-            <h1 className="font-display uppercase leading-[0.98] text-ivory" style={{ fontSize: "clamp(42px,6vw,84px)", letterSpacing: "0.03em" }}>
-              {w.brand}<br /><span className="text-ember">{w.model}</span>
+            <p className="eyebrow eyebrow-dot mb-6">
+              {w.category} · {w.city}
+            </p>
+            <h1
+              className="font-display uppercase leading-[0.98] text-ivory"
+              style={{ fontSize: "clamp(42px,6vw,84px)", letterSpacing: "0.03em" }}
+            >
+              {w.brand}
+              <br />
+              <span className="text-ember">{w.model}</span>
             </h1>
             <p className="mt-8 text-[16px] leading-[1.9] text-mute">{w.tagline}</p>
             <HeroSpecsRow w={w} />
           </div>
         </div>
         <div className="relative min-h-[60vh] overflow-hidden">
-          <img src={w.hero} alt={`${w.brand} ${w.model}`} className="absolute inset-0 h-full w-full animate-drift object-cover opacity-80" fetchPriority="high" />
+          <img
+            src={w.hero}
+            alt={`${w.brand} ${w.model}`}
+            className="absolute inset-0 h-full w-full animate-drift object-cover opacity-80"
+            fetchPriority="high"
+          />
           <div className="absolute inset-0 plate-scrim" />
         </div>
       </section>
@@ -224,14 +286,26 @@ function Hero({ w }: { w: Work }) {
       <section className="relative overflow-hidden border-b border-line bg-obsidian-2">
         <div className="relative min-h-[86vh]">
           <div className="absolute inset-x-[6vw] top-24 bottom-24 overflow-hidden">
-            <img src={w.hero} alt={`${w.brand} ${w.model}`} className="absolute inset-0 h-full w-full animate-drift object-cover opacity-80" fetchPriority="high" />
+            <img
+              src={w.hero}
+              alt={`${w.brand} ${w.model}`}
+              className="absolute inset-0 h-full w-full animate-drift object-cover opacity-80"
+              fetchPriority="high"
+            />
             <div className="absolute inset-0 plate-scrim" />
           </div>
           <div className="relative z-10 mx-auto w-full max-w-[1400px] px-[6vw] pt-40 pb-24">
             <div className="ml-auto max-w-[560px] bg-obsidian/90 p-10 backdrop-blur border border-line">
-              <p className="eyebrow eyebrow-dot mb-4">{w.category} · {w.city}</p>
-              <h1 className="font-display uppercase leading-[0.98] text-ivory" style={{ fontSize: "clamp(38px,4.8vw,68px)", letterSpacing: "0.03em" }}>
-                {w.brand}<br /><span className="text-ember">{w.model}</span>
+              <p className="eyebrow eyebrow-dot mb-4">
+                {w.category} · {w.city}
+              </p>
+              <h1
+                className="font-display uppercase leading-[0.98] text-ivory"
+                style={{ fontSize: "clamp(38px,4.8vw,68px)", letterSpacing: "0.03em" }}
+              >
+                {w.brand}
+                <br />
+                <span className="text-ember">{w.model}</span>
               </h1>
               <p className="mt-6 text-[15px] leading-[1.9] text-mute">{w.tagline}</p>
               <HeroSpecsRow w={w} compact />
@@ -247,15 +321,25 @@ function Hero({ w }: { w: Work }) {
       <div className="grid grid-cols-3 gap-[2px] bg-line">
         {[0, 1, 2].map((i) => (
           <div key={i} className="relative aspect-[3/4] overflow-hidden md:aspect-auto md:h-[70vh]">
-            <img src={w.gallery[i] ?? w.hero} alt={`${w.brand} ${w.model} — кадр ${i + 1}`} className="absolute inset-0 h-full w-full object-cover opacity-85" loading={i === 0 ? "eager" : "lazy"} />
+            <img
+              src={w.gallery[i] ?? w.hero}
+              alt={`${w.brand} ${w.model} — кадр ${i + 1}`}
+              className="absolute inset-0 h-full w-full object-cover opacity-85"
+              loading={i === 0 ? "eager" : "lazy"}
+            />
             <div className="absolute inset-0 plate-scrim" />
           </div>
         ))}
       </div>
       <div className="relative bg-obsidian px-[6vw] pt-24 pb-16">
         <div className="mx-auto max-w-[1400px]">
-          <p className="eyebrow eyebrow-dot mb-6">{w.category} · {w.city}</p>
-          <h1 className="max-w-[1200px] font-display uppercase leading-[0.98] text-ivory" style={{ fontSize: "clamp(44px,7.2vw,120px)", letterSpacing: "0.03em" }}>
+          <p className="eyebrow eyebrow-dot mb-6">
+            {w.category} · {w.city}
+          </p>
+          <h1
+            className="max-w-[1200px] font-display uppercase leading-[0.98] text-ivory"
+            style={{ fontSize: "clamp(44px,7.2vw,120px)", letterSpacing: "0.03em" }}
+          >
             {w.brand} <span className="text-ember">{w.model}</span>
           </h1>
           <p className="mt-8 max-w-[720px] text-[16px] leading-[1.9] text-mute">{w.tagline}</p>
@@ -268,11 +352,25 @@ function Hero({ w }: { w: Work }) {
 
 function HeroSpecsRow({ w, compact = false }: { w: Work; compact?: boolean }) {
   return (
-    <div className={`mt-10 grid gap-6 border-t border-line pt-8 text-[11px] uppercase tracking-[0.3em] text-mute ${compact ? "grid-cols-2" : "grid-cols-2 md:grid-cols-4"}`}>
-      <span><span className="mr-3 block text-mute-2">Часов</span>{w.hours}</span>
-      <span><span className="mr-3 block text-mute-2">Плёнка</span>{w.film}</span>
-      <span><span className="mr-3 block text-mute-2">Срок</span>{w.duration}</span>
-      <span><span className="mr-3 block text-mute-2">Год</span>{w.year}</span>
+    <div
+      className={`mt-10 grid gap-6 border-t border-line pt-8 text-[11px] uppercase tracking-[0.3em] text-mute ${compact ? "grid-cols-2" : "grid-cols-2 md:grid-cols-4"}`}
+    >
+      <span>
+        <span className="mr-3 block text-mute-2">Часов</span>
+        {w.hours}
+      </span>
+      <span>
+        <span className="mr-3 block text-mute-2">Плёнка</span>
+        {w.film}
+      </span>
+      <span>
+        <span className="mr-3 block text-mute-2">Срок</span>
+        {w.duration}
+      </span>
+      <span>
+        <span className="mr-3 block text-mute-2">Год</span>
+        {w.year}
+      </span>
     </div>
   );
 }
@@ -288,15 +386,17 @@ function SpecsPanel({ w }: { w: Work }) {
           <span className="h-px flex-1 bg-line" />
           <div className="flex gap-2">
             {[
-              ["perf",     "Динамика"],
-              ["process",  "Процесс"],
+              ["perf", "Динамика"],
+              ["process", "Процесс"],
               ["warranty", "Гарантия"],
             ].map(([k, l]) => (
               <button
                 key={k}
                 onClick={() => setTab(k as typeof tab)}
                 className={`border px-5 py-2 text-[10px] uppercase tracking-[0.3em] transition-colors ${
-                  tab === k ? "border-ember bg-ember text-obsidian" : "border-line-strong text-mute hover:text-ivory"
+                  tab === k
+                    ? "border-ember bg-ember text-obsidian"
+                    : "border-line-strong text-mute hover:text-ivory"
                 }`}
               >
                 {l}
@@ -308,18 +408,23 @@ function SpecsPanel({ w }: { w: Work }) {
         {tab === "perf" && (
           <div className="grid gap-[2px] bg-line md:grid-cols-4">
             {[
-              ["Мощность",     w.performance.power],
-              ["Крутящий",     w.performance.torque],
+              ["Мощность", w.performance.power],
+              ["Крутящий", w.performance.torque],
               ["0 → 100 км/ч", w.performance.zeroTo],
-              ["Максимум",     w.performance.top],
-              ["Снаряжённая",  w.performance.weight],
-              ["Категория",    w.category],
-              ["Плёнка",       w.film],
-              ["Часы",         w.hours],
+              ["Максимум", w.performance.top],
+              ["Снаряжённая", w.performance.weight],
+              ["Категория", w.category],
+              ["Плёнка", w.film],
+              ["Часы", w.hours],
             ].map(([l, v]) => (
               <div key={l} className="bg-obsidian p-8">
                 <p className="text-[10px] uppercase tracking-[0.35em] text-mute-2">{l}</p>
-                <p className="mt-4 font-display text-[26px] uppercase text-ivory" style={{ letterSpacing: "0.03em" }}>{v}</p>
+                <p
+                  className="mt-4 font-display text-[26px] uppercase text-ivory"
+                  style={{ letterSpacing: "0.03em" }}
+                >
+                  {v}
+                </p>
               </div>
             ))}
           </div>
@@ -327,16 +432,23 @@ function SpecsPanel({ w }: { w: Work }) {
         {tab === "process" && (
           <div className="grid gap-6 md:grid-cols-2">
             {[
-              ["Приём",     "Клубный протокол: опись, диагностика, карта работ."],
-              ["Подготовка","Мойка в чистой зоне, деконтаминация, лёгкая коррекция."],
-              ["Оклейка",   "Ручной раскрой без выкроек, монтаж без разбора."],
-              ["Контроль",  "Три источника света, фотофиксация каждого шва."],
-              ["Клубная книга","Документ с историей работы, вложен в панель бардачка."],
-              ["Сдача",     "Ключи передаёт мастер, который вёл проект."],
+              ["Приём", "Осмотр кузова, диагностика покрытия и согласование плана работ."],
+              ["Подготовка", "Мойка в чистой зоне, деконтаминация и мягкая коррекция лака."],
+              ["Оклейка", "Ручной раскрой по месту и монтаж без разбора автомобиля."],
+              ["Контроль", "Проверка каждого шва и кромки под ярким инспекционным светом."],
+              ["Гарантия", "10 лет на плёнку UNIQUE PPF и ежегодная ревизия покрытия."],
+              ["Сдача", "Автомобиль передаёт мастер, который вёл проект."],
             ].map(([t, c], i) => (
               <div key={t} className="border border-line bg-obsidian p-8">
-                <p className="font-display text-2xl text-mute-2">{String(i + 1).padStart(2, "0")}</p>
-                <h4 className="mt-6 font-display text-xl uppercase text-ivory" style={{ letterSpacing: "0.05em" }}>{t}</h4>
+                <p className="font-display text-2xl text-mute-2">
+                  {String(i + 1).padStart(2, "0")}
+                </p>
+                <h4
+                  className="mt-6 font-display text-xl uppercase text-ivory"
+                  style={{ letterSpacing: "0.05em" }}
+                >
+                  {t}
+                </h4>
                 <p className="mt-4 text-[14px] leading-[1.85] text-mute">{c}</p>
               </div>
             ))}
@@ -345,12 +457,14 @@ function SpecsPanel({ w }: { w: Work }) {
         {tab === "warranty" && (
           <div className="grid gap-6 md:grid-cols-3">
             {[
-              ["10 лет",  "Гарантия на плёнку UNIQUE PPF — пожелтение, отслоение, помутнение."],
-              ["5 лет",   "Керамическое покрытие Ceramic Pro 9H сохраняет гидрофобность."],
-              ["Ежегодно","Клубная ревизия — бесплатная проверка и восстановление швов."],
+              ["10 лет", "Гарантия на плёнку UNIQUE PPF — пожелтение, отслоение, помутнение."],
+              ["5 лет", "Керамическое покрытие Ceramic Pro 9H сохраняет гидрофобность."],
+              ["Ежегодно", "Клубная ревизия — бесплатная проверка и восстановление швов."],
             ].map(([t, c]) => (
               <div key={t} className="border border-line bg-obsidian p-10">
-                <p className="font-display text-ember" style={{ fontSize: "clamp(48px,5vw,72px)" }}>{t}</p>
+                <p className="font-display text-ember" style={{ fontSize: "clamp(48px,5vw,72px)" }}>
+                  {t}
+                </p>
                 <p className="mt-4 text-[14px] leading-[1.85] text-mute">{c}</p>
               </div>
             ))}
@@ -364,7 +478,7 @@ function SpecsPanel({ w }: { w: Work }) {
 /* ─────────── BESPOKE — конфигуратор ─────────── */
 function BespokeConfigurator({ w }: { w: Work }) {
   const [sel, setSel] = useState<Record<string, string>>(() =>
-    Object.fromEntries(w.bespoke.map(b => [b.title, b.options[0]])),
+    Object.fromEntries(w.bespoke.map((b) => [b.title, b.options[0]])),
   );
   return (
     <section className="border-b border-line px-[6vw] py-32">
@@ -375,23 +489,31 @@ function BespokeConfigurator({ w }: { w: Work }) {
           <span className="eyebrow">Bespoke — соберите свою комплектацию</span>
         </div>
         <p className="mb-12 max-w-[720px] text-[16px] leading-[1.9] text-mute">
-          Каждая работа UNIQUE начинается с диалога о деталях. Ниже — конфигуратор в стиле нашего клубного протокола:
-          выбирайте варианты, и мы подготовим индивидуальное предложение для вашего {w.brand} {w.model}.
+          Каждая работа UNIQUE начинается с диалога о деталях. Ниже — конфигуратор в стиле нашего
+          клубного протокола: выбирайте варианты, и мы подготовим индивидуальное предложение для
+          вашего {w.brand} {w.model}.
         </p>
         <div className="grid gap-8 md:grid-cols-[1fr_360px]">
           <div className="space-y-4">
-            {w.bespoke.map(b => (
+            {w.bespoke.map((b) => (
               <div key={b.title} className="border border-line bg-obsidian p-8">
                 <div className="mb-4 flex items-baseline justify-between gap-4">
-                  <h4 className="font-display text-xl uppercase text-ivory" style={{ letterSpacing: "0.05em" }}>{b.title}</h4>
-                  <span className="text-[10px] uppercase tracking-[0.3em] text-ember">{sel[b.title]}</span>
+                  <h4
+                    className="font-display text-xl uppercase text-ivory"
+                    style={{ letterSpacing: "0.05em" }}
+                  >
+                    {b.title}
+                  </h4>
+                  <span className="text-[10px] uppercase tracking-[0.3em] text-ember">
+                    {sel[b.title]}
+                  </span>
                 </div>
                 <p className="mb-5 text-[13.5px] leading-[1.85] text-mute">{b.note}</p>
                 <div className="flex flex-wrap gap-2">
-                  {b.options.map(o => (
+                  {b.options.map((o) => (
                     <button
                       key={o}
-                      onClick={() => setSel(s => ({ ...s, [b.title]: o }))}
+                      onClick={() => setSel((s) => ({ ...s, [b.title]: o }))}
                       className={`border px-4 py-2 text-[11px] uppercase tracking-[0.25em] transition-colors ${
                         sel[b.title] === o
                           ? "border-ivory bg-ivory text-obsidian"
@@ -407,9 +529,14 @@ function BespokeConfigurator({ w }: { w: Work }) {
           </div>
           <aside className="sticky top-24 self-start border border-ember/40 bg-obsidian p-8">
             <p className="eyebrow mb-4">Ваша спецификация</p>
-            <p className="font-display text-2xl uppercase text-ivory" style={{ letterSpacing: "0.05em" }}>{w.brand} {w.model}</p>
+            <p
+              className="font-display text-2xl uppercase text-ivory"
+              style={{ letterSpacing: "0.05em" }}
+            >
+              {w.brand} {w.model}
+            </p>
             <div className="mt-6 space-y-4 border-t border-line pt-6 text-[13px] leading-[1.7]">
-              {w.bespoke.map(b => (
+              {w.bespoke.map((b) => (
                 <div key={b.title} className="flex justify-between gap-4">
                   <span className="text-mute-2">{b.title}</span>
                   <span className="text-right text-ivory">{sel[b.title]}</span>
@@ -440,11 +567,16 @@ function PalettePanel({ w }: { w: Work }) {
           <span className="eyebrow">Палитра проекта</span>
         </div>
         <div className="grid gap-6 md:grid-cols-3">
-          {w.palette.map(p => (
+          {w.palette.map((p) => (
             <div key={p.name} className="border border-line bg-obsidian">
               <div className="aspect-[16/9]" style={{ backgroundColor: p.hex }} />
               <div className="p-6">
-                <p className="font-display text-lg uppercase text-ivory" style={{ letterSpacing: "0.05em" }}>{p.name}</p>
+                <p
+                  className="font-display text-lg uppercase text-ivory"
+                  style={{ letterSpacing: "0.05em" }}
+                >
+                  {p.name}
+                </p>
                 <p className="mt-1 text-[11px] uppercase tracking-[0.3em] text-mute-2">{p.hex}</p>
                 <p className="mt-4 text-[13.5px] leading-[1.85] text-mute">{p.note}</p>
               </div>
@@ -469,21 +601,27 @@ function CinematicGallery({ w }: { w: Work }) {
   const [active, setActive] = useState(0);
   const [lightbox, setLightbox] = useState<number | null>(null);
 
-  const tab = GALLERY_TABS.find(t => t.key === tabKey)!;
-  const images = tab.indices.map(i => w.gallery[i % w.gallery.length]).filter(Boolean);
+  const tab = GALLERY_TABS.find((t) => t.key === tabKey)!;
+  const images = tab.indices.map((i) => w.gallery[i % w.gallery.length]).filter(Boolean);
   const featured = images[active] ?? w.gallery[0];
 
-  useEffect(() => { setActive(0); }, [tabKey]);
+  useEffect(() => {
+    setActive(0);
+  }, [tabKey]);
   useEffect(() => {
     if (lightbox === null) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") setLightbox(null);
-      if (e.key === "ArrowRight") setLightbox(v => v === null ? v : (v + 1) % images.length);
-      if (e.key === "ArrowLeft")  setLightbox(v => v === null ? v : (v - 1 + images.length) % images.length);
+      if (e.key === "ArrowRight") setLightbox((v) => (v === null ? v : (v + 1) % images.length));
+      if (e.key === "ArrowLeft")
+        setLightbox((v) => (v === null ? v : (v - 1 + images.length) % images.length));
     };
     window.addEventListener("keydown", onKey);
     document.body.style.overflow = "hidden";
-    return () => { window.removeEventListener("keydown", onKey); document.body.style.overflow = ""; };
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
   }, [lightbox, images.length]);
 
   return (
@@ -492,12 +630,15 @@ function CinematicGallery({ w }: { w: Work }) {
         <div className="mb-10 flex flex-wrap items-end justify-between gap-6">
           <div>
             <p className="eyebrow eyebrow-dot mb-4">Кинематическая галерея</p>
-            <h2 className="font-display uppercase text-ivory" style={{ fontSize: "clamp(28px,3.4vw,44px)", letterSpacing: "0.05em" }}>
+            <h2
+              className="font-display uppercase text-ivory"
+              style={{ fontSize: "clamp(28px,3.4vw,44px)", letterSpacing: "0.05em" }}
+            >
               {w.brand} <span className="text-ember">{w.model}</span>
             </h2>
           </div>
           <div className="flex flex-wrap gap-2">
-            {GALLERY_TABS.map(t => (
+            {GALLERY_TABS.map((t) => (
               <button
                 key={t.key}
                 onClick={() => setTabKey(t.key)}
@@ -533,8 +674,16 @@ function CinematicGallery({ w }: { w: Work }) {
           <div className="absolute inset-0 plate-scrim" aria-hidden="true" />
           <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between gap-6 text-ivory">
             <div>
-              <p className="text-[10px] uppercase tracking-[0.4em] text-mute">{tab.label} · {String(active + 1).padStart(2, "0")} / {String(images.length).padStart(2, "0")}</p>
-              <p className="mt-2 font-display text-2xl uppercase" style={{ letterSpacing: "0.05em" }}>{w.category}</p>
+              <p className="text-[10px] uppercase tracking-[0.4em] text-mute">
+                {tab.label} · {String(active + 1).padStart(2, "0")} /{" "}
+                {String(images.length).padStart(2, "0")}
+              </p>
+              <p
+                className="mt-2 font-display text-2xl uppercase"
+                style={{ letterSpacing: "0.05em" }}
+              >
+                {w.category}
+              </p>
             </div>
             <span className="border border-ivory/60 px-4 py-2 text-[10px] uppercase tracking-[0.3em] backdrop-blur-sm transition-colors group-hover:bg-ivory group-hover:text-obsidian">
               Увеличить
@@ -548,10 +697,22 @@ function CinematicGallery({ w }: { w: Work }) {
           role="tablist"
           aria-label={`Кадры галереи · ${tab.label}`}
           onKeyDown={(e) => {
-            if (e.key === "ArrowRight") { e.preventDefault(); setActive(i => (i + 1) % images.length); }
-            if (e.key === "ArrowLeft")  { e.preventDefault(); setActive(i => (i - 1 + images.length) % images.length); }
-            if (e.key === "Home")       { e.preventDefault(); setActive(0); }
-            if (e.key === "End")        { e.preventDefault(); setActive(images.length - 1); }
+            if (e.key === "ArrowRight") {
+              e.preventDefault();
+              setActive((i) => (i + 1) % images.length);
+            }
+            if (e.key === "ArrowLeft") {
+              e.preventDefault();
+              setActive((i) => (i - 1 + images.length) % images.length);
+            }
+            if (e.key === "Home") {
+              e.preventDefault();
+              setActive(0);
+            }
+            if (e.key === "End") {
+              e.preventDefault();
+              setActive(images.length - 1);
+            }
           }}
         >
           {images.map((src, i) => (
@@ -564,7 +725,9 @@ function CinematicGallery({ w }: { w: Work }) {
                 tabIndex={active === i ? 0 : -1}
                 onClick={() => setActive(i)}
                 className={`relative block aspect-[4/3] w-full overflow-hidden border transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ember ${
-                  active === i ? "border-ember opacity-100" : "border-transparent opacity-55 hover:opacity-90"
+                  active === i
+                    ? "border-ember opacity-100"
+                    : "border-transparent opacity-55 hover:opacity-90"
                 }`}
               >
                 <img
@@ -593,7 +756,10 @@ function CinematicGallery({ w }: { w: Work }) {
           <button
             type="button"
             className="absolute left-6 top-6 text-[11px] uppercase tracking-[0.35em] text-ivory focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ember"
-            onClick={(e) => { e.stopPropagation(); setLightbox(null); }}
+            onClick={(e) => {
+              e.stopPropagation();
+              setLightbox(null);
+            }}
             aria-label="Закрыть просмотр"
             autoFocus
           >
@@ -602,9 +768,14 @@ function CinematicGallery({ w }: { w: Work }) {
           <button
             type="button"
             className="absolute left-6 top-1/2 -translate-y-1/2 border border-ivory/40 px-4 py-3 text-ivory hover:bg-ivory hover:text-obsidian focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ember"
-            onClick={(e) => { e.stopPropagation(); setLightbox(v => v === null ? v : (v - 1 + images.length) % images.length); }}
+            onClick={(e) => {
+              e.stopPropagation();
+              setLightbox((v) => (v === null ? v : (v - 1 + images.length) % images.length));
+            }}
             aria-label="Предыдущий кадр"
-          >←</button>
+          >
+            ←
+          </button>
           <img
             key={lightbox}
             src={images[lightbox]}
@@ -615,26 +786,31 @@ function CinematicGallery({ w }: { w: Work }) {
           <button
             type="button"
             className="absolute right-6 top-1/2 -translate-y-1/2 border border-ivory/40 px-4 py-3 text-ivory hover:bg-ivory hover:text-obsidian focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ember"
-            onClick={(e) => { e.stopPropagation(); setLightbox(v => v === null ? v : (v + 1) % images.length); }}
+            onClick={(e) => {
+              e.stopPropagation();
+              setLightbox((v) => (v === null ? v : (v + 1) % images.length));
+            }}
             aria-label="Следующий кадр"
-          >→</button>
+          >
+            →
+          </button>
           <p className="absolute bottom-6 left-1/2 -translate-x-1/2 text-[11px] uppercase tracking-[0.35em] text-mute">
-            {String(lightbox + 1).padStart(2, "0")} / {String(images.length).padStart(2, "0")} · {tab.label}
+            {String(lightbox + 1).padStart(2, "0")} / {String(images.length).padStart(2, "0")} ·{" "}
+            {tab.label}
           </p>
         </div>
       )}
     </section>
   );
-
 }
 
 /* ─────────── EXPLORE — интерактивные аккордеоны разделов ─────────── */
 type ExploreCat = "exterior" | "interior" | "materials" | "craft";
 const EXPLORE_CATS: { key: ExploreCat; label: string; num: string }[] = [
-  { key: "exterior",  label: "Экстерьер",   num: "I" },
-  { key: "interior",  label: "Интерьер",    num: "II" },
-  { key: "materials", label: "Материалы",   num: "III" },
-  { key: "craft",     label: "Мастерство",  num: "IV" },
+  { key: "exterior", label: "Экстерьер", num: "I" },
+  { key: "interior", label: "Интерьер", num: "II" },
+  { key: "materials", label: "Материалы", num: "III" },
+  { key: "craft", label: "Мастерство", num: "IV" },
 ];
 
 function ExploreAccordion({ w }: { w: Work }) {
@@ -645,39 +821,77 @@ function ExploreAccordion({ w }: { w: Work }) {
     exterior: {
       image: w.gallery[0] ?? w.hero,
       items: [
-        { title: "Плёнка UNIQUE PPF",          body: "Полиуретан толщиной 200 микрон с эластичностью 320 %. Плёнка заводится под кромки без снятия оптики, ручек и молдингов." },
-        { title: "Ручной раскрой без выкроек", body: "Каждая панель раскраивается непосредственно на кузове — швов на видимых зонах не остаётся." },
-        { title: "Защита оптики и стёкол",     body: "Отдельная плёнка для фар и лобового стекла — устойчива к точечным ударам щебня и реагентам зимой." },
-        { title: "Хром и молдинги",            body: "Полировка и защитный слой на хромированные элементы — блеск сохраняется без потемнения." },
+        {
+          title: "Плёнка UNIQUE PPF",
+          body: "Полиуретан толщиной 200 микрон с эластичностью 320 %. Плёнка заводится под кромки без снятия оптики, ручек и молдингов.",
+        },
+        {
+          title: "Ручной раскрой без выкроек",
+          body: "Каждая панель раскраивается непосредственно на кузове — швов на видимых зонах не остаётся.",
+        },
+        {
+          title: "Защита оптики и стёкол",
+          body: "Отдельная плёнка для фар и лобового стекла — устойчива к точечным ударам щебня и реагентам зимой.",
+        },
+        {
+          title: "Хром и молдинги",
+          body: "Полировка и защитный слой на хромированные элементы — блеск сохраняется без потемнения.",
+        },
       ],
     },
     interior: {
       image: w.gallery[6] ?? w.hero,
       items: [
-        { title: "Кожа и алькантара",   body: "UNIQUE Interior Coat — водооталкивающий состав для натуральной кожи, замши и алькантары. Впитывание запахов снижено на 80 %." },
-        { title: "Дерево и карбон",     body: "Полировка декоративных вставок с последующей керамической защитой — глубина рисунка сохраняется годами." },
-        { title: "Металлические детали", body: "Обработка нержавеющих накладок порогов и педалей — микроцарапины закрываются составом UNIQUE Metal." },
-        { title: "Стёкла салона",       body: "Керамика для внутренних стёкол — снижает налипание пыли и запотевание в холодную погоду." },
+        {
+          title: "Кожа и алькантара",
+          body: "UNIQUE Interior Coat — водооталкивающий состав для натуральной кожи, замши и алькантары. Впитывание запахов снижено на 80 %.",
+        },
+        {
+          title: "Дерево и карбон",
+          body: "Полировка декоративных вставок с последующей керамической защитой — глубина рисунка сохраняется годами.",
+        },
+        {
+          title: "Металлические детали",
+          body: "Обработка нержавеющих накладок порогов и педалей — микроцарапины закрываются составом UNIQUE Metal.",
+        },
+        {
+          title: "Стёкла салона",
+          body: "Керамика для внутренних стёкол — снижает налипание пыли и запотевание в холодную погоду.",
+        },
       ],
     },
     materials: {
       image: w.gallery[16] ?? w.hero,
-      items: w.materials.map(m => ({ title: m.name, body: m.note })),
+      items: w.materials.map((m) => ({ title: m.name, body: m.note })),
     },
     craft: {
       image: w.gallery[18] ?? w.hero,
       items: [
-        { title: "Клубный протокол приёма",   body: "Опись, диагностика при трёх источниках света и десятистраничная карта работ до старта проекта." },
-        { title: "Температурная выдержка",    body: "Автомобиль проводит 48 часов в тёплом боксе перед оклейкой — металл должен принять комнатную температуру." },
-        { title: "Финальная тройная проверка", body: "Каждый шов фотографируется под галогеном, LED и УФ-лампой — только после этого работа считается завершённой." },
-        { title: "Клубная книга владельца",   body: "Документ с историей работы и фото каждого этапа передаётся в панель бардачка автомобиля." },
+        {
+          title: "Приём и диагностика",
+          body: "Осмотр кузова под направленным светом и оценка состояния лака до начала работ.",
+        },
+        {
+          title: "Подготовка поверхности",
+          body: "Мойка в чистой зоне, деконтаминация и мягкая полировка — плёнка ложится только на идеально чистый лак.",
+        },
+        {
+          title: "Прецизионная укладка",
+          body: "Плёнка раскраивается по месту и заводится под кромки без снятия оптики и молдингов — видимых швов не остаётся.",
+        },
+        {
+          title: "Контроль качества",
+          body: "Каждый шов и кромка проверяются под ярким инспекционным светом перед выдачей автомобиля.",
+        },
       ],
     },
   };
 
   const active = content[cat];
 
-  useEffect(() => { setOpen(0); }, [cat]);
+  useEffect(() => {
+    setOpen(0);
+  }, [cat]);
 
   return (
     <section className="border-y border-line bg-obsidian-2 px-[6vw] py-32">
@@ -685,19 +899,24 @@ function ExploreAccordion({ w }: { w: Work }) {
         <div className="mb-12 flex flex-wrap items-end justify-between gap-6">
           <div>
             <p className="eyebrow eyebrow-dot mb-4">Исследуйте автомобиль</p>
-            <h2 className="font-display uppercase leading-tight text-ivory" style={{ fontSize: "clamp(28px,3.6vw,48px)", letterSpacing: "0.05em" }}>
-              Четыре измерения<br /><span className="text-ember">одной работы.</span>
+            <h2
+              className="font-display uppercase leading-tight text-ivory"
+              style={{ fontSize: "clamp(28px,3.6vw,48px)", letterSpacing: "0.05em" }}
+            >
+              Четыре измерения
+              <br />
+              <span className="text-ember">одной работы.</span>
             </h2>
           </div>
           <p className="max-w-[380px] text-[14px] leading-[1.85] text-mute">
-            Каждый раздел раскрывает автомобиль с новой стороны — от плёнки на кузове
-            до последнего шва внутри салона.
+            Каждый раздел раскрывает автомобиль с новой стороны — от плёнки на кузове до последнего
+            шва внутри салона.
           </p>
         </div>
 
         {/* Category rail */}
         <div className="mb-10 grid grid-cols-2 gap-[1px] bg-line md:grid-cols-4">
-          {EXPLORE_CATS.map(c => (
+          {EXPLORE_CATS.map((c) => (
             <button
               key={c.key}
               onClick={() => setCat(c.key)}
@@ -705,25 +924,34 @@ function ExploreAccordion({ w }: { w: Work }) {
                 cat === c.key ? "bg-obsidian-2" : "hover:bg-obsidian-2/60"
               }`}
             >
-              <span className={`font-display text-lg transition-colors ${cat === c.key ? "text-ember" : "text-mute-2"}`}>
+              <span
+                className={`font-display text-lg transition-colors ${cat === c.key ? "text-ember" : "text-mute-2"}`}
+              >
                 {c.num}
               </span>
-              <span className={`text-[11px] uppercase tracking-[0.3em] transition-colors ${
-                cat === c.key ? "text-ivory" : "text-mute group-hover:text-ivory"
-              }`}>
+              <span
+                className={`text-[11px] uppercase tracking-[0.3em] transition-colors ${
+                  cat === c.key ? "text-ivory" : "text-mute group-hover:text-ivory"
+                }`}
+              >
                 {c.label}
               </span>
-              <span className={`ml-auto h-px transition-all ${cat === c.key ? "w-10 bg-ember" : "w-4 bg-line-strong"}`} />
+              <span
+                className={`ml-auto h-px transition-all ${cat === c.key ? "w-10 bg-ember" : "w-4 bg-line-strong"}`}
+              />
             </button>
           ))}
         </div>
 
         <div className="grid gap-10 md:grid-cols-[0.9fr_1.1fr]">
-          <div key={cat} className="relative aspect-[4/5] overflow-hidden animate-fade-in md:aspect-auto">
+          <div
+            key={cat}
+            className="relative aspect-[4/5] overflow-hidden animate-fade-in md:aspect-auto"
+          >
             <img src={active.image} alt="" loading="lazy" className="h-full w-full object-cover" />
             <div className="absolute inset-0 plate-scrim" />
             <p className="absolute bottom-6 left-6 text-[10px] uppercase tracking-[0.35em] text-ivory">
-              {EXPLORE_CATS.find(c => c.key === cat)?.label}
+              {EXPLORE_CATS.find((c) => c.key === cat)?.label}
             </p>
           </div>
           <div className="divide-y divide-line border-y border-line">
@@ -736,12 +964,21 @@ function ExploreAccordion({ w }: { w: Work }) {
                     className="flex w-full items-center justify-between gap-6 py-6 text-left transition-colors hover:text-ivory"
                   >
                     <span className="flex items-center gap-6">
-                      <span className="font-display text-[13px] text-mute-2">{String(i + 1).padStart(2, "0")}</span>
-                      <span className="font-display text-lg uppercase text-ivory md:text-xl" style={{ letterSpacing: "0.05em" }}>
+                      <span className="font-display text-[13px] text-mute-2">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <span
+                        className="font-display text-lg uppercase text-ivory md:text-xl"
+                        style={{ letterSpacing: "0.05em" }}
+                      >
                         {it.title}
                       </span>
                     </span>
-                    <span className={`text-2xl text-ember transition-transform duration-300 ${isOpen ? "rotate-45" : ""}`}>+</span>
+                    <span
+                      className={`text-2xl text-ember transition-transform duration-300 ${isOpen ? "rotate-45" : ""}`}
+                    >
+                      +
+                    </span>
                   </button>
                   <div
                     className="grid overflow-hidden text-[14.5px] leading-[1.9] text-mute transition-all duration-500 ease-out"
@@ -768,9 +1005,18 @@ function useReveal<T extends HTMLElement>() {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    if (typeof IntersectionObserver === "undefined") { setShown(true); return; }
+    if (typeof IntersectionObserver === "undefined") {
+      setShown(true);
+      return;
+    }
     const io = new IntersectionObserver(
-      (entries) => entries.forEach(e => { if (e.isIntersecting) { setShown(true); io.disconnect(); } }),
+      (entries) =>
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            setShown(true);
+            io.disconnect();
+          }
+        }),
       { threshold: 0.18, rootMargin: "0px 0px -10% 0px" },
     );
     io.observe(el);
@@ -780,8 +1026,16 @@ function useReveal<T extends HTMLElement>() {
 }
 
 function RevealBlock({
-  children, delay = 0, as: Tag = "div", className = "",
-}: { children: React.ReactNode; delay?: number; as?: React.ElementType; className?: string }) {
+  children,
+  delay = 0,
+  as: Tag = "div",
+  className = "",
+}: {
+  children: React.ReactNode;
+  delay?: number;
+  as?: React.ElementType;
+  className?: string;
+}) {
   const { ref, shown } = useReveal<HTMLDivElement>();
   return (
     <Tag
@@ -800,55 +1054,74 @@ function RevealBlock({
 }
 
 function HeritageStory({ w }: { w: Work }) {
-  const chapters = useMemo(() => ([
-    {
-      num: "MMXV",
-      title: "Наследие мастерской",
-      body: `С 2015 года студия UNIQUE ведёт клубный протокол для каждого автомобиля. ${w.brand} ${w.model} — очередной том этой книги, где каждая страница подписана мастером, проведшим работу.`,
-      image: w.gallery[2] ?? w.hero,
-    },
-    {
-      num: "I",
-      title: "Рука мастера",
-      body: "Плёнка режется на кузове, а не по выкройке. Мастер работает с одним автомобилем неделями — швов на видимых зонах не остаётся, потому что швов нет.",
-      image: w.gallery[19] ?? w.hero,
-    },
-    {
-      num: "II",
-      title: "Тишина процесса",
-      body: `${w.hours} чистой работы. Ни звонков, ни спешки, ни второго автомобиля в боксе. Только один экземпляр ${w.brand} и температура, при которой металл принимает плёнку как продолжение лака.`,
-      image: w.gallery[21] ?? w.hero,
-    },
-    {
-      num: "III",
-      title: "Клубная книга",
-      body: "Каждый шов, каждая температура, каждый час зафиксированы в бумажной книге, которую владелец находит в бардачке. Это не сертификат — это летопись автомобиля.",
-      image: w.gallery[9] ?? w.hero,
-    },
-  ]), [w]);
+  const chapters = useMemo(
+    () => [
+      {
+        num: "MMXV",
+        title: "Наследие мастерской",
+        body: `С 2015 года студия UNIQUE защищает автомобили высшего класса. ${w.brand} ${w.model} — один из проектов, где за результат от первой панели до последнего шва отвечает один мастер.`,
+        image: w.gallery[2] ?? w.hero,
+      },
+      {
+        num: "I",
+        title: "Рука мастера",
+        body: "Плёнка раскраивается прямо на кузове и заводится под кромки — без снятия оптики и молдингов. Переходов на видимых зонах не остаётся.",
+        image: w.gallery[19] ?? w.hero,
+      },
+      {
+        num: "II",
+        title: "Тишина процесса",
+        body: `${w.hours} чистой работы. Ни звонков, ни спешки, ни второго автомобиля в боксе. Только один экземпляр ${w.brand} и температура, при которой металл принимает плёнку как продолжение лака.`,
+        image: w.gallery[21] ?? w.hero,
+      },
+      {
+        num: "III",
+        title: "Долгая защита",
+        body: "Плёнка принимает на себя щебень, реагенты и ультрафиолет, а мелкие царапины затягиваются от тепла. Через годы лак под ней остаётся таким же глубоким, как в день выдачи.",
+        image: w.gallery[9] ?? w.hero,
+      },
+    ],
+    [w],
+  );
 
   return (
     <section className="relative overflow-hidden border-t border-line bg-obsidian px-[6vw] py-32">
-      <div className="pointer-events-none absolute inset-0 opacity-[0.04]"
-        style={{ backgroundImage: "radial-gradient(circle at 20% 10%, #d9c39a 0%, transparent 55%), radial-gradient(circle at 80% 90%, #d9c39a 0%, transparent 55%)" }}
+      <div
+        className="pointer-events-none absolute inset-0 opacity-[0.04]"
+        style={{
+          backgroundImage:
+            "radial-gradient(circle at 20% 10%, #d9c39a 0%, transparent 55%), radial-gradient(circle at 80% 90%, #d9c39a 0%, transparent 55%)",
+        }}
         aria-hidden="true"
       />
       <div className="relative mx-auto max-w-[1400px]">
         <RevealBlock className="mb-20 max-w-[820px]">
           <p className="eyebrow eyebrow-dot mb-6">Наследие · Мастерство</p>
-          <h2 className="font-display uppercase leading-[1.02] text-ivory" style={{ fontSize: "clamp(32px,4.4vw,64px)", letterSpacing: "0.045em" }}>
-            История, написанная<br /><span className="text-ember">рукой мастера.</span>
+          <h2
+            className="font-display uppercase leading-[1.02] text-ivory"
+            style={{ fontSize: "clamp(32px,4.4vw,64px)", letterSpacing: "0.045em" }}
+          >
+            История, написанная
+            <br />
+            <span className="text-ember">рукой мастера.</span>
           </h2>
           <p className="mt-8 max-w-[620px] text-[15.5px] leading-[1.95] text-mute">
             Четыре главы этого проекта — не о технологии. О том, как {w.brand} {w.model}
-            прошёл путь от заводского металла до автомобиля, который стал частью клубной коллекции UNIQUE.
+            прошёл путь от заводского металла до автомобиля, который стал частью клубной коллекции
+            UNIQUE.
           </p>
         </RevealBlock>
 
         <ol className="relative space-y-24 md:space-y-32">
           {chapters.map((c, i) => (
-            <li key={c.title} className={`relative grid gap-10 md:grid-cols-2 md:items-center ${i % 2 ? "md:[&>*:first-child]:order-2" : ""}`}>
-              <RevealBlock className="relative aspect-[4/5] overflow-hidden md:aspect-[4/5]" delay={80}>
+            <li
+              key={c.title}
+              className={`relative grid gap-10 md:grid-cols-2 md:items-center ${i % 2 ? "md:[&>*:first-child]:order-2" : ""}`}
+            >
+              <RevealBlock
+                className="relative aspect-[4/5] overflow-hidden md:aspect-[4/5]"
+                delay={80}
+              >
                 <img
                   src={c.image.replace(/w=\d+/, "w=1200")}
                   srcSet={`${c.image.replace(/w=\d+/, "w=640")} 640w, ${c.image.replace(/w=\d+/, "w=960")} 960w, ${c.image.replace(/w=\d+/, "w=1280")} 1280w`}
@@ -864,10 +1137,16 @@ function HeritageStory({ w }: { w: Work }) {
                 </span>
               </RevealBlock>
               <RevealBlock delay={220} className="md:px-4">
-                <p className="font-display text-ember" style={{ fontSize: "clamp(48px,6vw,88px)", letterSpacing: "0.02em" }}>
+                <p
+                  className="font-display text-ember"
+                  style={{ fontSize: "clamp(48px,6vw,88px)", letterSpacing: "0.02em" }}
+                >
                   {c.num}
                 </p>
-                <h3 className="mt-4 font-display uppercase leading-[1.05] text-ivory" style={{ fontSize: "clamp(24px,2.6vw,36px)", letterSpacing: "0.05em" }}>
+                <h3
+                  className="mt-4 font-display uppercase leading-[1.05] text-ivory"
+                  style={{ fontSize: "clamp(24px,2.6vw,36px)", letterSpacing: "0.05em" }}
+                >
                   {c.title}
                 </h3>
                 <div className="mt-6 h-px w-16 bg-ember" aria-hidden="true" />
@@ -917,13 +1196,22 @@ function RelatedCarousel({ current, related }: { current: Work; related: Work[] 
   };
 
   return (
-    <section className="border-t border-line bg-obsidian-2 px-[6vw] py-32" aria-labelledby="related-heading">
+    <section
+      className="border-t border-line bg-obsidian-2 px-[6vw] py-32"
+      aria-labelledby="related-heading"
+    >
       <div className="mx-auto max-w-[1500px]">
         <div className="mb-14 flex flex-wrap items-end justify-between gap-6">
           <div>
             <p className="eyebrow eyebrow-dot mb-4">Курированные рекомендации</p>
-            <h2 id="related-heading" className="font-display uppercase leading-tight text-ivory" style={{ fontSize: "clamp(28px,3.6vw,48px)", letterSpacing: "0.05em" }}>
-              Похожие<br /><span className="text-ember">по духу и классу.</span>
+            <h2
+              id="related-heading"
+              className="font-display uppercase leading-tight text-ivory"
+              style={{ fontSize: "clamp(28px,3.6vw,48px)", letterSpacing: "0.05em" }}
+            >
+              Похожие
+              <br />
+              <span className="text-ember">по духу и классу.</span>
             </h2>
             <p className="mt-6 max-w-[520px] text-[14.5px] leading-[1.9] text-mute">
               Автомобили из клубной коллекции UNIQUE, близкие к {current.brand} {current.model}
@@ -937,15 +1225,21 @@ function RelatedCarousel({ current, related }: { current: Work; related: Work[] 
               disabled={!canPrev}
               aria-label="Предыдущий слайд"
               className="flex h-12 w-12 items-center justify-center border border-line-strong text-ivory transition-colors hover:bg-ivory hover:text-obsidian disabled:cursor-not-allowed disabled:opacity-30 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ember"
-            >←</button>
+            >
+              ←
+            </button>
             <button
               type="button"
               onClick={() => scrollByCards(1)}
               disabled={!canNext}
               aria-label="Следующий слайд"
               className="flex h-12 w-12 items-center justify-center border border-line-strong text-ivory transition-colors hover:bg-ivory hover:text-obsidian disabled:cursor-not-allowed disabled:opacity-30 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ember"
-            >→</button>
-            <Link to="/raboty" className="btn-line ml-2 hidden md:inline-block">Все работы</Link>
+            >
+              →
+            </button>
+            <Link to="/raboty" className="btn-line ml-2 hidden md:inline-block">
+              Все работы
+            </Link>
           </div>
         </div>
 
@@ -957,8 +1251,14 @@ function RelatedCarousel({ current, related }: { current: Work; related: Work[] 
           aria-label="Похожие автомобили UNIQUE"
           tabIndex={0}
           onKeyDown={(e) => {
-            if (e.key === "ArrowRight") { e.preventDefault(); scrollByCards(1); }
-            if (e.key === "ArrowLeft")  { e.preventDefault(); scrollByCards(-1); }
+            if (e.key === "ArrowRight") {
+              e.preventDefault();
+              scrollByCards(1);
+            }
+            if (e.key === "ArrowLeft") {
+              e.preventDefault();
+              scrollByCards(-1);
+            }
           }}
         >
           {related.map((r, i) => (
@@ -989,12 +1289,19 @@ function RelatedCarousel({ current, related }: { current: Work; related: Work[] 
                   {String(i + 1).padStart(2, "0")} · {r.category}
                 </span>
                 <div className="relative z-10">
-                  <p className="eyebrow mb-3 text-mute-2">{r.hours} · {r.city}</p>
-                  <h3 className="font-display uppercase leading-tight text-ivory" style={{ fontSize: "22px", letterSpacing: "0.06em" }}>
+                  <p className="eyebrow mb-3 text-mute-2">
+                    {r.hours} · {r.city}
+                  </p>
+                  <h3
+                    className="font-display uppercase leading-tight text-ivory"
+                    style={{ fontSize: "22px", letterSpacing: "0.06em" }}
+                  >
                     {r.brand}
                   </h3>
                   <p className="mt-1 text-[14.5px] text-ivory">{r.model}</p>
-                  <p className="mt-3 line-clamp-2 max-w-[280px] text-[12.5px] leading-[1.7] text-mute">{r.tagline}</p>
+                  <p className="mt-3 line-clamp-2 max-w-[280px] text-[12.5px] leading-[1.7] text-mute">
+                    {r.tagline}
+                  </p>
                   <span className="link-more mt-5">Смотреть работу</span>
                 </div>
               </Link>
@@ -1003,7 +1310,9 @@ function RelatedCarousel({ current, related }: { current: Work; related: Work[] 
         </ul>
 
         <div className="mt-8 md:hidden">
-          <Link to="/raboty" className="btn-line inline-block">Все работы</Link>
+          <Link to="/raboty" className="btn-line inline-block">
+            Все работы
+          </Link>
         </div>
       </div>
     </section>

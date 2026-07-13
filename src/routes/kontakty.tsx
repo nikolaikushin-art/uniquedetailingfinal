@@ -191,6 +191,26 @@ function KontaktyPage() {
                 вашим автомобилем.
               </p>
             </div>
+
+            <figure className="relative overflow-hidden border border-line">
+              <div className="aspect-[4/5]">
+                <img
+                  src="/portfolio/mercedes-maybach-s-680-ext-2.jpg"
+                  alt="Клубный бокс студии UNIQUE"
+                  loading="lazy"
+                  className="h-full w-full object-cover transition-transform duration-[1600ms] hover:scale-105"
+                />
+              </div>
+              <div className="absolute inset-0 plate-scrim" />
+              <figcaption className="absolute inset-x-0 bottom-0 p-6">
+                <p className="text-[10px] uppercase tracking-[0.35em] text-ivory">
+                  Клубный бокс UNIQUE
+                </p>
+                <p className="mt-2 max-w-[300px] text-[12.5px] leading-[1.7] text-mute">
+                  Отдельная зона приёма и закрытая парковка для каждого автомобиля.
+                </p>
+              </figcaption>
+            </figure>
           </aside>
 
           {/* Форма */}
@@ -327,7 +347,7 @@ function KontaktyPage() {
             <div className="grid md:grid-cols-[1fr_360px]">
               <div className="relative min-h-[440px] md:min-h-[580px] bg-obsidian">
                 <PremiumMap />
-                <div className="pointer-events-none absolute inset-0 z-[400] shadow-[inset_0_0_120px_rgba(8,9,11,0.7)]" />
+                <div className="pointer-events-none absolute inset-0 z-[400] shadow-[inset_0_0_70px_rgba(8,9,11,0.35)]" />
                 <span className="pointer-events-none absolute left-5 top-5 z-[500] flex items-center gap-2 rounded-sm bg-obsidian/80 px-3 py-1.5 text-[10px] uppercase tracking-[0.3em] text-ivory backdrop-blur">
                   <span className="h-[6px] w-[6px] rounded-full bg-ember shadow-[0_0_10px_theme(colors.ember)]" />
                   UNIQUE · Овцино

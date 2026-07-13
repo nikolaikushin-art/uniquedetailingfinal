@@ -355,6 +355,13 @@ const EXTERIOR_PROJECTS: Project[] = STUDIO_VEHICLES.map((v) => {
 
 const FRONT_PROJECTS: Project[] = [
   {
+    brand: "Porsche",
+    model: "911 GT3 RS",
+    finish: "Track PPF · Gloss White",
+    category: "Supercar Collection",
+    img: "/portfolio/porsche-911-gt3-rs-ppf.jpg",
+  },
+  {
     brand: "Ferrari",
     model: "Roma",
     finish: "Clear Bra · решётка и капот",
