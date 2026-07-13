@@ -263,18 +263,39 @@ summary:focus-visible {
 
 /* ============================================================
  * Desktop-only refinements — larger typography, tighter rhythm.
- * Mobile untouched to preserve existing composition.
+ * Mobile untouched to preserve existing composition. Nothing is
+ * removed; these rules only enlarge type and compress empty space
+ * on wide screens for a cleaner, more refined premium layout.
  * ============================================================ */
 @media (min-width: 1024px) {
-  body { font-size: 17px; line-height: 1.75; }
+  body { font-size: 17px; line-height: 1.78; }
   .eyebrow { font-size: 12px; letter-spacing: 0.34em; }
-  /* Slightly compress oversized vertical padding on desktop for a denser,
-     more editorial rhythm without crowding content. */
+  .link-more { font-size: 12px; }
+  .btn-line { padding: 19px 46px; font-size: 12px; }
+
+  /* Larger, more readable body copy on desktop. Targets the fixed-size
+     paragraph utilities used across the editorial layout without touching
+     the responsive clamp() headings (which already scale with viewport). */
+  .text-\[13\.5px\] { font-size: 14.5px; }
+  .text-\[14px\]    { font-size: 15px; }
+  .text-\[14\.5px\] { font-size: 15.5px; }
+  .text-\[15px\]    { font-size: 16px; }
+  .text-\[15\.5px\] { font-size: 16.5px; }
+  .text-\[16px\]    { font-size: 17px; }
+
+  /* Compress oversized vertical padding on desktop for a denser, more
+     editorial vertical rhythm — reduces excessive empty space while
+     preserving breathing room. */
+  section.py-40 { padding-top: 7rem; padding-bottom: 7rem; }
   section.py-32 { padding-top: 6rem; padding-bottom: 6rem; }
+  section.py-28 { padding-top: 5.5rem; padding-bottom: 5.5rem; }
   section.py-24 { padding-top: 5rem; padding-bottom: 5rem; }
   section.py-20 { padding-top: 4.5rem; padding-bottom: 4.5rem; }
 }
 @media (min-width: 1280px) {
   body { font-size: 18px; }
+  /* Widen the primary editorial containers slightly on very large screens
+     so content fills the space and side gutters feel intentional. */
+  .max-w-\[1280px\] { max-width: 1360px; }
 }
 
