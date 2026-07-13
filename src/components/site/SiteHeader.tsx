@@ -70,7 +70,7 @@ export function SiteHeader() {
       >
         <button
           onClick={() => setOpen(false)}
-          className="absolute left-[5vw] top-6 flex items-center gap-3 text-[11px] tracking-[0.35em] uppercase text-ivory"
+          className="absolute left-[5vw] top-6 z-20 flex items-center gap-3 text-[11px] tracking-[0.35em] uppercase text-ivory md:top-8"
           aria-label="Закрыть меню"
         >
           <span className="relative block h-4 w-4">
@@ -80,35 +80,37 @@ export function SiteHeader() {
           Закрыть
         </button>
 
-        <nav className="flex w-full flex-col justify-center border-r border-line px-[8vw] md:w-[55%]">
-          <ul className="space-y-1">
-            {NAV.map((n, i) => (
-              <li key={n.to} className="overflow-hidden">
-                <Link
-                  to={n.to}
-                  onClick={() => setOpen(false)}
-                  className="block font-display uppercase text-mute transition-all duration-300 hover:pl-4 hover:tracking-[0.18em] hover:text-ivory"
-                  style={{
-                    fontSize: "clamp(26px,3.4vw,42px)",
-                    letterSpacing: "0.14em",
-                    padding: "12px 0",
-                    transform: open ? "translateY(0)" : "translateY(110%)",
-                    opacity: open ? 1 : 0,
-                    transition: `transform .7s cubic-bezier(.2,.8,.2,1) ${i * 0.05 + 0.05}s, opacity .7s ease ${
-                      i * 0.05 + 0.05
-                    }s, color .3s ease, padding .3s ease`,
-                  }}
-                >
-                  {String(i + 1).padStart(2, "0")} — {n.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-          <div className="mt-16 space-y-2 text-[11px] uppercase tracking-[0.3em] text-mute-2">
-            <p>г. Санкт-Петербург · Ленинградская область</p>
-            <p>микрорайон Овцино, Петрозаводская улица, 33</p>
-            <p className="text-ember">Скоро открытие</p>
-            <p className="normal-case tracking-normal text-mute">info@uniquedetailing.ru</p>
+        <nav className="flex w-full flex-col overflow-y-auto border-r border-line md:w-[55%]">
+          <div className="flex min-h-full flex-col justify-center px-[8vw] pt-28 pb-16 md:pt-32">
+            <ul className="space-y-1">
+              {NAV.map((n, i) => (
+                <li key={n.to} className="overflow-hidden">
+                  <Link
+                    to={n.to}
+                    onClick={() => setOpen(false)}
+                    className="block font-display uppercase text-mute transition-all duration-300 hover:pl-4 hover:tracking-[0.18em] hover:text-ivory"
+                    style={{
+                      fontSize: "clamp(24px,3vw,40px)",
+                      letterSpacing: "0.14em",
+                      padding: "10px 0",
+                      transform: open ? "translateY(0)" : "translateY(110%)",
+                      opacity: open ? 1 : 0,
+                      transition: `transform .7s cubic-bezier(.2,.8,.2,1) ${i * 0.05 + 0.05}s, opacity .7s ease ${
+                        i * 0.05 + 0.05
+                      }s, color .3s ease, padding .3s ease`,
+                    }}
+                  >
+                    {String(i + 1).padStart(2, "0")} — {n.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <div className="mt-12 space-y-2 text-[11px] uppercase tracking-[0.3em] text-mute-2">
+              <p>г. Санкт-Петербург · Ленинградская область</p>
+              <p>микрорайон Овцино, Петрозаводская улица, 33</p>
+              <p className="text-ember">Скоро открытие</p>
+              <p className="normal-case tracking-normal text-mute">info@uniquedetailing.ru</p>
+            </div>
           </div>
         </nav>
 
