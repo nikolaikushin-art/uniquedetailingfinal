@@ -104,7 +104,7 @@ function Index() {
         title="О студии"
         heading="Мы не просто выполняем работу — мы создаём результат."
       >
-        <div className="grid gap-24 md:grid-cols-[0.9fr_1.1fr] md:items-center">
+        <div className="grid gap-14 md:grid-cols-[0.9fr_1.1fr] md:items-center md:gap-20">
           <div className="relative aspect-[4/5] overflow-hidden">
             <img
               src={HOME.studio}
