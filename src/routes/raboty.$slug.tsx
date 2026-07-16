@@ -4,6 +4,10 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { getWork, relatedWorks, type Work } from "@/lib/works";
 
+// Canonical/OG base URL. Set VITE_SITE_URL on the host (Vercel) to your real
+// domain; the fallback is used only until the production domain is connected.
+const SITE_URL = import.meta.env.VITE_SITE_URL ?? "https://uniquedetailing.ru";
+
 export const Route = createFileRoute("/raboty/$slug")({
   loader: ({ params }): { work: Work; related: Work[] } => {
     const work = getWork(params.slug);
@@ -22,7 +26,7 @@ export const Route = createFileRoute("/raboty/$slug")({
       };
     const title = `${w.brand} ${w.model} — ${w.category} · UNIQUE Detailing`;
     const desc = `${w.tagline} ${w.hours} работы мастера, гарантия 10 лет, клубный протокол UNIQUE в Санкт-Петербурге.`;
-    const url = `https://uniquedetailingfinal.lovable.app/raboty/${params?.slug ?? w.slug}`;
+    const url = `${SITE_URL}/raboty/${params?.slug ?? w.slug}`;
     const hasAbsoluteShareImage = w.hero.startsWith("https://");
     return {
       meta: [
