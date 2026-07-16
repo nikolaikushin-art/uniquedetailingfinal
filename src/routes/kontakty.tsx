@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { PageHero } from "@/components/site/PageHero";
+import { submitLead } from "@/lib/supabase";
 
 const STUDIO_LAT = 59.849;
 const STUDIO_LON = 30.74;
@@ -107,6 +108,30 @@ export const Route = createFileRoute("/kontakty")({
 
 function KontaktyPage() {
   const [sent, setSent] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const fd = new FormData(e.currentTarget);
+    setSubmitting(true);
+    try {
+      // Persists to Supabase when configured; degrades gracefully otherwise.
+      await submitLead({
+        name: String(fd.get("name") ?? ""),
+        phone: String(fd.get("phone") ?? ""),
+        email: String(fd.get("email") ?? ""),
+        car: String(fd.get("car") ?? ""),
+        service: String(fd.get("service") ?? ""),
+        comment: String(fd.get("comment") ?? ""),
+      });
+    } catch (err) {
+      console.error("Lead submission failed:", err);
+    } finally {
+      setSubmitting(false);
+      setSent(true);
+    }
+  }
+
   return (
     <div>
       <PageHero
@@ -214,13 +239,7 @@ function KontaktyPage() {
           </aside>
 
           {/* Форма */}
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              setSent(true);
-            }}
-            className="space-y-8 border border-line bg-obsidian-2 p-10"
-          >
+          <form onSubmit={handleSubmit} className="space-y-8 border border-line bg-obsidian-2 p-10">
             {sent ? (
               <div className="flex min-h-[400px] flex-col items-center justify-center text-center">
                 <p className="eyebrow mb-6">Заявка принята</p>
@@ -273,7 +292,10 @@ function KontaktyPage() {
                   <label className="mb-3 block text-[10px] uppercase tracking-[0.35em] text-mute-2">
                     Интересующая услуга
                   </label>
-                  <select className="w-full border border-line bg-transparent p-4 text-ivory outline-none focus:border-ivory">
+                  <select
+                    name="service"
+                    className="w-full border border-line bg-transparent p-4 text-ivory outline-none focus:border-ivory"
+                  >
                     {[
                       "Полная оклейка PPF",
                       "Зональная оклейка PPF",
@@ -296,6 +318,7 @@ function KontaktyPage() {
                     Комментарий
                   </label>
                   <textarea
+                    name="comment"
                     rows={5}
                     className="w-full border border-line bg-transparent p-4 text-ivory outline-none focus:border-ivory"
                     placeholder="Опишите пожелания или задайте вопрос"
@@ -306,8 +329,8 @@ function KontaktyPage() {
                   <p className="max-w-[300px] text-[11px] leading-[1.6] text-mute-2">
                     Нажимая «Отправить», вы соглашаетесь на обработку персональных данных.
                   </p>
-                  <button type="submit" className="btn-line btn-ember">
-                    Отправить заявку
+                  <button type="submit" className="btn-line btn-ember" disabled={submitting}>
+                    {submitting ? "Отправляем…" : "Отправить заявку"}
                   </button>
                 </div>
               </>
