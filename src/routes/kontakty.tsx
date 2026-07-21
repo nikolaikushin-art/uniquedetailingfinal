@@ -51,7 +51,7 @@ function PremiumMap() {
         if (cancelled || !ref.current || (ref.current as any)._leaflet_id) return;
         map = L.map(ref.current, {
           center: [STUDIO_LAT, STUDIO_LON],
-          zoom: 12,
+          zoom: 11,
           zoomControl: false,
           scrollWheelZoom: false,
           attributionControl: false,
