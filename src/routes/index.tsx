@@ -2,14 +2,15 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { WORKS } from "@/lib/works";
 import heroVideo from "@/assets/hero.mov.asset.json";
 import logo from "@/assets/logo.png.asset.json";
+import { cdn } from "@/lib/cdn";
 
 // Unique, curated imagery for the home page (no image is reused elsewhere).
 const HOME = {
-  heroPoster: "/portfolio/mercedes-benz-g-63-amg-0.jpg",
-  studio: "/portfolio/rolls-royce-phantom-series-ii-craft-1.jpg",
-  services: "/portfolio/porsche-911-turbo-s-craft-3.jpg",
-  film: "/portfolio/lamborghini-revuelto-craft-2.jpg",
-  quote: "/portfolio/ferrari-roma-det-6.jpg",
+  heroPoster: cdn("/portfolio/mercedes-benz-g-63-amg-0.jpg"),
+  studio: cdn("/portfolio/rolls-royce-phantom-series-ii-craft-1.jpg"),
+  services: cdn("/portfolio/porsche-911-turbo-s-craft-3.jpg"),
+  film: cdn("/portfolio/lamborghini-revuelto-craft-2.jpg"),
+  quote: cdn("/portfolio/ferrari-roma-det-6.jpg"),
 };
 
 export const Route = createFileRoute("/")({

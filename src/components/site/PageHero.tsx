@@ -18,11 +18,17 @@ export function PageHero({
   const bg = image ?? (mode === "lifestyle" ? lifestyleImage(seed, 2200) : carImage(seed, 2200));
   return (
     <section className="relative flex min-h-[78vh] items-center overflow-hidden border-b border-line">
-      <div className="absolute inset-0 animate-drift bg-cover bg-center" style={{ backgroundImage: `url(${bg})` }} />
+      <div
+        className="absolute inset-0 animate-drift bg-cover bg-center"
+        style={{ backgroundImage: `url(${bg})` }}
+      />
       <div className="absolute inset-0 plate-scrim" />
       <div className="relative z-10 mx-auto w-full max-w-[1400px] px-[6vw] pt-28">
         <p className="eyebrow eyebrow-dot mb-6">{eyebrow}</p>
-        <h1 className="max-w-[1100px] font-display uppercase leading-[1.02] text-ivory" style={{ fontSize: "clamp(38px,6.4vw,96px)", letterSpacing: "0.03em" }}>
+        <h1
+          className="max-w-[1100px] font-display uppercase leading-[1.02] text-ivory"
+          style={{ fontSize: "clamp(38px,6.4vw,96px)", letterSpacing: "0.03em" }}
+        >
           {title}
         </h1>
         {lede && <p className="mt-8 max-w-[600px] text-[16px] leading-[1.9] text-mute">{lede}</p>}

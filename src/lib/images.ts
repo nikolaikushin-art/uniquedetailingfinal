@@ -1,11 +1,8 @@
-// Site-wide imagery now draws exclusively from the studio's own portfolio
-// renders under /public/portfolio. No external stock (Unsplash) or legacy
-// generic vehicles remain anywhere on the site — every hero, preview and
-// background is a real UNIQUE studio car that also appears in the portfolio.
+// Studio portfolio imagery. Paths are local `/portfolio/*` keys; `cdn()`
+// rewrites them to Cloudflare R2 when `VITE_CDN_URL` is set.
+import { cdn } from "./cdn";
 
-// Curated exterior / hero shots — a diverse spread of the studio's flagship
-// vehicles, used for hero backgrounds, section imagery and previews.
-export const CAR_IMAGES = [
+const CAR_IMAGE_PATHS = [
   "/portfolio/rolls-royce-phantom-series-ii-0.jpg",
   "/portfolio/bentley-continental-gt-speed-0.jpg",
   "/portfolio/ferrari-sf90-stradale-0.jpg",
@@ -26,10 +23,7 @@ export const CAR_IMAGES = [
   "/portfolio/maserati-grecale-trofeo-0.jpg",
 ];
 
-// Atmospheric shots — interiors, close-up details and craftsmanship stages.
-// Used for quote panels and editorial backgrounds; still real studio cars,
-// so the whole site stays visually consistent and on-brand.
-export const LIFESTYLE_IMAGES = [
+const LIFESTYLE_IMAGE_PATHS = [
   "/portfolio/aston-martin-db12-craft-1.jpg",
   "/portfolio/rolls-royce-phantom-series-ii-2.jpg",
   "/portfolio/bentley-flying-spur-mulliner-2.jpg",
@@ -44,9 +38,9 @@ export const LIFESTYLE_IMAGES = [
   "/portfolio/bentley-bentayga-speed-craft-1.jpg",
 ];
 
-// Signatures preserve the previous (i, w) API so every call site keeps working;
-// the width argument is accepted for compatibility but real files are served at
-// their native resolution.
+export const CAR_IMAGES = CAR_IMAGE_PATHS.map((p) => cdn(p));
+export const LIFESTYLE_IMAGES = LIFESTYLE_IMAGE_PATHS.map((p) => cdn(p));
+
 export const carImage = (i: number, _w = 1600) =>
   CAR_IMAGES[((i % CAR_IMAGES.length) + CAR_IMAGES.length) % CAR_IMAGES.length];
 export const lifestyleImage = (i: number, _w = 1600) =>
@@ -54,7 +48,6 @@ export const lifestyleImage = (i: number, _w = 1600) =>
     ((i % LIFESTYLE_IMAGES.length) + LIFESTYLE_IMAGES.length) % LIFESTYLE_IMAGES.length
   ];
 
-// Kept for backward compatibility with any consumers building srcsets.
 export const carImageSrcSet = (i: number, widths: number[] = [640, 960, 1280, 1600, 1920]) =>
   widths.map((w) => `${carImage(i, w)} ${w}w`).join(", ");
 

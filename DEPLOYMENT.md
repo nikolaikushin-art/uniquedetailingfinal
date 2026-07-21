@@ -1,61 +1,67 @@
-# Deployment & migration guide
+# Deployment guide — uniquedetailing.ru
 
-This project is now **fully independent of Lovable**. GitHub is the source of
-truth. It builds with native Vite + TanStack Start (SSR) + Nitro and deploys to
-Vercel via the Nitro Vercel preset (Build Output API v3).
+Standalone TanStack Start (React 19, SSR) site. Native Vite + Tailwind v4 + Nitro.
+GitHub is the source of truth. Deploy target: Vercel.
 
-## What was migrated off Lovable
+## Architecture
 
-- **Build config** rewritten in `vite.config.ts` using native plugins
-  (`@tanstack/react-start`, `@vitejs/plugin-react`, `@tailwindcss/vite`,
-  `vite-tsconfig-paths`, `nitro/vite`). The `@lovable.dev/*` packages were removed.
-- **Brand media rescued** from Lovable storage into the repo:
-  `public/media/logo.png`, `public/media/numberplate-logo.png`,
-  `public/media/hero.mp4`. The `*.asset.json` manifests now point at `/media/*`.
-  No asset loads from `/__l5e/*` or `*.lovable.app` any longer.
-- **Removed** the Lovable error-reporting module, the Lovable preview OG image
-  (now `/og-cover.jpg`), and the `*.lovable.app` canonical URL (now driven by
-  `VITE_SITE_URL`).
+Frontend (Vercel) → Supabase (data, auth, edge functions) → Cloudflare R2 (heavy assets).
+Email: `info@uniquedetailing.ru` via Resend.
+Internal CRM stays at https://ops.uniquedetailing.ru (separate Vercel project).
 
-## Vercel setup (dashboard actions — do these in your account)
+## Environment variables (Vercel Production)
 
-1. Vercel → **Add New → Project** → import the GitHub repo
-   `nikolaikushin-art/uniquedetailingfinal`.
-2. Framework preset: **Other** (the build emits `.vercel/output` via Nitro, which
-   Vercel serves through the Build Output API automatically).
-   - Build command: `npm run build`
-   - Install command: `npm install`
-   - Output is auto-detected (`.vercel/output`); no output-dir override needed.
-3. Add **Environment Variables** (see `.env.example`):
-   - `VITE_SITE_URL` = your production domain
-   - `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY` = from Supabase
-4. Deploy. Connect your domain last.
+| Variable | Value |
+|---|---|
+| `VITE_SITE_URL` | `https://uniquedetailing.ru` |
+| `VITE_SUPABASE_URL` | `https://flqgrcmevbjavafppqmh.supabase.co` |
+| `VITE_SUPABASE_ANON_KEY` | publishable / anon key |
+| `VITE_CDN_URL` | `https://pub-d232aa7dc74242bdab9a8077f5ceaefa.r2.dev` |
+| `VITE_ASSET_BASE_URL` | same as CDN |
+| `VITE_LOGO_URL` | `https://pub-d232aa7dc74242bdab9a8077f5ceaefa.r2.dev/assets/unique-detailing-logo.png` |
+| `VITE_OPS_URL` | `https://ops.uniquedetailing.ru` |
+| `VITE_CONTACT_EMAIL` | `info@uniquedetailing.ru` |
 
-Verified locally: `NITRO_PRESET=vercel npm run build` produces
-`.vercel/output/{config.json,functions/__server.func,static/…}`.
+## Build
 
-## Supabase setup ("Unique Operations" project)
-
-Create the leads table used by the contact form (`src/lib/supabase.ts`):
-
-```sql
-create table public.leads (
-  id uuid primary key default gen_random_uuid(),
-  created_at timestamptz not null default now(),
-  name text, phone text, email text, car text, service text, comment text
-);
-alter table public.leads enable row level security;
-create policy "anon can insert leads"
-  on public.leads for insert to anon with check (true);
+```bash
+npm install
+npm run build   # Nitro auto-detects Vercel; or NITRO_PRESET=vercel npm run build
+npm run lint
 ```
 
-Then set `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` in Vercel. Until they
-are set, the form still works visually and simply skips the insert (it reports
-`supabase_not_configured` internally rather than erroring).
+## Supabase
 
-## Cloudflare R2 (optional)
+Contact form → RPC `submit_website_lead` → `public.leads` (`source=website`).
+Public reads: `services`, `service_packages`, `staff` (active rows), selected `studio_settings`.
+Migration: `supabase/migrations/20260721_public_website_rls.sql`.
 
-The site does **not** require R2 — media is self-hosted in `public/` and served
-by Vercel's CDN, so nothing depends on Lovable or temporary links. If you want to
-offload media to the Unique Operations R2 bucket later, serve it behind a CDN
-domain and set `VITE_ASSET_BASE_URL`; asset paths would then be prefixed with it.
+## Cloudflare R2
+
+Upload script: `node scripts/upload-assets-r2.mjs` (credentials in `.env.r2.local`).
+Path map:
+
+- `/portfolio/*` → `assets/gallery/*`
+- `/ppf/*` → `assets/services/*`
+- `/media/logo.png` → `assets/unique-detailing-logo.png`
+- `/media/hero.mp4` → `assets/marketing/hero.mp4`
+- `/og-cover.jpg` → `assets/marketing/og-cover.jpg`
+
+CDN helper: `src/lib/cdn.ts`.
+
+## DNS (Timeweb)
+
+Keep ops + email records. Public site:
+
+- `A @` → `76.76.21.21`
+- `CNAME www` → `cname.vercel-dns.com`
+- Keep `CNAME ops` → existing Vercel target
+
+Email (Resend / SES): MX + SPF + DKIM on `send` / `resend._domainkey` — do not remove.
+
+## Domains on Vercel
+
+Project: `uniquedetailingfinal` (do **not** attach to `unique-operations`).
+
+- `uniquedetailing.ru`
+- `www.uniquedetailing.ru` → redirect to apex

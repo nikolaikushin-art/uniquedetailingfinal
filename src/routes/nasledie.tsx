@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageHero, Rule } from "@/components/site/PageHero";
+import { cdn } from "@/lib/cdn";
 
 export const Route = createFileRoute("/nasledie")({
   head: () => ({
@@ -30,7 +31,7 @@ function NasleiePage() {
           </>
         }
         lede="Мы собрали редакционные материалы о том, из чего складывается UNIQUE — от истоков ремесла до персонального шофёра клубной программы."
-        image="/portfolio/rolls-royce-cullinan-black-badge-0.jpg"
+        image={cdn("/portfolio/rolls-royce-cullinan-black-badge-0.jpg")}
       />
 
       {/* НАСЛЕДИЕ */}
@@ -59,7 +60,7 @@ function NasleiePage() {
             </div>
             <div className="relative aspect-[4/5] overflow-hidden">
               <img
-                src="/portfolio/rolls-royce-ghost-extended-0.jpg"
+                src={cdn("/portfolio/rolls-royce-ghost-extended-0.jpg")}
                 alt="Наследие"
                 className="h-full w-full object-cover"
                 loading="lazy"
@@ -129,7 +130,7 @@ function NasleiePage() {
           <div className="grid gap-16 md:grid-cols-[1.1fr_0.9fr] md:items-center">
             <div className="relative aspect-[16/10] overflow-hidden">
               <img
-                src="/portfolio/aston-martin-db12-int-2.jpg"
+                src={cdn("/portfolio/aston-martin-db12-int-2.jpg")}
                 alt="Bespoke"
                 className="h-full w-full object-cover"
                 loading="lazy"
@@ -225,7 +226,7 @@ function NasleiePage() {
             </div>
             <div className="relative aspect-[16/10] overflow-hidden">
               <img
-                src="/portfolio/mercedes-maybach-s-680-0.jpg"
+                src={cdn("/portfolio/mercedes-maybach-s-680-0.jpg")}
                 alt="Chauffeur"
                 className="h-full w-full object-cover"
                 loading="lazy"

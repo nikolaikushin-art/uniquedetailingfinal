@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { WORKS, CATEGORIES } from "@/lib/works";
+import { cdn } from "@/lib/cdn";
 
 export const Route = createFileRoute("/raboty/")({
   head: () => ({
@@ -34,7 +35,9 @@ function RabotyPage() {
       <section className="relative flex min-h-[78vh] items-center overflow-hidden border-b border-line pt-28">
         <div
           className="absolute inset-0 animate-drift bg-cover bg-center opacity-70"
-          style={{ backgroundImage: `url(/portfolio/bentley-continental-gt-speed-0.jpg)` }}
+          style={{
+            backgroundImage: `url(${cdn("/portfolio/bentley-continental-gt-speed-0.jpg")})`,
+          }}
         />
         <div className="absolute inset-0 plate-scrim" />
         <div className="relative z-10 mx-auto w-full max-w-[1400px] px-[6vw]">

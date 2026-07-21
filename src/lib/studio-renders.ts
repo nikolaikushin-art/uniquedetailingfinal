@@ -49,14 +49,59 @@ const CATEGORY_LABEL: Record<number, string> = {
   23: "МАСТЕРСТВО · ФИНАЛЬНАЯ ПРИЁМКА",
 };
 
-const bodyGeometry: Record<StudioBody, { roof: string; body: string; height: number; clearance: number; wheel: number }> = {
-  coupe:       { roof: "M610 470 C705 330 930 318 1052 466 L1010 505 C890 462 742 460 610 470", body: "M282 652 C380 514 527 452 728 446 L1010 452 C1164 457 1314 525 1423 646 L1376 770 L330 772 Z", height: 1,    clearance: 0,   wheel: 104 },
-  convertible: { roof: "M650 490 C772 404 946 407 1044 500 L1008 528 C902 492 762 489 650 490", body: "M284 650 C396 530 554 475 746 472 L1022 478 C1166 484 1314 536 1424 648 L1374 770 L330 772 Z", height: 1,    clearance: 0,   wheel: 104 },
-  sedan:       { roof: "M550 482 C668 324 984 322 1112 484 L1078 525 C925 476 718 473 550 482", body: "M250 642 C378 525 530 462 726 450 L1110 466 C1260 480 1392 548 1460 648 L1418 776 L304 776 Z", height: 1.08, clearance: 0,   wheel: 98  },
-  suv:         { roof: "M498 502 C560 328 1018 302 1194 504 L1162 548 C960 504 708 492 498 502", body: "M218 626 C318 474 468 400 710 390 L1148 414 C1330 430 1462 526 1510 648 L1450 792 L284 794 Z", height: 1.2,  clearance: 24,  wheel: 116 },
-  wagon:       { roof: "M512 490 C610 340 1050 342 1236 520 L1192 554 C972 498 726 486 512 490", body: "M246 638 C364 510 512 452 738 446 L1170 462 C1328 476 1432 544 1480 650 L1426 776 L302 776 Z", height: 1.08, clearance: 4,   wheel: 100 },
-  supercar:    { roof: "M680 505 C754 388 950 376 1046 505 L1006 536 C905 500 788 498 680 505", body: "M260 660 C408 540 580 494 786 484 L1054 488 C1224 496 1378 554 1464 662 L1402 762 L310 762 Z", height: 0.86, clearance: -5, wheel: 106 },
-  hypercar:    { roof: "M690 506 C760 386 960 366 1060 506 L1016 536 C912 496 786 496 690 506", body: "M240 664 C394 538 558 498 792 492 L1082 496 C1268 500 1408 558 1482 666 L1400 762 L300 762 Z", height: 0.84, clearance: -8, wheel: 108 },
+const bodyGeometry: Record<
+  StudioBody,
+  { roof: string; body: string; height: number; clearance: number; wheel: number }
+> = {
+  coupe: {
+    roof: "M610 470 C705 330 930 318 1052 466 L1010 505 C890 462 742 460 610 470",
+    body: "M282 652 C380 514 527 452 728 446 L1010 452 C1164 457 1314 525 1423 646 L1376 770 L330 772 Z",
+    height: 1,
+    clearance: 0,
+    wheel: 104,
+  },
+  convertible: {
+    roof: "M650 490 C772 404 946 407 1044 500 L1008 528 C902 492 762 489 650 490",
+    body: "M284 650 C396 530 554 475 746 472 L1022 478 C1166 484 1314 536 1424 648 L1374 770 L330 772 Z",
+    height: 1,
+    clearance: 0,
+    wheel: 104,
+  },
+  sedan: {
+    roof: "M550 482 C668 324 984 322 1112 484 L1078 525 C925 476 718 473 550 482",
+    body: "M250 642 C378 525 530 462 726 450 L1110 466 C1260 480 1392 548 1460 648 L1418 776 L304 776 Z",
+    height: 1.08,
+    clearance: 0,
+    wheel: 98,
+  },
+  suv: {
+    roof: "M498 502 C560 328 1018 302 1194 504 L1162 548 C960 504 708 492 498 502",
+    body: "M218 626 C318 474 468 400 710 390 L1148 414 C1330 430 1462 526 1510 648 L1450 792 L284 794 Z",
+    height: 1.2,
+    clearance: 24,
+    wheel: 116,
+  },
+  wagon: {
+    roof: "M512 490 C610 340 1050 342 1236 520 L1192 554 C972 498 726 486 512 490",
+    body: "M246 638 C364 510 512 452 738 446 L1170 462 C1328 476 1432 544 1480 650 L1426 776 L302 776 Z",
+    height: 1.08,
+    clearance: 4,
+    wheel: 100,
+  },
+  supercar: {
+    roof: "M680 505 C754 388 950 376 1046 505 L1006 536 C905 500 788 498 680 505",
+    body: "M260 660 C408 540 580 494 786 484 L1054 488 C1224 496 1378 554 1464 662 L1402 762 L310 762 Z",
+    height: 0.86,
+    clearance: -5,
+    wheel: 106,
+  },
+  hypercar: {
+    roof: "M690 506 C760 386 960 366 1060 506 L1016 536 C912 496 786 496 690 506",
+    body: "M240 664 C394 538 558 498 792 492 L1082 496 C1268 500 1408 558 1482 666 L1400 762 L300 762 Z",
+    height: 0.84,
+    clearance: -8,
+    wheel: 108,
+  },
 };
 
 function studioDefs(v: StudioVehicle) {
@@ -358,47 +403,64 @@ const craftBase = (title: string, inner: string) => `
   </g>`;
 
 const craftCutting = (v: StudioVehicle) =>
-  craftBase("РАСКРОЙ PPF ПОД ЭТОТ КУЗОВ", `
+  craftBase(
+    "РАСКРОЙ PPF ПОД ЭТОТ КУЗОВ",
+    `
     <path d="M320 800 C600 500 1200 460 1480 780" fill="none" stroke="url(#paint)" stroke-width="120" stroke-linecap="round"/>
     <path d="M320 800 C600 500 1200 460 1480 780" fill="none" stroke="#eae8e2" stroke-opacity="0.5" stroke-width="2" stroke-dasharray="8 8"/>
     <circle cx="820" cy="560" r="12" fill="#e23a46"/>
     <path d="M820 560 L900 480" stroke="#e23a46" stroke-width="3"/>
-    <text x="920" y="470" fill="#eae8e2" opacity="0.7" font-family="Jost, Arial" font-size="16" letter-spacing="4">РЕЗ ${esc(v.paintName.toUpperCase())}</text>`);
+    <text x="920" y="470" fill="#eae8e2" opacity="0.7" font-family="Jost, Arial" font-size="16" letter-spacing="4">РЕЗ ${esc(v.paintName.toUpperCase())}</text>`,
+  );
 
 const craftApply = (v: StudioVehicle) =>
-  craftBase("НАНЕСЕНИЕ ПЛЁНКИ", `
+  craftBase(
+    "НАНЕСЕНИЕ ПЛЁНКИ",
+    `
     <path d="M280 700 C500 500 1100 460 1520 640" fill="url(#paint)" opacity="0.9"/>
     <path d="M600 640 L1400 500" stroke="url(#chrome)" stroke-width="14" stroke-linecap="round"/>
     <circle cx="1400" cy="500" r="30" fill="#e23a46"/>
-    <path d="M700 620 C900 600 1100 600 1300 620" stroke="#ffffff" stroke-opacity="0.4" stroke-width="6" fill="none"/>`);
+    <path d="M700 620 C900 600 1100 600 1300 620" stroke="#ffffff" stroke-opacity="0.4" stroke-width="6" fill="none"/>`,
+  );
 
 const craftPolish = (v: StudioVehicle) =>
-  craftBase("ПОЛИРОВКА ПОВЕРХНОСТИ", `
+  craftBase(
+    "ПОЛИРОВКА ПОВЕРХНОСТИ",
+    `
     <path d="M260 700 C500 460 1100 420 1540 640" fill="url(#paint)"/>
     <circle cx="900" cy="560" r="130" fill="#eae8e2" opacity="0.15"/>
     <circle cx="900" cy="560" r="90" fill="#eae8e2" opacity="0.25"/>
     <circle cx="900" cy="560" r="50" fill="url(#chrome)"/>
-    <path d="M900 460 V420 M900 700 V740 M780 560 H740 M1020 560 H1060" stroke="url(#chrome)" stroke-width="4"/>`);
+    <path d="M900 460 V420 M900 700 V740 M780 560 H740 M1020 560 H1060" stroke="url(#chrome)" stroke-width="4"/>`,
+  );
 
 const craftGauge = (v: StudioVehicle) =>
-  craftBase("КОНТРОЛЬ ТОЛЩИНЫ ЛАКА", `
+  craftBase(
+    "КОНТРОЛЬ ТОЛЩИНЫ ЛАКА",
+    `
     <path d="M260 700 C500 460 1100 420 1540 640" fill="url(#paint)"/>
     <rect x="780" y="440" width="240" height="140" rx="18" fill="#050607" stroke="url(#chrome)" stroke-width="3"/>
     <text x="900" y="510" text-anchor="middle" fill="#e23a46" font-family="Jost, Arial" font-weight="700" font-size="46" letter-spacing="4">${140 + (v.brand.length % 40)} µm</text>
     <text x="900" y="550" text-anchor="middle" fill="#eae8e2" opacity="0.6" font-family="Jost, Arial" font-size="14" letter-spacing="6">${esc(v.paintName.toUpperCase())}</text>
     <path d="M900 580 V680" stroke="url(#chrome)" stroke-width="6"/>
-    <circle cx="900" cy="700" r="24" fill="url(#chrome)"/>`);
+    <circle cx="900" cy="700" r="24" fill="url(#chrome)"/>`,
+  );
 
 const craftInspect = (v: StudioVehicle) =>
-  craftBase("СВЕТОВАЯ ИНСПЕКЦИЯ", `
+  craftBase(
+    "СВЕТОВАЯ ИНСПЕКЦИЯ",
+    `
     <path d="M260 700 C500 460 1100 420 1540 640" fill="url(#paint)"/>
     <path d="M400 300 L900 620 L1400 300" stroke="#fff3d7" stroke-opacity="0.4" stroke-width="3"/>
     <ellipse cx="900" cy="620" rx="220" ry="30" fill="#fff3d7" opacity="0.35" filter="url(#glow)"/>
-    <path d="M780 640 L1020 640" stroke="#e23a46" stroke-width="4"/>`);
+    <path d="M780 640 L1020 640" stroke="#e23a46" stroke-width="4"/>`,
+  );
 
 const craftHandover = (v: StudioVehicle) => {
   const g = bodyGeometry[v.body];
-  return craftBase("ПРИЁМКА КЛИЕНТУ", `
+  return craftBase(
+    "ПРИЁМКА КЛИЕНТУ",
+    `
     <g transform="translate(0 60) scale(0.72)" transform-origin="900 560">
       <g transform="translate(0 ${g.clearance}) scale(1 ${g.height})">
         <path d="${g.body}" fill="url(#paint)" stroke="#f5f2ea" stroke-opacity="0.2" stroke-width="3"/>
@@ -408,7 +470,8 @@ const craftHandover = (v: StudioVehicle) => {
         ${wheel(520, 762, g.wheel, v)}${wheel(1250, 762, g.wheel, v)}
       </g>
     </g>
-    <path d="M320 860 H1480" stroke="url(#chrome)" stroke-width="2" opacity="0.4"/>`);
+    <path d="M320 860 H1480" stroke="url(#chrome)" stroke-width="2" opacity="0.4"/>`,
+  );
 };
 
 /* ─────────── DISPATCH ─────────── */

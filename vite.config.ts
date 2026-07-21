@@ -5,11 +5,10 @@ import tailwindcss from "@tailwindcss/vite";
 import tsConfigPaths from "vite-tsconfig-paths";
 import { nitro } from "nitro/vite";
 
-// Standalone Vite config — no Lovable tooling.
-// TanStack Start (SSR) + React + Tailwind v4 + tsconfig path aliases, built
-// through Nitro. The deploy target is auto-detected by Nitro (Vercel sets
-// `VERCEL=1`, so a Vercel build produces the Vercel preset automatically);
-// override locally with `NITRO_PRESET=vercel npm run build` if desired.
+// Standalone Vite config — TanStack Start (SSR) + React + Tailwind v4 +
+// tsconfig path aliases, built through Nitro. The deploy target is
+// auto-detected by Nitro (Vercel sets `VERCEL=1`); override locally with
+// `NITRO_PRESET=vercel npm run build` if desired.
 export default defineConfig({
   plugins: [
     tsConfigPaths(),

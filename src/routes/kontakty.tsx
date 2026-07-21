@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { PageHero } from "@/components/site/PageHero";
 import { submitLead } from "@/lib/supabase";
+import { cdn } from "@/lib/cdn";
 
 const STUDIO_LAT = 59.849;
 const STUDIO_LON = 30.74;
@@ -144,7 +145,7 @@ function KontaktyPage() {
           </>
         }
         lede="Рассчитаем стоимость, согласуем сроки и подберём удобное время для приезда в клубную студию UNIQUE."
-        image="/portfolio/audi-r8-v10-performance-0.jpg"
+        image={cdn("/portfolio/audi-r8-v10-performance-0.jpg")}
       />
 
       {/* ЗАЯВЛЕНИЕ О КОНФИДЕНЦИАЛЬНОСТИ ВЛАДЕЛЬЦА */}
@@ -220,7 +221,7 @@ function KontaktyPage() {
             <figure className="relative overflow-hidden border border-line">
               <div className="aspect-[4/5]">
                 <img
-                  src="/portfolio/mercedes-maybach-s-680-ext-2.jpg"
+                  src={cdn("/portfolio/mercedes-maybach-s-680-ext-2.jpg")}
                   alt="Клубный бокс студии UNIQUE"
                   loading="lazy"
                   className="h-full w-full object-cover transition-transform duration-[1600ms] hover:scale-105"

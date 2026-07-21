@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageHero, Rule } from "@/components/site/PageHero";
+import { cdn } from "@/lib/cdn";
 
 export const Route = createFileRoute("/uslugi")({
   head: () => ({
@@ -33,7 +34,7 @@ const SERVICES = [
     ],
     duration: "5 – 10 дней",
     from: "от 180 000 ₽",
-    img: "/portfolio/range-rover-sv-l460-craft-2.jpg",
+    img: cdn("/portfolio/range-rover-sv-l460-craft-2.jpg"),
   },
   {
     num: "02",
@@ -47,7 +48,7 @@ const SERVICES = [
     ],
     duration: "10 – 14 дней",
     from: "от 320 000 ₽",
-    img: "/portfolio/bmw-xm-label-red-0.jpg",
+    img: cdn("/portfolio/bmw-xm-label-red-0.jpg"),
   },
   {
     num: "03",
@@ -61,7 +62,7 @@ const SERVICES = [
     ],
     duration: "2 – 3 дня",
     from: "от 90 000 ₽",
-    img: "/portfolio/porsche-taycan-turbo-s-craft-4.jpg",
+    img: cdn("/portfolio/porsche-taycan-turbo-s-craft-4.jpg"),
   },
   {
     num: "04",
@@ -75,7 +76,7 @@ const SERVICES = [
     ],
     duration: "4 – 7 дней",
     from: "от 140 000 ₽",
-    img: "/portfolio/audi-rs6-avant-performance-craft-4.jpg",
+    img: cdn("/portfolio/audi-rs6-avant-performance-craft-4.jpg"),
   },
   {
     num: "05",
@@ -88,7 +89,7 @@ const SERVICES = [
     ],
     duration: "1 – 2 дня",
     from: "от 25 000 ₽",
-    img: "/portfolio/aston-martin-dbs-770-ultimate-det-2.jpg",
+    img: cdn("/portfolio/aston-martin-dbs-770-ultimate-det-2.jpg"),
   },
   {
     num: "06",
@@ -101,7 +102,7 @@ const SERVICES = [
     ],
     duration: "2 – 4 дня",
     from: "от 45 000 ₽",
-    img: "/portfolio/bentley-flying-spur-mulliner-2.jpg",
+    img: cdn("/portfolio/bentley-flying-spur-mulliner-2.jpg"),
   },
 ];
 
@@ -118,7 +119,7 @@ function UslugiPage() {
           </>
         }
         lede="Мы работаем по единым технологическим картам, отработанным в европейском центре UNIQUE. Каждая услуга — с гарантией, договором и клубной книгой владельца."
-        image="/portfolio/mclaren-765lt-0.jpg"
+        image={cdn("/portfolio/mclaren-765lt-0.jpg")}
       />
 
       {/* УСЛУГИ — чередующиеся блоки */}
