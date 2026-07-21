@@ -105,12 +105,25 @@ function WorkPage() {
 
       {/* ИСТОРИЯ ПРОЕКТА */}
       <section className="px-[6vw] py-32">
-        <div className="mx-auto grid max-w-[1280px] gap-16 md:grid-cols-[280px_1fr]">
+        <div className="mx-auto grid max-w-[1280px] gap-12 md:grid-cols-2 md:items-start md:gap-16">
           <div>
-            <p className="eyebrow">История проекта</p>
-            <p className="mt-6 font-display text-4xl uppercase text-mute-2">01</p>
+            <p className="eyebrow mb-6">История проекта</p>
+            <div className="relative aspect-[4/5] overflow-hidden bg-obsidian">
+              <img
+                src={w.gallery[17] ?? w.gallery[0] ?? w.hero}
+                alt={`${w.brand} ${w.model} — история проекта`}
+                className="h-full w-full object-cover"
+                loading="lazy"
+                decoding="async"
+                sizes="(min-width: 768px) 40vw, 90vw"
+              />
+              <div className="absolute inset-0 plate-scrim" />
+              <p className="absolute bottom-6 left-6 font-display text-5xl uppercase text-ivory/90">
+                01
+              </p>
+            </div>
           </div>
-          <div className="space-y-8 text-[16px] leading-[1.95] text-mute">
+          <div className="space-y-8 text-[16px] leading-[1.95] text-mute md:pt-14">
             {w.story.map((p, i) => (
               <p key={i}>{p}</p>
             ))}
