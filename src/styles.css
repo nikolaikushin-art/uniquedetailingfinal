@@ -32,7 +32,8 @@
   --color-ink-line: rgb(21 22 26 / 0.12);
 }
 
-html { scroll-behavior: smooth; }
+/* Keep page navigations instant. In-page hash/CTA scrolls opt into smooth via JS. */
+html { scroll-behavior: auto; }
 body {
   background: var(--color-obsidian);
   color: var(--color-ivory);

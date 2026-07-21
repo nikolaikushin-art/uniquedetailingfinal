@@ -9,6 +9,8 @@ export const getRouter = () => {
     routeTree,
     context: { queryClient },
     scrollRestoration: true,
+    // Instant reset — global CSS smooth scroll was animating from the previous Y.
+    scrollRestorationBehavior: "instant",
     defaultPreloadStaleTime: 0,
   });
 
