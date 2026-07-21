@@ -320,21 +320,20 @@ summary:focus-visible {
  * ============================================================ */
 /* Isolate so Leaflet panes/controls stay under the site header/logo (z-50). */
 .leaflet-container {
-  background: var(--color-obsidian);
+  background: #2a2e34;
   font-family: var(--font-sans);
   outline: none;
   isolation: isolate;
   z-index: 0 !important;
 }
-/* Deep obsidian basemap — dark, quiet roads, ember pin stays vivid. */
+/* High-contrast monochrome basemap — readable roads/labels, red pin stays vivid. */
 .leaflet-tile-pane,
 .uq-map-tiles {
-  filter: grayscale(1) brightness(0.72) contrast(1.18) saturate(0);
-  opacity: 0.88;
+  filter: grayscale(1) brightness(2.05) contrast(1.12) saturate(0);
 }
 .leaflet-control-zoom { border: none !important; box-shadow: none !important; margin: 16px !important; }
 .leaflet-control-zoom a {
-  background: rgba(8, 9, 11, 0.82) !important;
+  background: rgba(16, 18, 21, 0.85) !important;
   color: var(--color-ivory) !important;
   border: 1px solid var(--color-line-strong) !important;
   width: 34px; height: 34px; line-height: 32px;
