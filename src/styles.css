@@ -318,8 +318,7 @@ summary:focus-visible {
  * Grayscale basemap, no traffic/vendor chrome, single UNIQUE
  * red marker + refined dark controls. Matches the luxury identity.
  * ============================================================ */
-/* Isolate the map so Leaflet panes/controls (z-index 200–1000) stay inside
-   this stacking context and scroll under the site header/logo (z-50). */
+/* Isolate so Leaflet panes/controls stay under the site header/logo (z-50). */
 .leaflet-container {
   background: #3a3e45;
   font-family: var(--font-sans);
@@ -327,19 +326,6 @@ summary:focus-visible {
   isolation: isolate;
   z-index: 0 !important;
 }
-.leaflet-pane,
-.leaflet-top,
-.leaflet-bottom {
-  z-index: auto !important;
-}
-.leaflet-map-pane { z-index: 1 !important; }
-.leaflet-tile-pane { z-index: 1 !important; }
-.leaflet-overlay-pane { z-index: 2 !important; }
-.leaflet-shadow-pane { z-index: 3 !important; }
-.leaflet-marker-pane { z-index: 4 !important; }
-.leaflet-tooltip-pane { z-index: 5 !important; }
-.leaflet-popup-pane { z-index: 6 !important; }
-.leaflet-control { z-index: 7 !important; }
 /* Soft charcoal-grey basemap: lower contrast, muted roads/labels. */
 .leaflet-tile-pane,
 .uq-map-tiles {
