@@ -370,12 +370,12 @@ function KontaktyPage() {
             <span className="pointer-events-none absolute bottom-0 right-0 z-20 h-8 w-8 border-b-2 border-r-2 border-ember/70" />
 
             <div className="grid md:grid-cols-[1fr_360px]">
-              <div className="relative z-0 isolate min-h-[440px] overflow-hidden md:min-h-[580px] bg-[#34383f]">
+              <div className="relative z-0 isolate min-h-[440px] overflow-hidden bg-obsidian md:min-h-[580px]">
                 <PremiumMap />
-                {/* Soft wash — keeps basemap elegant / light-grey, not stark B&W */}
-                <div className="pointer-events-none absolute inset-0 z-[1] bg-[#3a3e45]/30" />
-                <div className="pointer-events-none absolute inset-0 z-[2] shadow-[inset_0_0_80px_rgba(20,22,26,0.35)]" />
-                <span className="pointer-events-none absolute left-5 top-5 z-[3] flex max-w-[min(92%,22rem)] items-center gap-2 rounded-sm bg-obsidian/70 px-3 py-1.5 text-[10px] uppercase tracking-[0.22em] text-ivory/90 backdrop-blur">
+                {/* Deep vignette — matches site obsidian, keeps map elegant and dark */}
+                <div className="pointer-events-none absolute inset-0 z-[1] bg-obsidian/25" />
+                <div className="pointer-events-none absolute inset-0 z-[2] shadow-[inset_0_0_100px_rgba(8,9,11,0.55)]" />
+                <span className="pointer-events-none absolute left-5 top-5 z-[3] flex max-w-[min(92%,22rem)] items-center gap-2 rounded-sm bg-obsidian/85 px-3 py-1.5 text-[10px] uppercase tracking-[0.22em] text-ivory backdrop-blur">
                   <span className="h-[6px] w-[6px] shrink-0 rounded-full bg-ember shadow-[0_0_10px_theme(colors.ember)]" />
                   Петрозаводская ул., 33 · Овцино
                 </span>

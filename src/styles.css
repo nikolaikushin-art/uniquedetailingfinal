@@ -320,23 +320,23 @@ summary:focus-visible {
  * ============================================================ */
 /* Isolate so Leaflet panes/controls stay under the site header/logo (z-50). */
 .leaflet-container {
-  background: #3a3e45;
+  background: var(--color-obsidian);
   font-family: var(--font-sans);
   outline: none;
   isolation: isolate;
   z-index: 0 !important;
 }
-/* Soft charcoal-grey basemap: lower contrast, muted roads/labels. */
+/* Deep obsidian basemap — dark, quiet roads, ember pin stays vivid. */
 .leaflet-tile-pane,
 .uq-map-tiles {
-  filter: grayscale(1) brightness(1.55) contrast(0.78) saturate(0);
-  opacity: 0.9;
+  filter: grayscale(1) brightness(0.72) contrast(1.18) saturate(0);
+  opacity: 0.88;
 }
 .leaflet-control-zoom { border: none !important; box-shadow: none !important; margin: 16px !important; }
 .leaflet-control-zoom a {
-  background: rgba(28, 31, 36, 0.72) !important;
+  background: rgba(8, 9, 11, 0.82) !important;
   color: var(--color-ivory) !important;
-  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border: 1px solid var(--color-line-strong) !important;
   width: 34px; height: 34px; line-height: 32px;
   backdrop-filter: blur(6px);
   transition: background .3s ease, color .3s ease, border-color .3s ease;
@@ -346,7 +346,7 @@ summary:focus-visible {
   background: var(--color-ember) !important; color: #fff !important; border-color: var(--color-ember) !important;
 }
 .leaflet-control-attribution {
-  background: rgba(28, 31, 36, 0.45) !important;
+  background: rgba(8, 9, 11, 0.55) !important;
   color: var(--color-mute-2) !important;
   font-size: 9px !important; letter-spacing: 0.05em;
   padding: 2px 8px !important; margin: 0 !important;
