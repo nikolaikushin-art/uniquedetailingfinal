@@ -1,8 +1,8 @@
 # UNIQUE Detailing — engineering notes
 
 Standalone TanStack Start (React 19, SSR) site. Build tooling is native Vite
-(`vite.config.ts`) with Tailwind v4 and Nitro; there is **no** Lovable
-dependency. GitHub is the single source of truth.
+(`vite.config.ts`) with Tailwind v4 and Nitro. GitHub is the single source of
+truth.
 
 - Package manager: `npm` (or `bun`). Build: `npm run build`. Dev: `npm run dev`.
 - Deploy target: Vercel. Nitro auto-detects the Vercel environment; you can

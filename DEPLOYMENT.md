@@ -1,21 +1,18 @@
-# Deployment & migration guide
+# Deployment & configuration guide
 
-This project is now **fully independent of Lovable**. GitHub is the source of
-truth. It builds with native Vite + TanStack Start (SSR) + Nitro and deploys to
-Vercel via the Nitro Vercel preset (Build Output API v3).
+GitHub is the source of truth. The site builds with native Vite + TanStack
+Start (SSR) + Nitro and deploys to Vercel via the Nitro Vercel preset (Build
+Output API v3).
 
-## What was migrated off Lovable
+## Build
 
-- **Build config** rewritten in `vite.config.ts` using native plugins
+- Build config lives in `vite.config.ts` using native plugins
   (`@tanstack/react-start`, `@vitejs/plugin-react`, `@tailwindcss/vite`,
-  `vite-tsconfig-paths`, `nitro/vite`). The `@lovable.dev/*` packages were removed.
-- **Brand media rescued** from Lovable storage into the repo:
-  `public/media/logo.png`, `public/media/numberplate-logo.png`,
-  `public/media/hero.mp4`. The `*.asset.json` manifests now point at `/media/*`.
-  No asset loads from `/__l5e/*` or `*.lovable.app` any longer.
-- **Removed** the Lovable error-reporting module, the Lovable preview OG image
-  (now `/og-cover.jpg`), and the `*.lovable.app` canonical URL (now driven by
-  `VITE_SITE_URL`).
+  `vite-tsconfig-paths`, `nitro/vite`).
+- Brand media (logo, hero video) is served from `public/media/`; the
+  `*.asset.json` manifests point at `/media/*`.
+- The Open Graph preview image is `public/og-cover.jpg`; the canonical URL is
+  driven by `VITE_SITE_URL`.
 
 ## Vercel setup (dashboard actions — do these in your account)
 
@@ -56,6 +53,6 @@ are set, the form still works visually and simply skips the insert (it reports
 ## Cloudflare R2 (optional)
 
 The site does **not** require R2 — media is self-hosted in `public/` and served
-by Vercel's CDN, so nothing depends on Lovable or temporary links. If you want to
-offload media to the Unique Operations R2 bucket later, serve it behind a CDN
-domain and set `VITE_ASSET_BASE_URL`; asset paths would then be prefixed with it.
+by Vercel's CDN. If you want to offload media to the Unique Operations R2 bucket,
+serve it behind a CDN domain and set `VITE_ASSET_BASE_URL`; asset paths would
+then be prefixed with it.
