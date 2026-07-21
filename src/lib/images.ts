@@ -1,3 +1,5 @@
+import { asset } from "./asset";
+
 // Site-wide imagery now draws exclusively from the studio's own portfolio
 // renders under /public/portfolio. No external stock (Unsplash) or legacy
 // generic vehicles remain anywhere on the site — every hero, preview and
@@ -48,11 +50,13 @@ export const LIFESTYLE_IMAGES = [
 // the width argument is accepted for compatibility but real files are served at
 // their native resolution.
 export const carImage = (i: number, _w = 1600) =>
-  CAR_IMAGES[((i % CAR_IMAGES.length) + CAR_IMAGES.length) % CAR_IMAGES.length];
+  asset(CAR_IMAGES[((i % CAR_IMAGES.length) + CAR_IMAGES.length) % CAR_IMAGES.length]);
 export const lifestyleImage = (i: number, _w = 1600) =>
-  LIFESTYLE_IMAGES[
-    ((i % LIFESTYLE_IMAGES.length) + LIFESTYLE_IMAGES.length) % LIFESTYLE_IMAGES.length
-  ];
+  asset(
+    LIFESTYLE_IMAGES[
+      ((i % LIFESTYLE_IMAGES.length) + LIFESTYLE_IMAGES.length) % LIFESTYLE_IMAGES.length
+    ],
+  );
 
 // Kept for backward compatibility with any consumers building srcsets.
 export const carImageSrcSet = (i: number, widths: number[] = [640, 960, 1280, 1600, 1920]) =>

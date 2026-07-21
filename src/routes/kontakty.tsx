@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { PageHero } from "@/components/site/PageHero";
 import { submitLead } from "@/lib/supabase";
+import { asset } from "@/lib/asset";
 
 const STUDIO_LAT = 59.849;
 const STUDIO_LON = 30.74;
@@ -109,26 +110,36 @@ export const Route = createFileRoute("/kontakty")({
 function KontaktyPage() {
   const [sent, setSent] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const fd = new FormData(e.currentTarget);
+    const name = String(fd.get("name") ?? "").trim();
+    const phone = String(fd.get("phone") ?? "").trim();
+    const email = String(fd.get("email") ?? "").trim();
+
+    if (!name || (!phone && !email)) {
+      setError("Укажите имя и телефон или email, чтобы мы могли связаться.");
+      return;
+    }
+
+    setError(null);
     setSubmitting(true);
-    try {
-      // Persists to Supabase when configured; degrades gracefully otherwise.
-      await submitLead({
-        name: String(fd.get("name") ?? ""),
-        phone: String(fd.get("phone") ?? ""),
-        email: String(fd.get("email") ?? ""),
-        car: String(fd.get("car") ?? ""),
-        service: String(fd.get("service") ?? ""),
-        comment: String(fd.get("comment") ?? ""),
-      });
-    } catch (err) {
-      console.error("Lead submission failed:", err);
-    } finally {
-      setSubmitting(false);
+    const result = await submitLead({
+      name,
+      phone,
+      email,
+      car: String(fd.get("car") ?? "").trim(),
+      service: String(fd.get("service") ?? ""),
+      comment: String(fd.get("comment") ?? "").trim(),
+    });
+    setSubmitting(false);
+
+    if (result.ok) {
       setSent(true);
+    } else {
+      setError("Не удалось отправить заявку. Попробуйте ещё раз или позвоните нам.");
     }
   }
 
@@ -144,7 +155,7 @@ function KontaktyPage() {
           </>
         }
         lede="Рассчитаем стоимость, согласуем сроки и подберём удобное время для приезда в клубную студию UNIQUE."
-        image="/portfolio/audi-r8-v10-performance-0.jpg"
+        image={asset("/portfolio/audi-r8-v10-performance-0.jpg")}
       />
 
       {/* ЗАЯВЛЕНИЕ О КОНФИДЕНЦИАЛЬНОСТИ ВЛАДЕЛЬЦА */}
@@ -220,7 +231,7 @@ function KontaktyPage() {
             <figure className="relative overflow-hidden border border-line">
               <div className="aspect-[4/5]">
                 <img
-                  src="/portfolio/mercedes-maybach-s-680-ext-2.jpg"
+                  src={asset("/portfolio/mercedes-maybach-s-680-ext-2.jpg")}
                   alt="Клубный бокс студии UNIQUE"
                   loading="lazy"
                   className="h-full w-full object-cover transition-transform duration-[1600ms] hover:scale-105"
@@ -324,6 +335,8 @@ function KontaktyPage() {
                     placeholder="Опишите пожелания или задайте вопрос"
                   />
                 </div>
+
+                {error ? <p className="text-[13px] leading-[1.6] text-ember">{error}</p> : null}
 
                 <div className="flex flex-wrap items-center justify-between gap-4">
                   <p className="max-w-[300px] text-[11px] leading-[1.6] text-mute-2">

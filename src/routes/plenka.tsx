@@ -3,6 +3,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Rule } from "@/components/site/PageHero";
 import { STUDIO_VEHICLES } from "@/lib/studio-vehicles";
 import logo from "@/assets/logo.png.asset.json";
+import { asset } from "@/lib/asset";
 
 /* ─────────── Coverage packages ─────────── */
 const PACKAGES = [
@@ -90,33 +91,33 @@ export const Route = createFileRoute("/plenka")({
  * Studio-generated brand & material photography under /public/ppf.
  * Every branded shot carries the physical «UNIQUE · DETAILING» wordmark. */
 const PPF = {
-  hero: "/ppf/ppf-hero.jpg",
-  clarity: "/ppf/ppf-clarity.jpg",
-  hydrophobic: "/ppf/ppf-hydrophobic.jpg",
-  selfheal: "/ppf/ppf-selfheal.jpg",
-  layers: "/ppf/ppf-layers.jpg",
-  roll: "/ppf/ppf-roll.jpg",
-  box: "/ppf/ppf-box.jpg",
-  boxes: "/ppf/ppf-boxes.jpg",
-  caseKit: "/ppf/ppf-case.jpg",
-  shelf: "/ppf/ppf-shelf.jpg",
-  gloss: "/ppf/ppf-gloss.jpg",
-  matte: "/ppf/ppf-matte.jpg",
-  special: "/ppf/ppf-special.jpg",
-  before: "/ppf/ppf-before.jpg",
-  after: "/ppf/ppf-after.jpg",
-  installCut: "/ppf/ppf-install-cut.jpg",
-  installApply: "/ppf/ppf-install-apply.jpg",
-  installInspect: "/ppf/ppf-install-inspect.jpg",
+  hero: asset("/ppf/ppf-hero.jpg"),
+  clarity: asset("/ppf/ppf-clarity.jpg"),
+  hydrophobic: asset("/ppf/ppf-hydrophobic.jpg"),
+  selfheal: asset("/ppf/ppf-selfheal.jpg"),
+  layers: asset("/ppf/ppf-layers.jpg"),
+  roll: asset("/ppf/ppf-roll.jpg"),
+  box: asset("/ppf/ppf-box.jpg"),
+  boxes: asset("/ppf/ppf-boxes.jpg"),
+  caseKit: asset("/ppf/ppf-case.jpg"),
+  shelf: asset("/ppf/ppf-shelf.jpg"),
+  gloss: asset("/ppf/ppf-gloss.jpg"),
+  matte: asset("/ppf/ppf-matte.jpg"),
+  special: asset("/ppf/ppf-special.jpg"),
+  before: asset("/ppf/ppf-before.jpg"),
+  after: asset("/ppf/ppf-after.jpg"),
+  installCut: asset("/ppf/ppf-install-cut.jpg"),
+  installApply: asset("/ppf/ppf-install-apply.jpg"),
+  installInspect: asset("/ppf/ppf-install-inspect.jpg"),
   // New brand & material photography (official-logo product line)
-  rollsDuo: "/ppf/ppf-rolls-duo.jpg",
-  suite: "/ppf/ppf-suite.jpg",
-  swatches: "/ppf/ppf-swatches.jpg",
-  core: "/ppf/ppf-core.jpg",
-  beading: "/ppf/ppf-beading.jpg",
-  heal2: "/ppf/ppf-heal2.jpg",
-  apply2: "/ppf/ppf-apply2.jpg",
-  knife2: "/ppf/ppf-knife2.jpg",
+  rollsDuo: asset("/ppf/ppf-rolls-duo.jpg"),
+  suite: asset("/ppf/ppf-suite.jpg"),
+  swatches: asset("/ppf/ppf-swatches.jpg"),
+  core: asset("/ppf/ppf-core.jpg"),
+  beading: asset("/ppf/ppf-beading.jpg"),
+  heal2: asset("/ppf/ppf-heal2.jpg"),
+  apply2: asset("/ppf/ppf-apply2.jpg"),
+  knife2: asset("/ppf/ppf-knife2.jpg"),
 } as const;
 
 /* ─────────── Vehicle demonstration data (the 30% — cars proving the film) ─────────── */
@@ -135,11 +136,11 @@ const DEMOS: Demo[] = [
     brand: "Lamborghini",
     model: "Revuelto",
     finish: "Full Body PPF · Arancio Borealis",
-    hero: "/portfolio/lamborghini-revuelto-0.jpg",
+    hero: asset("/portfolio/lamborghini-revuelto-0.jpg"),
     details: [
-      { img: "/portfolio/lamborghini-revuelto-det-4.jpg", label: "Передний сплиттер" },
-      { img: "/portfolio/lamborghini-revuelto-det-2.jpg", label: "Оптика · защита фар" },
-      { img: "/portfolio/lamborghini-revuelto-det-1.jpg", label: "Изгиб кузова" },
+      { img: asset("/portfolio/lamborghini-revuelto-det-4.jpg"), label: "Передний сплиттер" },
+      { img: asset("/portfolio/lamborghini-revuelto-det-2.jpg"), label: "Оптика · защита фар" },
+      { img: asset("/portfolio/lamborghini-revuelto-det-1.jpg"), label: "Изгиб кузова" },
     ],
   },
   {
@@ -147,11 +148,11 @@ const DEMOS: Demo[] = [
     brand: "Ferrari",
     model: "SF90 Stradale",
     finish: "Full Body PPF · Rosso Corsa",
-    hero: "/portfolio/ferrari-sf90-stradale-0.jpg",
+    hero: asset("/portfolio/ferrari-sf90-stradale-0.jpg"),
     details: [
-      { img: "/portfolio/ferrari-sf90-stradale-det-4.jpg", label: "Капот и решётка" },
-      { img: "/portfolio/ferrari-sf90-stradale-det-5.jpg", label: "Зеркало и кромка" },
-      { img: "/portfolio/ferrari-sf90-stradale-det-1.jpg", label: "Колесо и арка" },
+      { img: asset("/portfolio/ferrari-sf90-stradale-det-4.jpg"), label: "Капот и решётка" },
+      { img: asset("/portfolio/ferrari-sf90-stradale-det-5.jpg"), label: "Зеркало и кромка" },
+      { img: asset("/portfolio/ferrari-sf90-stradale-det-1.jpg"), label: "Колесо и арка" },
     ],
   },
   {
@@ -159,11 +160,11 @@ const DEMOS: Demo[] = [
     brand: "Rolls-Royce",
     model: "Phantom Series II",
     finish: "Full Body PPF · Infinity Black",
-    hero: "/portfolio/rolls-royce-phantom-series-ii-0.jpg",
+    hero: asset("/portfolio/rolls-royce-phantom-series-ii-0.jpg"),
     details: [
-      { img: "/portfolio/rolls-royce-phantom-series-ii-det-4.jpg", label: "Капот и кромки" },
-      { img: "/portfolio/rolls-royce-phantom-series-ii-det-2.jpg", label: "Оптика" },
-      { img: "/portfolio/rolls-royce-phantom-series-ii-det-5.jpg", label: "Зеркало" },
+      { img: asset("/portfolio/rolls-royce-phantom-series-ii-det-4.jpg"), label: "Капот и кромки" },
+      { img: asset("/portfolio/rolls-royce-phantom-series-ii-det-2.jpg"), label: "Оптика" },
+      { img: asset("/portfolio/rolls-royce-phantom-series-ii-det-5.jpg"), label: "Зеркало" },
     ],
   },
   {
@@ -171,11 +172,11 @@ const DEMOS: Demo[] = [
     brand: "Mercedes-Benz",
     model: "G 63 AMG",
     finish: "Full Body PPF · Graphite Magno",
-    hero: "/portfolio/mercedes-benz-g-63-amg-0.jpg",
+    hero: asset("/portfolio/mercedes-benz-g-63-amg-0.jpg"),
     details: [
-      { img: "/portfolio/mercedes-benz-g-63-amg-det-4.jpg", label: "Фронтальная зона" },
-      { img: "/portfolio/mercedes-benz-g-63-amg-det-2.jpg", label: "Оптика" },
-      { img: "/portfolio/mercedes-benz-g-63-amg-det-1.jpg", label: "Колесо и арка" },
+      { img: asset("/portfolio/mercedes-benz-g-63-amg-det-4.jpg"), label: "Фронтальная зона" },
+      { img: asset("/portfolio/mercedes-benz-g-63-amg-det-2.jpg"), label: "Оптика" },
+      { img: asset("/portfolio/mercedes-benz-g-63-amg-det-1.jpg"), label: "Колесо и арка" },
     ],
   },
 ];
@@ -220,22 +221,22 @@ const FINISHES = [
 
 /* ─────────── UNIQUE film colour & finish collection ─────────── */
 const COLOURS: { img: string; name: string; type: string }[] = [
-  { img: "/ppf/ppf-c-piano-black.jpg", name: "Piano Black", type: "Глянец" },
-  { img: "/ppf/ppf-c-obsidian-black.jpg", name: "Obsidian Black", type: "Глянец" },
-  { img: "/ppf/ppf-c-satin-black.jpg", name: "Satin Black", type: "Сатин" },
-  { img: "/ppf/ppf-c-matte-charcoal.jpg", name: "Matte Charcoal", type: "Мат" },
-  { img: "/ppf/ppf-c-graphite.jpg", name: "Graphite", type: "Сатин" },
-  { img: "/ppf/ppf-c-metallic-grey.jpg", name: "Metallic Grey", type: "Металлик" },
-  { img: "/ppf/ppf-c-nardo-grey.jpg", name: "Nardo Grey", type: "Сатин-мат" },
-  { img: "/ppf/ppf-c-frozen-grey.jpg", name: "Frozen Grey", type: "Мат" },
-  { img: "/ppf/ppf-c-titanium-silver.jpg", name: "Titanium Silver", type: "Металлик" },
-  { img: "/ppf/ppf-c-champagne-silver.jpg", name: "Champagne Silver", type: "Металлик" },
-  { img: "/ppf/ppf-c-pearl-white.jpg", name: "Pearl White", type: "Перламутр" },
-  { img: "/ppf/ppf-c-racing-blue.jpg", name: "Racing Blue", type: "Глянец" },
-  { img: "/ppf/ppf-c-deep-emerald.jpg", name: "Deep Emerald", type: "Глянец" },
-  { img: "/ppf/ppf-c-burgundy.jpg", name: "Burgundy", type: "Глянец" },
-  { img: "/ppf/ppf-c-bronze-metallic.jpg", name: "Bronze Metallic", type: "Металлик" },
-  { img: "/ppf/ppf-c-carbon.jpg", name: "Carbon", type: "Карбон" },
+  { img: asset("/ppf/ppf-c-piano-black.jpg"), name: "Piano Black", type: "Глянец" },
+  { img: asset("/ppf/ppf-c-obsidian-black.jpg"), name: "Obsidian Black", type: "Глянец" },
+  { img: asset("/ppf/ppf-c-satin-black.jpg"), name: "Satin Black", type: "Сатин" },
+  { img: asset("/ppf/ppf-c-matte-charcoal.jpg"), name: "Matte Charcoal", type: "Мат" },
+  { img: asset("/ppf/ppf-c-graphite.jpg"), name: "Graphite", type: "Сатин" },
+  { img: asset("/ppf/ppf-c-metallic-grey.jpg"), name: "Metallic Grey", type: "Металлик" },
+  { img: asset("/ppf/ppf-c-nardo-grey.jpg"), name: "Nardo Grey", type: "Сатин-мат" },
+  { img: asset("/ppf/ppf-c-frozen-grey.jpg"), name: "Frozen Grey", type: "Мат" },
+  { img: asset("/ppf/ppf-c-titanium-silver.jpg"), name: "Titanium Silver", type: "Металлик" },
+  { img: asset("/ppf/ppf-c-champagne-silver.jpg"), name: "Champagne Silver", type: "Металлик" },
+  { img: asset("/ppf/ppf-c-pearl-white.jpg"), name: "Pearl White", type: "Перламутр" },
+  { img: asset("/ppf/ppf-c-racing-blue.jpg"), name: "Racing Blue", type: "Глянец" },
+  { img: asset("/ppf/ppf-c-deep-emerald.jpg"), name: "Deep Emerald", type: "Глянец" },
+  { img: asset("/ppf/ppf-c-burgundy.jpg"), name: "Burgundy", type: "Глянец" },
+  { img: asset("/ppf/ppf-c-bronze-metallic.jpg"), name: "Bronze Metallic", type: "Металлик" },
+  { img: asset("/ppf/ppf-c-carbon.jpg"), name: "Carbon", type: "Карбон" },
 ];
 
 /* ─────────── Pairing system (Vehicle + Material + Film detail) ─────────── */
@@ -256,39 +257,39 @@ type Pairing = {
 const PAIRINGS: Pairing[] = [
   {
     n: "01",
-    veh: "/portfolio/rolls-royce-phantom-series-ii-0.jpg",
+    veh: asset("/portfolio/rolls-royce-phantom-series-ii-0.jpg"),
     brand: "Rolls-Royce",
     model: "Phantom Series II",
-    material: "/ppf/ppf-gloss.jpg",
+    material: asset("/ppf/ppf-gloss.jpg"),
     materialName: "UNIQUE Gloss",
     materialTag: "Полная оклейка кузова",
-    detail: "/ppf/ppf-c-piano-black.jpg",
+    detail: asset("/ppf/ppf-c-piano-black.jpg"),
     detailName: "Piano Black",
     detailTag: "Глянец · отражение",
     note: "Глянцевая плёнка повторяет глубину лака Infinity Black — защита невидима, кузов нетронут.",
   },
   {
     n: "02",
-    veh: "/portfolio/lamborghini-revuelto-0.jpg",
+    veh: asset("/portfolio/lamborghini-revuelto-0.jpg"),
     brand: "Lamborghini",
     model: "Revuelto",
-    material: "/ppf/ppf-special.jpg",
+    material: asset("/ppf/ppf-special.jpg"),
     materialName: "UNIQUE Special",
     materialTag: "Ударная зона · трек",
-    detail: "/ppf/ppf-band-edge.jpg",
+    detail: asset("/ppf/ppf-band-edge.jpg"),
     detailName: "Кромка плёнки",
     detailTag: "Прозрачность 99.7%",
     note: "Фронтальная зона и арки под ядром 210 µm — щебень и трек без единого скола.",
   },
   {
     n: "03",
-    veh: "/portfolio/mercedes-benz-g-63-amg-0.jpg",
+    veh: asset("/portfolio/mercedes-benz-g-63-amg-0.jpg"),
     brand: "Mercedes-Benz",
     model: "G 63 AMG",
-    material: "/ppf/ppf-matte.jpg",
+    material: asset("/ppf/ppf-matte.jpg"),
     materialName: "UNIQUE Stealth",
     materialTag: "Сатиновое покрытие",
-    detail: "/ppf/ppf-c-satin-black.jpg",
+    detail: asset("/ppf/ppf-c-satin-black.jpg"),
     detailName: "Satin Black",
     detailTag: "Стелс · матовость",
     note: "Graphite Magno в сатине: матовый характер и полная защита кузова одной плёнкой.",
@@ -349,7 +350,7 @@ const EXTERIOR_PROJECTS: Project[] = STUDIO_VEHICLES.map((v) => {
     model: v.model,
     finish: `${FINISH_LABEL[category]} · ${v.paintName}`,
     category,
-    img: `/portfolio/${v.slug}-ext-3.jpg`,
+    img: asset(`/portfolio/${v.slug}-ext-3.jpg`),
   };
 });
 
@@ -359,49 +360,49 @@ const FRONT_PROJECTS: Project[] = [
     model: "911 GT3 RS",
     finish: "Track PPF · Gloss White",
     category: "Supercar Collection",
-    img: "/portfolio/porsche-911-gt3-rs-ppf.jpg",
+    img: asset("/portfolio/porsche-911-gt3-rs-ppf.jpg"),
   },
   {
     brand: "Ferrari",
     model: "Roma",
     finish: "Clear Bra · решётка и капот",
     category: "Front Protection",
-    img: "/portfolio/ferrari-roma-det-4.jpg",
+    img: asset("/portfolio/ferrari-roma-det-4.jpg"),
   },
   {
     brand: "Aston Martin",
     model: "DB12",
     finish: "Clear Bra · оптика",
     category: "Front Protection",
-    img: "/portfolio/aston-martin-db12-det-2.jpg",
+    img: asset("/portfolio/aston-martin-db12-det-2.jpg"),
   },
   {
     brand: "Porsche",
     model: "911 Turbo S",
     finish: "Track front · защита носа",
     category: "Front Protection",
-    img: "/portfolio/porsche-911-turbo-s-det-2.jpg",
+    img: asset("/portfolio/porsche-911-turbo-s-det-2.jpg"),
   },
   {
     brand: "Lamborghini",
     model: "Revuelto",
     finish: "Front splitter PPF",
     category: "Front Protection",
-    img: "/portfolio/lamborghini-revuelto-det-4.jpg",
+    img: asset("/portfolio/lamborghini-revuelto-det-4.jpg"),
   },
   {
     brand: "BMW",
     model: "XM Label Red",
     finish: "Front guard · решётка",
     category: "Front Protection",
-    img: "/portfolio/bmw-xm-label-red-det-4.jpg",
+    img: asset("/portfolio/bmw-xm-label-red-det-4.jpg"),
   },
   {
     brand: "McLaren",
     model: "750S Spider",
     finish: "Nose PPF · оптика",
     category: "Front Protection",
-    img: "/portfolio/mclaren-750s-spider-det-2.jpg",
+    img: asset("/portfolio/mclaren-750s-spider-det-2.jpg"),
   },
 ];
 
@@ -697,7 +698,7 @@ function PlenkaPage() {
       {/* ═══════════ CINEMATIC BAND — GLOSS REFLECTION ═══════════ */}
       <section className="relative flex min-h-[62vh] items-end overflow-hidden border-y border-line">
         <img
-          src="/ppf/ppf-band-reflection.jpg"
+          src={asset("/ppf/ppf-band-reflection.jpg")}
           alt="UNIQUE PPF — глянцевое отражение на кузове"
           loading="lazy"
           className="absolute inset-0 h-full w-full object-cover"
@@ -725,7 +726,7 @@ function PlenkaPage() {
           }}
         />
         <div className="relative mx-auto flex max-w-[1100px] flex-col items-center text-center">
-          <img src={logo.url} alt="UNIQUE Detailing" className="h-16 w-auto md:h-20" />
+          <img src={asset(logo.url)} alt="UNIQUE Detailing" className="h-16 w-auto md:h-20" />
           <div className="mt-8 h-px w-16 bg-ember" />
           <p className="mt-8 max-w-[680px] text-[15px] leading-[1.95] text-mute">
             UNIQUE PPF — собственный бренд защитных плёнок. Единая айдентика от рулона и упаковки до
@@ -907,7 +908,7 @@ function PlenkaPage() {
           <div className="grid gap-2 md:grid-cols-2">
             {[
               {
-                img: "/ppf/ppf-band-beading.jpg",
+                img: asset("/ppf/ppf-band-beading.jpg"),
                 tag: "Гидрофобность",
                 title: "Вода скатывается сама",
                 body: "Топ-коат превращает воду в плотные капли — они скатываются, унося грязь и реагенты.",
@@ -1183,7 +1184,7 @@ function PlenkaPage() {
       {/* ═══════════ CINEMATIC BAND — STEALTH SATIN ═══════════ */}
       <section className="relative flex min-h-[58vh] items-end overflow-hidden border-y border-line">
         <img
-          src="/ppf/ppf-band-satin.jpg"
+          src={asset("/ppf/ppf-band-satin.jpg")}
           alt="UNIQUE PPF — сатиновое стелс-покрытие"
           loading="lazy"
           className="absolute inset-0 h-full w-full object-cover"

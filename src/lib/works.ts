@@ -2,6 +2,7 @@
 // Each portfolio entry uses a dedicated photo set generated for that exact
 // vehicle (brand, model, body, paint), stored under /public/portfolio and
 // keyed by slug, so every card and detail page matches its label.
+import { asset } from "./asset";
 import { STUDIO_VEHICLES, type StudioVehicle } from "./studio-vehicles";
 
 export type Spec = { label: string; value: string };
@@ -209,15 +210,15 @@ export const WORKS: Work[] = STUDIO_VEHICLES.map((vehicle, i) => {
     "UNIQUE PPF Clear + Ceramic",
   ][i % 4];
   // Per-vehicle photo set: 0 = hero/front 3/4, 1 = rear 3/4, 2 = interior, 3 = detail.
-  const shot = (n: 0 | 1 | 2 | 3) => `/portfolio/${vehicle.slug}-${n}.jpg`;
+  const shot = (n: 0 | 1 | 2 | 3) => asset(`/portfolio/${vehicle.slug}-${n}.jpg`);
   // Three extra unique exterior angles (front-on, side profile, elevated rear 3/4).
-  const ext = (n: 1 | 2 | 3) => `/portfolio/${vehicle.slug}-ext-${n}.jpg`;
+  const ext = (n: 1 | 2 | 3) => asset(`/portfolio/${vehicle.slug}-ext-${n}.jpg`);
   // Six distinct interiors per car (original + 5 unique angles), no repeats.
-  const interior = (n: 1 | 2 | 3 | 4 | 5) => `/portfolio/${vehicle.slug}-int-${n}.jpg`;
+  const interior = (n: 1 | 2 | 3 | 4 | 5) => asset(`/portfolio/${vehicle.slug}-int-${n}.jpg`);
   // Six unique detail close-ups (wheel/caliper, headlight, grille/badge, mirror/PPF, exhaust, taillight).
-  const detail = (n: 1 | 2 | 3 | 4 | 5 | 6) => `/portfolio/${vehicle.slug}-det-${n}.jpg`;
+  const detail = (n: 1 | 2 | 3 | 4 | 5 | 6) => asset(`/portfolio/${vehicle.slug}-det-${n}.jpg`);
   // Six craftsmanship stages: prep, wash, correction, PPF, coating, inspection.
-  const craft = (n: 1 | 2 | 3 | 4 | 5 | 6) => `/portfolio/${vehicle.slug}-craft-${n}.jpg`;
+  const craft = (n: 1 | 2 | 3 | 4 | 5 | 6) => asset(`/portfolio/${vehicle.slug}-craft-${n}.jpg`);
   const gallery = [
     // 0–5 exterior (6 distinct angles, no repeats)
     shot(0),
