@@ -51,7 +51,7 @@ function PremiumMap() {
         if (cancelled || !ref.current || (ref.current as any)._leaflet_id) return;
         map = L.map(ref.current, {
           center: [STUDIO_LAT, STUDIO_LON],
-          zoom: 14,
+          zoom: 12,
           zoomControl: false,
           scrollWheelZoom: false,
           attributionControl: false,
@@ -60,6 +60,7 @@ function PremiumMap() {
         L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
           maxZoom: 19,
           subdomains: "abcd",
+          className: "uq-map-tiles",
         }).addTo(map);
         L.control.zoom({ position: "bottomright" }).addTo(map);
         L.control
@@ -372,9 +373,9 @@ function KontaktyPage() {
               <div className="relative min-h-[440px] md:min-h-[580px] bg-obsidian">
                 <PremiumMap />
                 <div className="pointer-events-none absolute inset-0 z-[400] shadow-[inset_0_0_70px_rgba(8,9,11,0.35)]" />
-                <span className="pointer-events-none absolute left-5 top-5 z-[500] flex items-center gap-2 rounded-sm bg-obsidian/80 px-3 py-1.5 text-[10px] uppercase tracking-[0.3em] text-ivory backdrop-blur">
-                  <span className="h-[6px] w-[6px] rounded-full bg-ember shadow-[0_0_10px_theme(colors.ember)]" />
-                  UNIQUE · Овцино
+                <span className="pointer-events-none absolute left-5 top-5 z-[500] flex max-w-[min(92%,22rem)] items-center gap-2 rounded-sm bg-obsidian/80 px-3 py-1.5 text-[10px] uppercase tracking-[0.22em] text-ivory backdrop-blur">
+                  <span className="h-[6px] w-[6px] shrink-0 rounded-full bg-ember shadow-[0_0_10px_theme(colors.ember)]" />
+                  Петрозаводская ул., 33 · Овцино
                 </span>
               </div>
 
