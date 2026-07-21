@@ -344,22 +344,16 @@ function KontaktyPage() {
       {/* ПРЕМИАЛЬНАЯ КАРТА */}
       <section className="border-t border-line px-[6vw] py-24">
         <div className="mx-auto max-w-[1400px]">
-          <div className="mb-10 flex flex-wrap items-end justify-between gap-5">
-            <div>
-              <p className="eyebrow eyebrow-dot mb-4">Локация клубной студии</p>
-              <h2
-                className="font-display uppercase leading-tight text-ivory"
-                style={{ fontSize: "clamp(26px,3vw,42px)", letterSpacing: "0.05em" }}
-              >
-                Найдите нас
-                <br />
-                <span className="text-ember">на карте.</span>
-              </h2>
-            </div>
-            <p className="max-w-[360px] text-[13.5px] leading-[1.85] text-mute">
-              Монохромная карта студии без лишних элементов. Постройте маршрут в один клик — от
-              вашего местоположения до дверей UNIQUE.
-            </p>
+          <div className="mb-10">
+            <p className="eyebrow eyebrow-dot mb-4">Локация клубной студии</p>
+            <h2
+              className="font-display uppercase leading-tight text-ivory"
+              style={{ fontSize: "clamp(26px,3vw,42px)", letterSpacing: "0.05em" }}
+            >
+              Найдите нас
+              <br />
+              <span className="text-ember">на карте.</span>
+            </h2>
           </div>
 
           <div className="relative z-0 isolate overflow-hidden border border-line-strong bg-obsidian-2">

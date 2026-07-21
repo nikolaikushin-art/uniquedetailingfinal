@@ -769,7 +769,7 @@ function PlenkaPage() {
                   </div>
                   <div className="absolute inset-0 plate-scrim" />
                   <span className="absolute left-5 top-5 border border-ivory/30 bg-obsidian/50 px-3 py-1 text-[9px] uppercase tracking-[0.28em] text-ivory backdrop-blur-sm">
-                    {p.n} · Pairing
+                    {p.n} · Проект
                   </span>
                   <div className="absolute inset-x-0 bottom-0 p-8">
                     <h3
@@ -1014,7 +1014,7 @@ function PlenkaPage() {
               className="font-display uppercase leading-tight text-ivory"
               style={{ fontSize: "clamp(26px,3.2vw,46px)", letterSpacing: "0.04em" }}
             >
-              Потяните ползунок
+              До и после защиты
             </h2>
             <p className="max-w-[360px] text-[13.5px] leading-[1.85] text-mute">
               Слева — незащищённый лак со следами эксплуатации. Справа — поверхность под плёнкой
@@ -1117,8 +1117,7 @@ function PlenkaPage() {
               </h2>
             </div>
             <p className="max-w-[360px] text-[13.5px] leading-[1.85] text-mute">
-              {list.length} проектов в подборке. Наведите на карточку, чтобы увидеть спецификацию,
-              нажмите — чтобы открыть кадр во весь экран.
+              {list.length} проектов с оклейкой UNIQUE PPF — от прозрачной защиты до смены цвета.
             </p>
           </div>
 

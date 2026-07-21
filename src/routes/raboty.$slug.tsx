@@ -633,7 +633,7 @@ function CinematicGallery({ w }: { w: Work }) {
       <div className="mx-auto max-w-[1500px]">
         <div className="mb-10 flex flex-wrap items-end justify-between gap-6">
           <div>
-            <p className="eyebrow eyebrow-dot mb-4">Кинематическая галерея</p>
+            <p className="eyebrow eyebrow-dot mb-4">Галерея проекта</p>
             <h2
               className="font-display uppercase text-ivory"
               style={{ fontSize: "clamp(28px,3.4vw,44px)", letterSpacing: "0.05em" }}
@@ -906,14 +906,15 @@ function ExploreAccordion({ w }: { w: Work }) {
               className="font-display uppercase leading-tight text-ivory"
               style={{ fontSize: "clamp(28px,3.6vw,48px)", letterSpacing: "0.05em" }}
             >
-              Четыре измерения
+              Детали проекта
               <br />
-              <span className="text-ember">одной работы.</span>
+              <span className="text-ember">
+                {w.brand} {w.model}.
+              </span>
             </h2>
           </div>
           <p className="max-w-[380px] text-[14px] leading-[1.85] text-mute">
-            Каждый раздел раскрывает автомобиль с новой стороны — от плёнки на кузове до последнего
-            шва внутри салона.
+            Кузов, салон, материалы и спецификация — всё, что вошло в работу по этому автомобилю.
           </p>
         </div>
 
@@ -1109,9 +1110,8 @@ function HeritageStory({ w }: { w: Work }) {
             <span className="text-ember">рукой мастера.</span>
           </h2>
           <p className="mt-8 max-w-[620px] text-[15.5px] leading-[1.95] text-mute">
-            Четыре главы этого проекта — не о технологии. О том, как {w.brand} {w.model}
-            прошёл путь от заводского металла до автомобиля, который стал частью клубной коллекции
-            UNIQUE.
+            Как {w.brand} {w.model} прошёл путь от заводского покрытия до результата под клубной
+            гарантией UNIQUE — в деталях этого проекта.
           </p>
         </RevealBlock>
 
