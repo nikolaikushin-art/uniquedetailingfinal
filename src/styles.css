@@ -72,7 +72,7 @@ summary:focus-visible {
 }
 .eyebrow-dot::before {
   content: ''; display: inline-block; width: 5px; height: 5px; border-radius: 50%;
-  background: var(--color-ember); box-shadow: 0 0 10px var(--color-ember);
+  background: var(--color-ember);
   margin-right: 10px; vertical-align: middle;
 }
 

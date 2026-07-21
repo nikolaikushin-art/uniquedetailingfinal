@@ -55,7 +55,7 @@ export function SiteHeader() {
           className="flex shrink-0 items-center justify-center"
           aria-label="UNIQUE Detailing"
         >
-          <img src={logo.url} alt="UNIQUE Detailing" className="h-10 w-auto md:h-[52px]" />
+          <img src={logo.url} alt="UNIQUE Detailing" className="h-12 w-auto md:h-[68px]" />
         </Link>
 
         <div className="flex flex-1 items-center justify-end">
