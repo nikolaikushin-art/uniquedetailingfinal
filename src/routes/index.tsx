@@ -1,17 +1,19 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect, useRef, useState } from "react";
 import { WORKS } from "@/lib/works";
 import heroVideo from "@/assets/hero.mov.asset.json";
-import logo from "@/assets/logo.png.asset.json";
-import { cdn } from "@/lib/cdn";
+import { cdnSized } from "@/lib/cdn";
+import { CdnImage } from "@/components/site/CdnImage";
 
 // Unique, curated imagery for the home page (no image is reused elsewhere).
 const HOME = {
-  heroPoster: cdn("/portfolio/mercedes-benz-g-63-amg-0.jpg"),
-  studio: cdn("/portfolio/rolls-royce-phantom-series-ii-craft-1.jpg"),
+  heroPosterPath: "/portfolio/mercedes-benz-g-63-amg-0.jpg",
+  heroPoster: cdnSized("/portfolio/mercedes-benz-g-63-amg-0.jpg", 1440),
+  studio: "/portfolio/rolls-royce-phantom-series-ii-craft-1.jpg",
   // Shared services visual — PPF install craft (matches core offering).
-  services: cdn("/ppf/ppf-install-apply.jpg"),
-  film: cdn("/portfolio/lamborghini-revuelto-craft-2.jpg"),
-  quote: cdn("/portfolio/ferrari-roma-det-6.jpg"),
+  services: "/ppf/ppf-install-apply.jpg",
+  film: "/portfolio/lamborghini-revuelto-craft-2.jpg",
+  quote: cdnSized("/portfolio/ferrari-roma-det-6.jpg", 1080),
 };
 
 export const Route = createFileRoute("/")({
@@ -29,26 +31,88 @@ export const Route = createFileRoute("/")({
         content: "Оклейка PPF, керамика и клубный сервис. Скоро открытие в Санкт-Петербурге.",
       },
     ],
+    links: [
+      {
+        rel: "preload",
+        as: "image",
+        href: HOME.heroPoster,
+        type: "image/webp",
+        fetchpriority: "high",
+      },
+    ],
   }),
   component: Index,
 });
+
+function HeroVideo() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [active, setActive] = useState(false);
+
+  useEffect(() => {
+    // Paint the poster first; hydrate the heavy MP4 after the browser is idle.
+    const start = () => setActive(true);
+    let idleId: number | undefined;
+    let timeoutId: number | undefined;
+
+    if (typeof window !== "undefined" && "requestIdleCallback" in window) {
+      idleId = window.requestIdleCallback(start, { timeout: 1800 });
+    } else {
+      timeoutId = window.setTimeout(start, 900);
+    }
+
+    return () => {
+      if (idleId != null && "cancelIdleCallback" in window) {
+        window.cancelIdleCallback(idleId);
+      }
+      if (timeoutId != null) window.clearTimeout(timeoutId);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!active) return;
+    const el = videoRef.current;
+    if (!el) return;
+    el.preload = "metadata";
+    void el.play().catch(() => {
+      /* autoplay can be blocked — poster remains */
+    });
+  }, [active]);
+
+  return (
+    <>
+      <img
+        src={HOME.heroPoster}
+        alt=""
+        className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
+          active ? "opacity-0" : "opacity-100"
+        }`}
+        fetchPriority="high"
+        decoding="async"
+      />
+      {active && (
+        <video
+          ref={videoRef}
+          src={heroVideo.url}
+          muted
+          loop
+          playsInline
+          preload="none"
+          poster={HOME.heroPoster}
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+      )}
+    </>
+  );
+}
 
 function Index() {
   const featured = WORKS.slice(0, 6);
 
   return (
     <div>
-      {/* HERO — с видео */}
+      {/* HERO — poster-first, deferred video */}
       <section className="relative flex min-h-screen items-center overflow-hidden">
-        <video
-          src={heroVideo.url}
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="absolute inset-0 h-full w-full object-cover"
-          poster={HOME.heroPoster}
-        />
+        <HeroVideo />
         <div className="absolute inset-0 bg-obsidian/55" />
         <div className="absolute inset-0 plate-scrim" />
 
@@ -108,10 +172,11 @@ function Index() {
       >
         <div className="grid gap-14 md:grid-cols-[0.9fr_1.1fr] md:items-center md:gap-20">
           <div className="relative aspect-[4/5] overflow-hidden">
-            <img
+            <CdnImage
               src={HOME.studio}
               alt="Студия UNIQUE"
               className="h-full w-full object-cover"
+              sizes="(min-width: 768px) 40vw, 90vw"
               loading="lazy"
             />
             <div className="absolute inset-0 plate-scrim" />
@@ -216,10 +281,11 @@ function Index() {
             </div>
           </div>
           <div className="relative aspect-[4/5] overflow-hidden">
-            <img
+            <CdnImage
               src={HOME.services}
               alt="Работа в студии"
               className="h-full w-full object-cover"
+              sizes="(min-width: 768px) 40vw, 90vw"
               loading="lazy"
             />
             <div className="absolute inset-0 plate-scrim" />
@@ -237,12 +303,12 @@ function Index() {
               params={{ slug: w.slug }}
               className="group relative flex aspect-[4/5] flex-col justify-end overflow-hidden bg-obsidian p-8"
             >
-              <img
+              <CdnImage
                 src={w.hero}
                 alt={`${w.brand} ${w.model}`}
                 className="absolute inset-0 h-full w-full object-cover opacity-85 transition-transform duration-[1200ms] ease-out group-hover:scale-[1.06]"
+                sizes="(min-width: 768px) 33vw, 90vw"
                 loading="lazy"
-                decoding="async"
               />
               <div className="absolute inset-0 plate-scrim" />
               <div className="relative z-10">
@@ -272,10 +338,11 @@ function Index() {
       <section className="border-y border-line bg-obsidian-2">
         <div className="grid md:grid-cols-2">
           <div className="relative min-h-[60vh]">
-            <img
+            <CdnImage
               src={HOME.film}
               alt="Плёнка UNIQUE"
               className="absolute inset-0 h-full w-full object-cover"
+              sizes="(min-width: 768px) 50vw, 100vw"
               loading="lazy"
             />
             <div className="absolute inset-0 plate-scrim" />

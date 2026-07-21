@@ -13,7 +13,7 @@ import { type ReactNode, useLayoutEffect } from "react";
 import appCss from "../styles.css?url";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
-import { cdn } from "@/lib/cdn";
+import { CDN_BASE, cdn } from "@/lib/cdn";
 
 function NotFoundComponent() {
   return (
@@ -114,6 +114,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "icon", href: "/favicon.ico?v=2", sizes: "any" },
       { rel: "icon", href: "/favicon-32.png?v=2", type: "image/png", sizes: "32x32" },
       { rel: "apple-touch-icon", href: "/apple-touch-icon.png?v=2" },
+      ...(CDN_BASE
+        ? [
+            { rel: "preconnect", href: CDN_BASE, crossOrigin: "anonymous" as const },
+            { rel: "dns-prefetch", href: CDN_BASE },
+          ]
+        : []),
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {

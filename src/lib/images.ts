@@ -1,6 +1,6 @@
 // Studio portfolio imagery. Paths are local `/portfolio/*` keys; `cdn()`
 // rewrites them to Cloudflare R2 when `VITE_CDN_URL` is set.
-import { cdn } from "./cdn";
+import { cdn, cdnSrcSet, cdnSized } from "./cdn";
 
 const CAR_IMAGE_PATHS = [
   "/portfolio/rolls-royce-phantom-series-ii-0.jpg",
@@ -41,15 +41,25 @@ const LIFESTYLE_IMAGE_PATHS = [
 export const CAR_IMAGES = CAR_IMAGE_PATHS.map((p) => cdn(p));
 export const LIFESTYLE_IMAGES = LIFESTYLE_IMAGE_PATHS.map((p) => cdn(p));
 
-export const carImage = (i: number, _w = 1600) =>
-  CAR_IMAGES[((i % CAR_IMAGES.length) + CAR_IMAGES.length) % CAR_IMAGES.length];
-export const lifestyleImage = (i: number, _w = 1600) =>
-  LIFESTYLE_IMAGES[
-    ((i % LIFESTYLE_IMAGES.length) + LIFESTYLE_IMAGES.length) % LIFESTYLE_IMAGES.length
-  ];
+export const carImage = (i: number, w = 1440) =>
+  cdnSized(
+    CAR_IMAGE_PATHS[((i % CAR_IMAGE_PATHS.length) + CAR_IMAGE_PATHS.length) % CAR_IMAGE_PATHS.length],
+    w,
+  );
+export const lifestyleImage = (i: number, w = 1440) =>
+  cdnSized(
+    LIFESTYLE_IMAGE_PATHS[
+      ((i % LIFESTYLE_IMAGE_PATHS.length) + LIFESTYLE_IMAGE_PATHS.length) %
+        LIFESTYLE_IMAGE_PATHS.length
+    ],
+    w,
+  );
 
-export const carImageSrcSet = (i: number, widths: number[] = [640, 960, 1280, 1600, 1920]) =>
-  widths.map((w) => `${carImage(i, w)} ${w}w`).join(", ");
+export const carImageSrcSet = (i: number, widths: number[] = [480, 768, 1080, 1440]) =>
+  cdnSrcSet(
+    CAR_IMAGE_PATHS[((i % CAR_IMAGE_PATHS.length) + CAR_IMAGE_PATHS.length) % CAR_IMAGE_PATHS.length],
+    widths,
+  );
 
 export const carGallery = (seed: number, n = 12) =>
   Array.from({ length: n }, (_, k) => carImage(seed * 3 + k * 5 + (k % 3)));

@@ -1,7 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { WORKS, CATEGORIES } from "@/lib/works";
-import { cdn } from "@/lib/cdn";
+import { cdnWidth } from "@/lib/cdn";
+import { CdnImage } from "@/components/site/CdnImage";
+
+const RABOTY_HERO = "/portfolio/bentley-continental-gt-speed-0.jpg";
 
 export const Route = createFileRoute("/raboty/")({
   head: () => ({
@@ -16,6 +19,15 @@ export const Route = createFileRoute("/raboty/")({
       {
         property: "og:description",
         content: "Больше 500 автомобилей за 10 лет. Портфолио студии UNIQUE.",
+      },
+    ],
+    links: [
+      {
+        rel: "preload",
+        as: "image",
+        href: cdnWidth(RABOTY_HERO, 1440),
+        type: "image/webp",
+        fetchpriority: "high",
       },
     ],
   }),
@@ -33,12 +45,17 @@ function RabotyPage() {
     <div>
       {/* HERO */}
       <section className="relative flex min-h-[78vh] items-center overflow-hidden border-b border-line pt-28">
-        <div
-          className="absolute inset-0 animate-drift bg-cover bg-center opacity-70"
-          style={{
-            backgroundImage: `url(${cdn("/portfolio/bentley-continental-gt-speed-0.jpg")})`,
-          }}
-        />
+        <div className="absolute inset-0 animate-drift opacity-70">
+          <CdnImage
+            src={RABOTY_HERO}
+            alt=""
+            className="h-full w-full object-cover"
+            sizes="100vw"
+            loading="eager"
+            fetchPriority="high"
+            fallbackWidth={1440}
+          />
+        </div>
         <div className="absolute inset-0 plate-scrim" />
         <div className="relative z-10 mx-auto w-full max-w-[1400px] px-[6vw]">
           <p className="eyebrow eyebrow-dot mb-6">Выполненные работы</p>
@@ -93,12 +110,12 @@ function RabotyPage() {
               params={{ slug: w.slug }}
               className="group relative flex aspect-[4/5] flex-col justify-end overflow-hidden bg-obsidian p-8"
             >
-              <img
+              <CdnImage
                 src={w.hero}
                 alt={`${w.brand} ${w.model}`}
                 className="absolute inset-0 h-full w-full object-cover opacity-85 transition-transform duration-[1200ms] ease-out group-hover:scale-[1.06]"
+                sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
                 loading="lazy"
-                decoding="async"
               />
               <div className="absolute inset-0 plate-scrim" />
               <div className="absolute left-6 top-6 z-10 text-[10px] uppercase tracking-[0.3em] text-mute">

@@ -1,4 +1,5 @@
 import { carImage, lifestyleImage } from "@/lib/images";
+import { CdnImage } from "@/components/site/CdnImage";
 
 export function PageHero({
   eyebrow,
@@ -15,13 +16,20 @@ export function PageHero({
   mode?: "car" | "lifestyle";
   seed?: number;
 }) {
-  const bg = image ?? (mode === "lifestyle" ? lifestyleImage(seed, 2200) : carImage(seed, 2200));
+  const bg = image ?? (mode === "lifestyle" ? lifestyleImage(seed, 1440) : carImage(seed, 1440));
   return (
     <section className="relative flex min-h-[78vh] items-center overflow-hidden border-b border-line">
-      <div
-        className="absolute inset-0 animate-drift bg-cover bg-center"
-        style={{ backgroundImage: `url(${bg})` }}
-      />
+      <div className="absolute inset-0 animate-drift">
+        <CdnImage
+          src={bg}
+          alt=""
+          className="h-full w-full object-cover"
+          sizes="100vw"
+          loading="eager"
+          fetchPriority="high"
+          fallbackWidth={1080}
+        />
+      </div>
       <div className="absolute inset-0 plate-scrim" />
       <div className="relative z-10 mx-auto w-full max-w-[1400px] px-[6vw] pt-28">
         <p className="eyebrow eyebrow-dot mb-6">{eyebrow}</p>

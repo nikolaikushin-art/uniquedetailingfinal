@@ -3,6 +3,8 @@ import * as React from "react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { getWork, relatedWorks, type Work } from "@/lib/works";
+import { cdnWidth } from "@/lib/cdn";
+import { CdnImage } from "@/components/site/CdnImage";
 
 // Canonical/OG base URL. Set VITE_SITE_URL on the host (Vercel) to your real
 // domain; the fallback is used only until the production domain is connected.
@@ -59,7 +61,15 @@ export const Route = createFileRoute("/raboty/$slug")({
       links: [
         { rel: "canonical", href: url },
         ...(hasAbsoluteShareImage
-          ? [{ rel: "preload", as: "image", href: w.hero, fetchpriority: "high" }]
+          ? [
+              {
+                rel: "preload",
+                as: "image",
+                href: cdnWidth(w.hero, 1440),
+                type: "image/webp",
+                fetchpriority: "high",
+              },
+            ]
           : []),
       ],
       scripts: [
@@ -109,12 +119,11 @@ function WorkPage() {
           <div className="flex min-h-[420px] flex-col">
             <p className="eyebrow mb-6">История проекта</p>
             <div className="relative min-h-[360px] flex-1 overflow-hidden bg-obsidian">
-              <img
+              <CdnImage
                 src={w.gallery[2] ?? w.gallery[0] ?? w.hero}
                 alt={`${w.brand} ${w.model} — история проекта`}
                 className="absolute inset-0 h-full w-full object-cover"
                 loading="lazy"
-                decoding="async"
                 sizes="(min-width: 768px) 40vw, 90vw"
               />
               <div className="absolute inset-0 plate-scrim" />
@@ -239,11 +248,14 @@ function Hero({ w }: { w: Work }) {
     // full-bleed кинематик
     return (
       <section className="relative flex min-h-[92vh] items-center overflow-hidden border-b border-line">
-        <img
+        <CdnImage
           src={w.hero}
           alt={`${w.brand} ${w.model}`}
           className="absolute inset-0 h-full w-full animate-drift object-cover opacity-80"
+          sizes="100vw"
+          loading="eager"
           fetchPriority="high"
+          fallbackWidth={1440}
         />
         <div className="absolute inset-0 plate-scrim" />
         <div className="relative z-10 mx-auto w-full max-w-[1400px] px-[6vw] pt-28">
@@ -286,11 +298,14 @@ function Hero({ w }: { w: Work }) {
           </div>
         </div>
         <div className="relative min-h-[60vh] overflow-hidden">
-          <img
+          <CdnImage
             src={w.hero}
             alt={`${w.brand} ${w.model}`}
             className="absolute inset-0 h-full w-full animate-drift object-cover opacity-80"
+            sizes="(min-width: 768px) 55vw, 100vw"
+            loading="eager"
             fetchPriority="high"
+            fallbackWidth={1440}
           />
           <div className="absolute inset-0 plate-scrim" />
         </div>
@@ -303,11 +318,14 @@ function Hero({ w }: { w: Work }) {
       <section className="relative overflow-hidden border-b border-line bg-obsidian-2">
         <div className="relative min-h-[86vh]">
           <div className="absolute inset-x-[6vw] top-24 bottom-24 overflow-hidden">
-            <img
+            <CdnImage
               src={w.hero}
               alt={`${w.brand} ${w.model}`}
               className="absolute inset-0 h-full w-full animate-drift object-cover opacity-80"
+              sizes="88vw"
+              loading="eager"
               fetchPriority="high"
+              fallbackWidth={1440}
             />
             <div className="absolute inset-0 plate-scrim" />
           </div>
@@ -338,11 +356,14 @@ function Hero({ w }: { w: Work }) {
       <div className="grid grid-cols-3 gap-[2px] bg-line">
         {[0, 1, 2].map((i) => (
           <div key={i} className="relative aspect-[3/4] overflow-hidden md:aspect-auto md:h-[70vh]">
-            <img
+            <CdnImage
               src={w.gallery[i] ?? w.hero}
               alt={`${w.brand} ${w.model} — кадр ${i + 1}`}
               className="absolute inset-0 h-full w-full object-cover opacity-85"
+              sizes="33vw"
               loading={i === 0 ? "eager" : "lazy"}
+              fetchPriority={i === 0 ? "high" : "auto"}
+              fallbackWidth={1080}
             />
             <div className="absolute inset-0 plate-scrim" />
           </div>
@@ -678,14 +699,12 @@ function CinematicGallery({ w }: { w: Work }) {
           className="group relative block aspect-[16/9] w-full overflow-hidden bg-obsidian focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ember"
           aria-label={`Открыть в полноэкранном режиме — ${w.brand} ${w.model}, ${tab.label} ${active + 1} из ${images.length}`}
         >
-          <img
+          <CdnImage
             key={featured}
             src={featured}
-            srcSet={`${featured.replace(/w=\d+/, "w=960")} 960w, ${featured.replace(/w=\d+/, "w=1400")} 1400w, ${featured} 1800w`}
             sizes="(min-width: 1500px) 1400px, 92vw"
             alt={`${w.brand} ${w.model} — ${tab.label}, кадр ${active + 1}`}
             loading="lazy"
-            decoding="async"
             className="h-full w-full animate-fade-in object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-[1.03]"
           />
           <div className="absolute inset-x-4 bottom-4 flex flex-col items-start gap-3 text-ivory sm:inset-x-6 sm:bottom-6 sm:flex-row sm:items-end sm:justify-between sm:gap-6">
@@ -746,13 +765,13 @@ function CinematicGallery({ w }: { w: Work }) {
                     : "border-transparent opacity-55 hover:opacity-90"
                 }`}
               >
-                <img
-                  src={src.replace(/w=\d+/, "w=480")}
-                  srcSet={`${src.replace(/w=\d+/, "w=320")} 320w, ${src.replace(/w=\d+/, "w=480")} 480w, ${src.replace(/w=\d+/, "w=640")} 640w`}
+                <CdnImage
+                  src={src}
                   sizes="(min-width: 768px) 220px, 33vw"
+                  widths={[480, 768]}
                   alt=""
                   loading="lazy"
-                  decoding="async"
+                  fallbackWidth={480}
                   className="h-full w-full object-cover"
                 />
               </button>
@@ -1158,13 +1177,11 @@ function HeritageStory({ w }: { w: Work }) {
                 className="relative aspect-[4/5] overflow-hidden md:aspect-[4/5]"
                 delay={80}
               >
-                <img
-                  src={c.image.replace(/w=\d+/, "w=1200")}
-                  srcSet={`${c.image.replace(/w=\d+/, "w=640")} 640w, ${c.image.replace(/w=\d+/, "w=960")} 960w, ${c.image.replace(/w=\d+/, "w=1280")} 1280w`}
+                <CdnImage
+                  src={c.image}
                   sizes="(min-width: 768px) 42vw, 90vw"
                   alt={`${w.brand} ${w.model} — глава ${c.num}, ${c.title}`}
                   loading="lazy"
-                  decoding="async"
                   className="h-full w-full object-cover"
                 />
                 <div className="absolute inset-0 plate-scrim" aria-hidden="true" />
@@ -1311,13 +1328,11 @@ function RelatedCarousel({ current, related }: { current: Work; related: Work[] 
                 params={{ slug: r.slug }}
                 className="group relative flex aspect-[4/5] flex-col justify-end overflow-hidden bg-obsidian p-7 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ember"
               >
-                <img
-                  src={r.hero.replace(/w=\d+/, "w=1200")}
-                  srcSet={`${r.hero.replace(/w=\d+/, "w=640")} 640w, ${r.hero.replace(/w=\d+/, "w=960")} 960w, ${r.hero.replace(/w=\d+/, "w=1280")} 1280w`}
+                <CdnImage
+                  src={r.hero}
                   sizes="(min-width: 1280px) 24vw, (min-width: 640px) 46vw, 86vw"
                   alt={`${r.brand} ${r.model}`}
                   loading="lazy"
-                  decoding="async"
                   className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-[1.06]"
                 />
                 <div className="absolute inset-0 plate-scrim" aria-hidden="true" />

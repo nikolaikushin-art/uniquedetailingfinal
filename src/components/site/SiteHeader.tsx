@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import logo from "@/assets/logo.png.asset.json";
-import { cdn } from "@/lib/cdn";
+import { cdnSized } from "@/lib/cdn";
 
 const NAV = [
   { to: "/uslugi", label: "Услуги" },
@@ -139,7 +139,7 @@ export function SiteHeader() {
           <div
             className="absolute inset-0 animate-drift bg-cover bg-center opacity-60"
             style={{
-              backgroundImage: `url(${cdn("/portfolio/rolls-royce-spectre-0.jpg")})`,
+              backgroundImage: `url(${cdnSized("/portfolio/rolls-royce-spectre-0.jpg", 1080)})`,
             }}
           />
           <div className="absolute inset-0 plate-scrim" />
