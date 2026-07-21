@@ -1,7 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { WORKS } from "@/lib/works";
 import heroVideo from "@/assets/hero.mov.asset.json";
-import logo from "@/assets/logo.png.asset.json";
 
 // Unique, curated imagery for the home page (no image is reused elsewhere).
 const HOME = {
@@ -51,37 +50,42 @@ function Index() {
         <div className="absolute inset-0 plate-scrim" />
 
         <div className="relative z-10 mx-auto w-full max-w-[1400px] px-[6vw] pt-32 md:pt-24">
-          <div className="mb-8 flex items-center gap-4 animate-fade-up">
-            <span className="h-[6px] w-[6px] rounded-full bg-ember shadow-[0_0_12px_theme(colors.ember)]" />
-            <span className="text-[10px] uppercase tracking-[0.4em] text-ember">
-              Скоро открытие · Санкт-Петербург
-            </span>
-          </div>
+          <p className="animate-fade-up text-[10px] uppercase tracking-[0.42em] text-mute">
+            Санкт-Петербург · Скоро открытие
+          </p>
 
           <h1
-            className="mt-6 max-w-[1100px] font-display uppercase leading-[1.02] text-ivory animate-fade-up"
+            className="mt-8 font-display uppercase leading-none text-ivory animate-fade-up"
             style={{
-              fontSize: "clamp(40px,7.4vw,116px)",
-              letterSpacing: "0.03em",
-              animationDelay: ".1s",
+              fontSize: "clamp(64px, 14vw, 168px)",
+              letterSpacing: "0.08em",
+              animationDelay: ".08s",
             }}
           >
-            Европейский
-            <br />
-            стандарт
-            <br />
-            детейлинга.
+            UNIQUE
           </h1>
+
           <p
-            className="mt-8 max-w-[560px] text-[16px] leading-[1.9] text-mute animate-fade-up"
-            style={{ animationDelay: ".2s" }}
+            className="mt-6 max-w-[720px] font-display uppercase leading-[1.15] text-ivory/85 animate-fade-up"
+            style={{
+              fontSize: "clamp(22px, 3.4vw, 40px)",
+              letterSpacing: "0.06em",
+              animationDelay: ".16s",
+            }}
           >
-            Более 10 лет опыта, клубная атмосфера и сервис, в который хочется возвращаться. Вы
-            уникальны — и ваш автомобиль тоже.
+            Европейский стандарт детейлинга.
           </p>
+
+          <p
+            className="mt-8 max-w-[520px] text-[15.5px] leading-[1.9] text-mute animate-fade-up"
+            style={{ animationDelay: ".24s" }}
+          >
+            Более 10 лет опыта, клубная атмосфера и сервис, в который хочется возвращаться.
+          </p>
+
           <div
             className="mt-12 flex flex-wrap gap-4 animate-fade-up"
-            style={{ animationDelay: ".3s" }}
+            style={{ animationDelay: ".32s" }}
           >
             <Link to="/kontakty" className="btn-line btn-ember">
               Рассчитать стоимость

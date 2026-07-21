@@ -187,7 +187,7 @@ function KontaktyPage() {
                 Петрозаводская улица, 33
               </p>
               <p className="mt-4 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.3em] text-ember">
-                <span className="h-[6px] w-[6px] rounded-full bg-ember shadow-[0_0_10px_theme(colors.ember)]" />
+                <span className="h-[6px] w-[6px] rounded-full bg-ember" />
                 Скоро открытие
               </p>
             </div>
@@ -372,7 +372,7 @@ function KontaktyPage() {
                 <PremiumMap />
                 <div className="pointer-events-none absolute inset-0 z-[400] shadow-[inset_0_0_70px_rgba(8,9,11,0.35)]" />
                 <span className="pointer-events-none absolute left-5 top-5 z-[500] flex items-center gap-2 rounded-sm bg-obsidian/80 px-3 py-1.5 text-[10px] uppercase tracking-[0.3em] text-ivory backdrop-blur">
-                  <span className="h-[6px] w-[6px] rounded-full bg-ember shadow-[0_0_10px_theme(colors.ember)]" />
+                  <span className="h-[6px] w-[6px] rounded-full bg-ember" />
                   UNIQUE · Овцино
                 </span>
               </div>
