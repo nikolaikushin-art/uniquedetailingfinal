@@ -36,7 +36,8 @@ const SERVICES = [
     ],
     duration: "5 – 10 дней",
     from: "от 180 000 ₽",
-    img: cdn("/portfolio/range-rover-sv-l460-craft-2.jpg"),
+    // Professional wet-apply PPF install — not wash/foam.
+    img: cdn("/ppf/ppf-install-apply.jpg"),
   },
   {
     id: "color",
@@ -51,7 +52,8 @@ const SERVICES = [
     ],
     duration: "10 – 14 дней",
     from: "от 320 000 ₽",
-    img: cdn("/portfolio/bmw-xm-label-red-0.jpg"),
+    // Finished colour-change polyurethane wrap (iridescent finish).
+    img: cdn("/ppf/ppf-special.jpg"),
   },
   {
     id: "ceramic",
@@ -66,7 +68,8 @@ const SERVICES = [
     ],
     duration: "2 – 3 дня",
     from: "от 90 000 ₽",
-    img: cdn("/portfolio/porsche-taycan-turbo-s-craft-4.jpg"),
+    // Hydrophobic beading / sheeting — ceramic result, not PPF install.
+    img: cdn("/ppf/ppf-hydrophobic.jpg"),
   },
   {
     id: "restore",
@@ -81,7 +84,8 @@ const SERVICES = [
     ],
     duration: "4 – 7 дней",
     from: "от 140 000 ₽",
-    img: cdn("/portfolio/audi-rs6-avant-performance-craft-4.jpg"),
+    // Paint correction inspection under control light.
+    img: cdn("/ppf/ppf-install-inspect.jpg"),
   },
   {
     id: "tint",
@@ -152,12 +156,14 @@ function UslugiPage() {
               id={s.id}
               className={`scroll-mt-28 grid gap-16 md:grid-cols-2 md:items-center ${i % 2 === 1 ? "md:[&>div:first-child]:order-2" : ""}`}
             >
-              <div className="relative aspect-[4/5] overflow-hidden">
+              <div className="relative aspect-[4/5] overflow-hidden bg-obsidian">
                 <img
                   src={s.img}
                   alt={s.title}
                   className="h-full w-full object-cover"
-                  loading="lazy"
+                  loading={i < 2 ? "eager" : "lazy"}
+                  decoding="async"
+                  sizes="(max-width: 768px) 100vw, 45vw"
                 />
                 <div className="absolute inset-0 plate-scrim" />
                 <p className="absolute bottom-6 left-6 font-display text-6xl text-ivory opacity-90">

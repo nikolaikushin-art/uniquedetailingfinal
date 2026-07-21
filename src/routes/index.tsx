@@ -8,7 +8,8 @@ import { cdn } from "@/lib/cdn";
 const HOME = {
   heroPoster: cdn("/portfolio/mercedes-benz-g-63-amg-0.jpg"),
   studio: cdn("/portfolio/rolls-royce-phantom-series-ii-craft-1.jpg"),
-  services: cdn("/portfolio/porsche-911-turbo-s-craft-3.jpg"),
+  // Shared services visual — PPF install craft (matches core offering).
+  services: cdn("/ppf/ppf-install-apply.jpg"),
   film: cdn("/portfolio/lamborghini-revuelto-craft-2.jpg"),
   quote: cdn("/portfolio/ferrari-roma-det-6.jpg"),
 };
