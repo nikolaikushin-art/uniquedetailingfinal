@@ -318,23 +318,39 @@ summary:focus-visible {
  * Grayscale basemap, no traffic/vendor chrome, single UNIQUE
  * red marker + refined dark controls. Matches the luxury identity.
  * ============================================================ */
+/* Isolate the map so Leaflet panes/controls (z-index 200–1000) stay inside
+   this stacking context and scroll under the site header/logo (z-50). */
 .leaflet-container {
-  background: #2a2e34;
+  background: #3a3e45;
   font-family: var(--font-sans);
   outline: none;
+  isolation: isolate;
+  z-index: 0 !important;
 }
-/* Grayscale only the tiles so the red marker keeps its accent colour.
-   Brighter / softer contrast lifts pure black into a charcoal-grey basemap
-   with readable roads while staying monochrome and premium. */
+.leaflet-pane,
+.leaflet-top,
+.leaflet-bottom {
+  z-index: auto !important;
+}
+.leaflet-map-pane { z-index: 1 !important; }
+.leaflet-tile-pane { z-index: 1 !important; }
+.leaflet-overlay-pane { z-index: 2 !important; }
+.leaflet-shadow-pane { z-index: 3 !important; }
+.leaflet-marker-pane { z-index: 4 !important; }
+.leaflet-tooltip-pane { z-index: 5 !important; }
+.leaflet-popup-pane { z-index: 6 !important; }
+.leaflet-control { z-index: 7 !important; }
+/* Soft charcoal-grey basemap: lower contrast, muted roads/labels. */
 .leaflet-tile-pane,
 .uq-map-tiles {
-  filter: grayscale(1) brightness(2.05) contrast(1.12) saturate(0);
+  filter: grayscale(1) brightness(1.55) contrast(0.78) saturate(0);
+  opacity: 0.9;
 }
 .leaflet-control-zoom { border: none !important; box-shadow: none !important; margin: 16px !important; }
 .leaflet-control-zoom a {
-  background: rgba(16, 18, 21, 0.85) !important;
+  background: rgba(28, 31, 36, 0.72) !important;
   color: var(--color-ivory) !important;
-  border: 1px solid var(--color-line-strong) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
   width: 34px; height: 34px; line-height: 32px;
   backdrop-filter: blur(6px);
   transition: background .3s ease, color .3s ease, border-color .3s ease;
@@ -344,7 +360,7 @@ summary:focus-visible {
   background: var(--color-ember) !important; color: #fff !important; border-color: var(--color-ember) !important;
 }
 .leaflet-control-attribution {
-  background: rgba(8, 9, 11, 0.55) !important;
+  background: rgba(28, 31, 36, 0.45) !important;
   color: var(--color-mute-2) !important;
   font-size: 9px !important; letter-spacing: 0.05em;
   padding: 2px 8px !important; margin: 0 !important;

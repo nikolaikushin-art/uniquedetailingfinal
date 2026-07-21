@@ -362,7 +362,7 @@ function KontaktyPage() {
             </p>
           </div>
 
-          <div className="relative overflow-hidden border border-line-strong bg-obsidian-2">
+          <div className="relative z-0 isolate overflow-hidden border border-line-strong bg-obsidian-2">
             {/* corner accents */}
             <span className="pointer-events-none absolute left-0 top-0 z-20 h-8 w-8 border-l-2 border-t-2 border-ember/70" />
             <span className="pointer-events-none absolute right-0 top-0 z-20 h-8 w-8 border-r-2 border-t-2 border-ember/70" />
@@ -370,10 +370,12 @@ function KontaktyPage() {
             <span className="pointer-events-none absolute bottom-0 right-0 z-20 h-8 w-8 border-b-2 border-r-2 border-ember/70" />
 
             <div className="grid md:grid-cols-[1fr_360px]">
-              <div className="relative min-h-[440px] md:min-h-[580px] bg-obsidian">
+              <div className="relative z-0 isolate min-h-[440px] overflow-hidden md:min-h-[580px] bg-[#34383f]">
                 <PremiumMap />
-                <div className="pointer-events-none absolute inset-0 z-[400] shadow-[inset_0_0_50px_rgba(42,46,52,0.22)]" />
-                <span className="pointer-events-none absolute left-5 top-5 z-[500] flex max-w-[min(92%,22rem)] items-center gap-2 rounded-sm bg-obsidian/80 px-3 py-1.5 text-[10px] uppercase tracking-[0.22em] text-ivory backdrop-blur">
+                {/* Soft wash — keeps basemap elegant / light-grey, not stark B&W */}
+                <div className="pointer-events-none absolute inset-0 z-[1] bg-[#3a3e45]/30" />
+                <div className="pointer-events-none absolute inset-0 z-[2] shadow-[inset_0_0_80px_rgba(20,22,26,0.35)]" />
+                <span className="pointer-events-none absolute left-5 top-5 z-[3] flex max-w-[min(92%,22rem)] items-center gap-2 rounded-sm bg-obsidian/70 px-3 py-1.5 text-[10px] uppercase tracking-[0.22em] text-ivory/90 backdrop-blur">
                   <span className="h-[6px] w-[6px] shrink-0 rounded-full bg-ember shadow-[0_0_10px_theme(colors.ember)]" />
                   Петрозаводская ул., 33 · Овцино
                 </span>
