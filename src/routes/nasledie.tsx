@@ -142,7 +142,9 @@ function NasleiePage() {
                 className="font-display uppercase leading-[1.05] text-ivory"
                 style={{ fontSize: "clamp(28px,3.4vw,46px)", letterSpacing: "0.04em" }}
               >
-                Восемнадцать месяцев на одну идею.
+                Индивидуальный заказ.
+                <br />
+                Без шаблонов.
               </h2>
               <p>
                 Клубный заказ UNIQUE начинается с диалога — не с прайса. Мы собираем комплектацию
