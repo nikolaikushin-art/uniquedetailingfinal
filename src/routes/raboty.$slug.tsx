@@ -105,14 +105,14 @@ function WorkPage() {
 
       {/* ИСТОРИЯ ПРОЕКТА */}
       <section className="px-[6vw] py-32">
-        <div className="mx-auto grid max-w-[1280px] gap-12 md:grid-cols-2 md:items-start md:gap-16">
-          <div>
+        <div className="mx-auto grid max-w-[1280px] gap-12 md:grid-cols-2 md:items-stretch md:gap-16">
+          <div className="flex min-h-[420px] flex-col">
             <p className="eyebrow mb-6">История проекта</p>
-            <div className="relative aspect-[4/5] overflow-hidden bg-obsidian">
+            <div className="relative min-h-[360px] flex-1 overflow-hidden bg-obsidian">
               <img
-                src={w.gallery[17] ?? w.gallery[0] ?? w.hero}
+                src={w.gallery[2] ?? w.gallery[0] ?? w.hero}
                 alt={`${w.brand} ${w.model} — история проекта`}
-                className="h-full w-full object-cover"
+                className="absolute inset-0 h-full w-full object-cover"
                 loading="lazy"
                 decoding="async"
                 sizes="(min-width: 768px) 40vw, 90vw"
