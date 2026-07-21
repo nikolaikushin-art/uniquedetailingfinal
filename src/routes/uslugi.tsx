@@ -1,4 +1,5 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useRouterState } from "@tanstack/react-router";
+import { useEffect } from "react";
 import { PageHero, Rule } from "@/components/site/PageHero";
 import { cdn } from "@/lib/cdn";
 
@@ -23,6 +24,7 @@ export const Route = createFileRoute("/uslugi")({
 
 const SERVICES = [
   {
+    id: "ppf",
     num: "01",
     title: "Полная и зональная оклейка PPF без разбора авто",
     copy: "Надёжная защита кузова автомобиля полиуретановой плёнкой от сколов, царапин, реагентов, песка и других повреждений на дороге. Плёнка сохраняет заводской блеск лакокрасочного покрытия, предотвращает выгорание и помогает поддерживать автомобиль в идеальном состоянии.",
@@ -37,6 +39,7 @@ const SERVICES = [
     img: cdn("/portfolio/range-rover-sv-l460-craft-2.jpg"),
   },
   {
+    id: "color",
     num: "02",
     title: "Смена цвета полиуретановой плёнкой без разбора авто",
     copy: "Полная смена цвета кузова обратимо и безопасно, без вмешательства в заводскую окраску. Более 80 цветов собственного производства UNIQUE — глянцевые, матовые, сатиновые и хамелеоны.",
@@ -51,6 +54,7 @@ const SERVICES = [
     img: cdn("/portfolio/bmw-xm-label-red-0.jpg"),
   },
   {
+    id: "ceramic",
     num: "03",
     title: "Керамическая защита кузова, дисков и стёкол",
     copy: "Керамическое покрытие 9H создаёт кристаллическую защитную плёнку на лакокрасочном покрытии. Может использоваться самостоятельно или поверх PPF для двойной защиты и гидрофобного эффекта.",
@@ -65,6 +69,7 @@ const SERVICES = [
     img: cdn("/portfolio/porsche-taycan-turbo-s-craft-4.jpg"),
   },
   {
+    id: "restore",
     num: "04",
     title: "Комплекс «Восстановление + защита»",
     copy: "Многоступенчатая полировка лакокрасочного покрытия — устранение царапин, голограмм, потёртостей и следов эксплуатации. Финальная защита плёнкой PPF или керамикой на выбор.",
@@ -79,6 +84,7 @@ const SERVICES = [
     img: cdn("/portfolio/audi-rs6-avant-performance-craft-4.jpg"),
   },
   {
+    id: "tint",
     num: "05",
     title: "Тонирование стёкол и оклейка оптики",
     copy: "Профессиональное тонирование стёкол премиум-плёнками с сертификатами. Прозрачная защита фар и задних фонарей от сколов и помутнения.",
@@ -92,6 +98,7 @@ const SERVICES = [
     img: cdn("/portfolio/aston-martin-dbs-770-ultimate-det-2.jpg"),
   },
   {
+    id: "interior",
     num: "06",
     title: "Детейлинг салона и химчистка",
     copy: "Глубокая химчистка кожи, алькантары, ткани и потолка. Восстановление боковых валиков сидений и защитное покрытие салонной кожи.",
@@ -107,6 +114,20 @@ const SERVICES = [
 ];
 
 function UslugiPage() {
+  const hash = useRouterState({ select: (s) => s.location.hash });
+
+  useEffect(() => {
+    const id = hash.replace(/^#/, "");
+    if (!id) return;
+    const el = document.getElementById(id);
+    if (!el) return;
+    // Wait a frame so layout/hero settle before scrolling from footer / deep links.
+    const t = window.setTimeout(() => {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 50);
+    return () => window.clearTimeout(t);
+  }, [hash]);
+
   return (
     <div>
       <PageHero
@@ -128,7 +149,8 @@ function UslugiPage() {
           {SERVICES.map((s, i) => (
             <article
               key={s.num}
-              className={`grid gap-16 md:grid-cols-2 md:items-center ${i % 2 === 1 ? "md:[&>div:first-child]:order-2" : ""}`}
+              id={s.id}
+              className={`scroll-mt-28 grid gap-16 md:grid-cols-2 md:items-center ${i % 2 === 1 ? "md:[&>div:first-child]:order-2" : ""}`}
             >
               <div className="relative aspect-[4/5] overflow-hidden">
                 <img

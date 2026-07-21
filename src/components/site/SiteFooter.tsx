@@ -2,6 +2,8 @@ import { Link } from "@tanstack/react-router";
 import logo from "@/assets/logo.png.asset.json";
 import { CONTACT_EMAIL, OPS_URL } from "@/lib/cdn";
 
+type FooterLink = { to: string; hash?: string; label: string };
+
 export function SiteFooter() {
   return (
     <footer className="bg-obsidian-2 px-[6vw] pt-24 pb-10">
@@ -31,10 +33,10 @@ export function SiteFooter() {
         <FooterCol
           title="Услуги"
           items={[
-            { to: "/uslugi", label: "Полная оклейка PPF" },
-            { to: "/uslugi", label: "Смена цвета плёнкой" },
-            { to: "/uslugi", label: "Керамическая защита" },
-            { to: "/uslugi", label: "Восстановление + защита" },
+            { to: "/uslugi", hash: "ppf", label: "Полная оклейка PPF" },
+            { to: "/uslugi", hash: "color", label: "Смена цвета плёнкой" },
+            { to: "/uslugi", hash: "ceramic", label: "Керамическая защита" },
+            { to: "/uslugi", hash: "restore", label: "Восстановление + защита" },
           ]}
         />
         <div>
@@ -78,7 +80,7 @@ export function SiteFooter() {
   );
 }
 
-function FooterCol({ title, items }: { title: string; items: { to: string; label: string }[] }) {
+function FooterCol({ title, items }: { title: string; items: FooterLink[] }) {
   return (
     <div>
       <h4 className="mb-6 text-[11px] font-normal uppercase tracking-[0.3em] text-mute-2">
@@ -86,7 +88,23 @@ function FooterCol({ title, items }: { title: string; items: { to: string; label
       </h4>
       <div className="space-y-2 text-[14.5px] text-mute">
         {items.map((i, k) => (
-          <Link key={i.label + k} to={i.to} className="block transition-colors hover:text-ivory">
+          <Link
+            key={i.label + k}
+            to={i.to}
+            hash={i.hash}
+            hashScrollIntoView={{ behavior: "smooth", block: "start" }}
+            className="block transition-colors hover:text-ivory"
+            onClick={() => {
+              if (!i.hash) return;
+              // Same-route hash clicks: ensure we scroll even if the router
+              // treats the location as unchanged.
+              window.setTimeout(() => {
+                document
+                  .getElementById(i.hash!)
+                  ?.scrollIntoView({ behavior: "smooth", block: "start" });
+              }, 50);
+            }}
+          >
             {i.label}
           </Link>
         ))}
