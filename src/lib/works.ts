@@ -3,6 +3,7 @@
 // vehicle (brand, model, body, paint), stored under /public/portfolio and
 // keyed by slug, so every card and detail page matches its label.
 import { cdn } from "./cdn";
+import { storyFor } from "./project-stories";
 import { STUDIO_VEHICLES, type StudioVehicle } from "./studio-vehicles";
 
 export type Spec = { label: string; value: string };
@@ -387,7 +388,7 @@ export const WORKS: Work[] = STUDIO_VEHICLES.map((vehicle, i) => {
     hours: vehicle.hours,
     film,
     duration: ["5 дней", "7 дней", "9 дней", "11 дней", "14 дней", "18 дней"][i % 6],
-    story: buildStory(vehicle, film),
+    story: storyFor(vehicle.slug) ?? buildStory(vehicle, film),
     quote: QUOTES[(hashSlug(vehicle.slug) + i) % QUOTES.length],
     hero: shot(0),
     gallery,
