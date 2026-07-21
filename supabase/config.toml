@@ -1,0 +1,7 @@
+project_id = "flqgrcmevbjavafppqmh"
+
+# Public contact-form intake. JWT verification is disabled because the form is
+# submitted by anonymous website visitors; the function performs its own
+# validation and writes with the service role.
+[functions.contact]
+verify_jwt = false

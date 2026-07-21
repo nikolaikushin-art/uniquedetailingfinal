@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import logo from "@/assets/logo.png.asset.json";
+import { asset } from "@/lib/asset";
 
 const NAV = [
   { to: "/uslugi", label: "Услуги" },
@@ -55,7 +56,7 @@ export function SiteHeader() {
           className="flex shrink-0 items-center justify-center"
           aria-label="UNIQUE Detailing"
         >
-          <img src={logo.url} alt="UNIQUE Detailing" className="h-10 w-auto md:h-[52px]" />
+          <img src={asset(logo.url)} alt="UNIQUE Detailing" className="h-14 w-auto md:h-[76px]" />
         </Link>
 
         <div className="flex flex-1 items-center justify-end">
@@ -138,12 +139,12 @@ export function SiteHeader() {
           <div
             className="absolute inset-0 animate-drift bg-cover bg-center opacity-60"
             style={{
-              backgroundImage: "url(/portfolio/rolls-royce-spectre-0.jpg)",
+              backgroundImage: `url(${asset("/portfolio/rolls-royce-spectre-0.jpg")})`,
             }}
           />
           <div className="absolute inset-0 plate-scrim" />
           <div className="absolute bottom-10 left-10 right-10">
-            <img src={logo.url} alt="" className="mb-6 h-10 w-auto opacity-90" />
+            <img src={asset(logo.url)} alt="" className="mb-6 h-10 w-auto opacity-90" />
             <p className="font-display text-2xl uppercase leading-tight tracking-[0.08em] text-ivory">
               Европейский стандарт
               <br />

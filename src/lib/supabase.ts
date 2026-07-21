@@ -1,27 +1,15 @@
-import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+// Contact-form backend client.
+//
+// Leads are written through the shared Unique Operations Supabase project. The
+// `leads` table blocks anonymous inserts by design (row-level security), so the
+// form submits to the `contact` Edge Function, which validates the payload and
+// persists it with the service role. The browser only ever sends the public
+// anon key.
 
-/**
- * Supabase client for the UNIQUE Operations project.
- *
- * Configured entirely through environment variables so no keys live in the
- * repo. Set these on the host (Vercel → Project → Settings → Environment
- * Variables) and, for local dev, in a `.env` file:
- *
- *   VITE_SUPABASE_URL=https://<project-ref>.supabase.co
- *   VITE_SUPABASE_ANON_KEY=<anon public key>
- *
- * If the variables are absent the client is `null` and helpers degrade
- * gracefully (they report `supabase_not_configured` instead of throwing), so
- * the site still builds and runs before the backend is connected.
- */
 const url = import.meta.env.VITE_SUPABASE_URL as string | undefined;
 const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined;
 
 export const isSupabaseConfigured = Boolean(url && anonKey);
-
-export const supabase: SupabaseClient | null = isSupabaseConfigured
-  ? createClient(url as string, anonKey as string)
-  : null;
 
 export type Lead = {
   name?: string;
@@ -34,29 +22,28 @@ export type Lead = {
 
 export type SubmitResult = { ok: true } | { ok: false; error: string };
 
-/**
- * Inserts a contact-form lead into the `leads` table.
- *
- * Expected table (create in the Supabase SQL editor):
- *
- *   create table public.leads (
- *     id uuid primary key default gen_random_uuid(),
- *     created_at timestamptz not null default now(),
- *     name text, phone text, email text, car text, service text, comment text
- *   );
- *   alter table public.leads enable row level security;
- *   create policy "anon can insert leads" on public.leads
- *     for insert to anon with check (true);
- */
 export async function submitLead(lead: Lead): Promise<SubmitResult> {
-  if (!supabase) return { ok: false, error: "supabase_not_configured" };
-  const { error } = await supabase.from("leads").insert({
-    name: lead.name || null,
-    phone: lead.phone || null,
-    email: lead.email || null,
-    car: lead.car || null,
-    service: lead.service || null,
-    comment: lead.comment || null,
-  });
-  return error ? { ok: false, error: error.message } : { ok: true };
+  if (!isSupabaseConfigured) return { ok: false, error: "supabase_not_configured" };
+
+  const endpoint = `${(url as string).replace(/\/+$/, "")}/functions/v1/contact`;
+
+  try {
+    const res = await fetch(endpoint, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        apikey: anonKey as string,
+        Authorization: `Bearer ${anonKey}`,
+      },
+      body: JSON.stringify(lead),
+    });
+
+    const data = (await res.json().catch(() => null)) as SubmitResult | null;
+    if (!res.ok || !data?.ok) {
+      return { ok: false, error: data && "error" in data ? data.error : `http_${res.status}` };
+    }
+    return { ok: true };
+  } catch (err) {
+    return { ok: false, error: err instanceof Error ? err.message : "network_error" };
+  }
 }
