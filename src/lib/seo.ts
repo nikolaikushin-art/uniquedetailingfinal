@@ -57,8 +57,8 @@ export function pageSeo({
   path,
   image,
   imageAlt = OG_IMAGE_ALT,
-  imageWidth = OG_IMAGE_WIDTH,
-  imageHeight = OG_IMAGE_HEIGHT,
+  imageWidth,
+  imageHeight,
   ogTitle,
   ogDescription,
   type = "website",
@@ -68,8 +68,16 @@ export function pageSeo({
   const ogD = ogDescription ?? description;
   const ogImage = absoluteOgImage(image);
 
-  // Emit width/height only for the branded 1200×630 card (portfolio heroes vary).
-  const isBrandedCard = !image || ogImage === DEFAULT_OG_IMAGE;
+  // Emit width/height only for the branded 1200×630 card, or when the caller
+  // explicitly passes dimensions. Portfolio heroes must not inherit 1200×630.
+  const isBrandedCard =
+    !image ||
+    ogImage === DEFAULT_OG_IMAGE ||
+    /\/og-share-1200\.jpg(\?|$)/i.test(ogImage) ||
+    /\/og-cover\.jpg(\?|$)/i.test(ogImage);
+
+  const width = isBrandedCard ? OG_IMAGE_WIDTH : imageWidth;
+  const height = isBrandedCard ? OG_IMAGE_HEIGHT : imageHeight;
 
   return {
     meta: [
@@ -84,17 +92,12 @@ export function pageSeo({
       { property: "og:image", content: ogImage },
       { property: "og:image:secure_url", content: ogImage },
       { property: "og:image:type", content: "image/jpeg" },
-      ...(isBrandedCard
+      ...(width != null && height != null
         ? [
-            { property: "og:image:width", content: String(OG_IMAGE_WIDTH) },
-            { property: "og:image:height", content: String(OG_IMAGE_HEIGHT) },
+            { property: "og:image:width", content: String(width) },
+            { property: "og:image:height", content: String(height) },
           ]
-        : imageWidth && imageHeight
-          ? [
-              { property: "og:image:width", content: String(imageWidth) },
-              { property: "og:image:height", content: String(imageHeight) },
-            ]
-          : []),
+        : []),
       { property: "og:image:alt", content: imageAlt },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: ogT },
