@@ -8,9 +8,10 @@ import { pageSeo } from "@/lib/seo";
 
 // Unique, curated imagery for the home page (no image is reused elsewhere).
 const HOME = {
-  heroPosterPath: "/portfolio/mercedes-benz-g-63-amg-0.jpg",
-  heroPoster: cdnSized("/portfolio/mercedes-benz-g-63-amg-0.jpg", 1440),
-  heroPosterMobile: cdnWidth("/portfolio/mercedes-benz-g-63-amg-0.jpg", 768),
+  // Frame from IMG_7432 hero reel (darkened to match the video grade).
+  heroPosterPath: "/media/hero-poster.jpg",
+  heroPoster: cdnSized("/media/hero-poster.jpg", 1440),
+  heroPosterMobile: cdnWidth("/media/hero-poster.jpg", 768),
   studio: "/portfolio/rolls-royce-phantom-series-ii-craft-1.jpg",
   // Shared services visual — PPF install craft (matches core offering).
   services: "/ppf/ppf-install-apply.jpg",
@@ -112,7 +113,7 @@ function HeroVideo() {
           playsInline
           preload="none"
           poster={HOME.heroPosterMobile}
-          className="absolute inset-0 h-full w-full object-cover"
+          className="absolute inset-0 h-full w-full scale-[1.02] object-cover brightness-[0.72] contrast-[1.05]"
         />
       )}
     </>
@@ -127,7 +128,9 @@ function Index() {
       {/* HERO — poster-first, deferred video */}
       <section className="relative flex min-h-[100svh] items-end overflow-hidden md:items-center">
         <HeroVideo />
-        <div className="absolute inset-0 bg-obsidian/55" />
+        {/* Extra blackout so brand type stays legible over the reel */}
+        <div className="absolute inset-0 bg-obsidian/70" />
+        <div className="absolute inset-0 bg-gradient-to-t from-obsidian via-obsidian/35 to-obsidian/45" />
         <div className="absolute inset-0 plate-scrim" />
 
         <div className="relative z-10 mx-auto w-full max-w-[1400px] px-[6vw] pb-8 pt-28 md:pb-32 md:pt-24">
