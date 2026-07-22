@@ -98,7 +98,7 @@ function HeroVideo() {
         srcSet={cdnSrcSet(HOME.heroPosterPath, [768, 1080, 1440])}
         sizes="100vw"
         alt=""
-        className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
+        className={`absolute inset-0 h-full w-full scale-[1.02] object-cover brightness-[0.72] contrast-[1.05] transition-opacity duration-700 ${
           active ? "opacity-0" : "opacity-100"
         }`}
         fetchPriority="high"
