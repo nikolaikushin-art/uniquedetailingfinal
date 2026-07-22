@@ -123,12 +123,12 @@ function Index() {
   return (
     <div>
       {/* HERO — poster-first, deferred video */}
-      <section className="relative flex min-h-screen items-center overflow-hidden">
+      <section className="relative flex min-h-[100svh] items-end overflow-hidden md:items-center">
         <HeroVideo />
         <div className="absolute inset-0 bg-obsidian/55" />
         <div className="absolute inset-0 plate-scrim" />
 
-        <div className="relative z-10 mx-auto w-full max-w-[1400px] px-[6vw] pt-32 md:pt-24">
+        <div className="relative z-10 mx-auto w-full max-w-[1400px] px-[6vw] pb-8 pt-28 md:pb-32 md:pt-24">
           <div className="mb-8 flex items-center gap-4 animate-fade-up">
             <span className="h-[6px] w-[6px] rounded-full bg-ember shadow-[0_0_12px_theme(colors.ember)]" />
             <span className="text-[10px] uppercase tracking-[0.4em] text-ember">
@@ -158,7 +158,7 @@ function Index() {
             уникальны — и ваш автомобиль тоже.
           </p>
           <div
-            className="mt-12 flex flex-wrap gap-4 animate-fade-up"
+            className="mt-10 flex flex-col gap-3 animate-fade-up sm:mt-12 sm:flex-row sm:flex-wrap sm:gap-4"
             style={{ animationDelay: ".3s" }}
           >
             <Link to="/kontakty" className="btn-line btn-ember">
@@ -168,9 +168,16 @@ function Index() {
               Наши работы
             </Link>
           </div>
+
+          {/* Mobile: scroll cue sits in flow under CTAs — no overlap */}
+          <div className="mt-10 flex flex-col items-center gap-2 text-[10px] uppercase tracking-[0.4em] text-mute-2 md:hidden">
+            <span>Листайте</span>
+            <span className="h-8 w-px bg-gradient-to-b from-mute-2 to-transparent" />
+          </div>
         </div>
 
-        <div className="absolute bottom-8 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-3 text-[10px] uppercase tracking-[0.4em] text-mute-2">
+        {/* Desktop: anchored to the viewport bottom */}
+        <div className="pointer-events-none absolute bottom-8 left-1/2 z-10 hidden -translate-x-1/2 flex-col items-center gap-3 text-[10px] uppercase tracking-[0.4em] text-mute-2 md:flex">
           <span>Листайте</span>
           <span className="h-12 w-px bg-gradient-to-b from-mute-2 to-transparent" />
         </div>
