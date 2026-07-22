@@ -98,7 +98,7 @@ function HeroVideo() {
         srcSet={cdnSrcSet(HOME.heroPosterPath, [768, 1080, 1440])}
         sizes="100vw"
         alt=""
-        className={`absolute inset-0 h-full w-full scale-[1.02] object-cover brightness-[0.72] contrast-[1.05] transition-opacity duration-700 ${
+        className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
           active ? "opacity-0" : "opacity-100"
         }`}
         fetchPriority="high"
@@ -113,7 +113,7 @@ function HeroVideo() {
           playsInline
           preload="none"
           poster={HOME.heroPosterMobile}
-          className="absolute inset-0 h-full w-full scale-[1.02] object-cover brightness-[0.72] contrast-[1.05]"
+          className="absolute inset-0 h-full w-full object-cover"
         />
       )}
     </>
@@ -128,9 +128,8 @@ function Index() {
       {/* HERO — poster-first, deferred video */}
       <section className="relative flex min-h-[100svh] items-end overflow-hidden md:items-center">
         <HeroVideo />
-        {/* Blackout overlay — stolen old reel, graded darker for type contrast */}
-        <div className="absolute inset-0 bg-obsidian/70" />
-        <div className="absolute inset-0 bg-gradient-to-t from-obsidian via-obsidian/35 to-obsidian/45" />
+        {/* Light scrim only — video already carries a mild grade */}
+        <div className="absolute inset-0 bg-obsidian/35" />
         <div className="absolute inset-0 plate-scrim" />
 
         <div className="relative z-10 mx-auto w-full max-w-[1400px] px-[6vw] pb-8 pt-28 md:pb-32 md:pt-24">
