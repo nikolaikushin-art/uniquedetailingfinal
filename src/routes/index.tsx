@@ -8,7 +8,7 @@ import { pageSeo } from "@/lib/seo";
 
 // Unique, curated imagery for the home page (no image is reused elsewhere).
 const HOME = {
-  // Frame from IMG_7432 hero reel (darkened to match the video grade).
+  // Darkened frame from the stolen uniquedetailing.ru hero reel.
   heroPosterPath: "/media/hero-poster.jpg",
   heroPoster: cdnSized("/media/hero-poster.jpg", 1440),
   heroPosterMobile: cdnWidth("/media/hero-poster.jpg", 768),
@@ -128,7 +128,7 @@ function Index() {
       {/* HERO — poster-first, deferred video */}
       <section className="relative flex min-h-[100svh] items-end overflow-hidden md:items-center">
         <HeroVideo />
-        {/* Extra blackout so brand type stays legible over the reel */}
+        {/* Blackout overlay — stolen old reel, graded darker for type contrast */}
         <div className="absolute inset-0 bg-obsidian/70" />
         <div className="absolute inset-0 bg-gradient-to-t from-obsidian via-obsidian/35 to-obsidian/45" />
         <div className="absolute inset-0 plate-scrim" />
