@@ -28,7 +28,7 @@ export const Route = createFileRoute("/")({
       ogTitle: "UNIQUE Detailing — Европейский стандарт",
       ogDescription:
         "Оклейка PPF, керамика и клубный сервис UNIQUE в Санкт-Петербурге. Запись открыта.",
-      image: HOME.heroPoster,
+      // Dedicated 1200×630 JPEG share card (not WebP hero) for WhatsApp/Telegram.
     });
     return {
       ...seo,

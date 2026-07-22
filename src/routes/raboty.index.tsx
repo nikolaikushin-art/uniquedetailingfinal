@@ -15,7 +15,7 @@ export const Route = createFileRoute("/raboty/")({
         "Портфолио выполненных работ студии UNIQUE. Оклейка PPF, смена цвета и керамика для Audi, Aston Martin, BMW, Porsche, Bentley и других премиум-автомобилей.",
       path: "/raboty",
       ogDescription: "Больше 500 автомобилей за 10 лет. Портфолио студии UNIQUE.",
-      image: cdnWidth(RABOTY_HERO, 1440),
+      // Branded 1200×630 JPEG — avoid WebP (many messengers ignore it).
     });
     return {
       ...seo,

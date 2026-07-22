@@ -5,10 +5,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { getWork, relatedWorks, type Work } from "@/lib/works";
 import { cdnWidth } from "@/lib/cdn";
 import { CdnImage } from "@/components/site/CdnImage";
-
-// Canonical/OG base URL. Set VITE_SITE_URL on the host (Vercel) to your real
-// domain; the fallback is used only until the production domain is connected.
-const SITE_URL = import.meta.env.VITE_SITE_URL ?? "https://uniquedetailing.ru";
+import { absoluteOgImage, DEFAULT_OG_IMAGE, pageSeo, SITE_NAME } from "@/lib/seo";
 
 export const Route = createFileRoute("/raboty/$slug")({
   loader: ({ params }): { work: Work; related: Work[] } => {
@@ -28,49 +25,36 @@ export const Route = createFileRoute("/raboty/$slug")({
       };
     const title = `${w.brand} ${w.model} — ${w.category} · UNIQUE Detailing`;
     const desc = `${w.tagline} ${w.hours} работы мастера, гарантия 10 лет, клубный протокол UNIQUE в Санкт-Петербурге.`;
-    const url = `${SITE_URL}/raboty/${params?.slug ?? w.slug}`;
-    const hasAbsoluteShareImage = w.hero.startsWith("https://");
+    const path = `/raboty/${params?.slug ?? w.slug}`;
+    const shareImage = absoluteOgImage(w.hero) || DEFAULT_OG_IMAGE;
+    const imageAlt = `${w.brand} ${w.model} — работа UNIQUE Detailing`;
+    const seo = pageSeo({
+      title,
+      description: desc,
+      path,
+      image: shareImage,
+      imageAlt,
+      type: "article",
+    });
     return {
+      ...seo,
       meta: [
-        { title },
-        { name: "description", content: desc },
+        ...seo.meta,
         {
           name: "keywords",
           content: `${w.brand}, ${w.model}, ${w.category}, детейлинг, PPF, оклейка, керамика, UNIQUE Detailing, Санкт-Петербург`,
         },
-        { property: "og:title", content: title },
-        { property: "og:description", content: desc },
-        { property: "og:type", content: "article" },
-        { property: "og:url", content: url },
-        ...(hasAbsoluteShareImage
-          ? [
-              { property: "og:image", content: w.hero },
-              {
-                property: "og:image:alt",
-                content: `${w.brand} ${w.model} — работа UNIQUE Detailing`,
-              },
-            ]
-          : []),
-        { property: "og:site_name", content: "UNIQUE Detailing" },
         { property: "article:section", content: w.category },
-        { name: "twitter:card", content: "summary_large_image" },
-        { name: "twitter:title", content: title },
-        { name: "twitter:description", content: desc },
-        ...(hasAbsoluteShareImage ? [{ name: "twitter:image", content: w.hero }] : []),
       ],
       links: [
-        { rel: "canonical", href: url },
-        ...(hasAbsoluteShareImage
-          ? [
-              {
-                rel: "preload",
-                as: "image",
-                href: cdnWidth(w.hero, 1440),
-                type: "image/webp",
-                fetchpriority: "high",
-              },
-            ]
-          : []),
+        ...seo.links,
+        {
+          rel: "preload",
+          as: "image",
+          href: cdnWidth(w.hero, 1440),
+          type: "image/webp",
+          fetchpriority: "high",
+        },
       ],
       scripts: [
         {
@@ -80,11 +64,12 @@ export const Route = createFileRoute("/raboty/$slug")({
             "@type": "Article",
             headline: `${w.brand} ${w.model} — ${w.category}`,
             description: desc,
-            ...(hasAbsoluteShareImage ? { image: [w.hero] } : {}),
-            author: { "@type": "Organization", name: "UNIQUE Detailing" },
-            publisher: { "@type": "Organization", name: "UNIQUE Detailing" },
+            image: [shareImage],
+            author: { "@type": "Organization", name: SITE_NAME },
+            publisher: { "@type": "Organization", name: SITE_NAME },
             datePublished: `${w.year}-01-01`,
             about: `${w.brand} ${w.model}`,
+            mainEntityOfPage: `${seo.links[0]?.href}`,
           }),
         },
       ],

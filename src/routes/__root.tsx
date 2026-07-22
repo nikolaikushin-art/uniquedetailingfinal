@@ -13,7 +13,15 @@ import { type ReactNode, useLayoutEffect } from "react";
 import appCss from "../styles.css?url";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
-import { CDN_BASE, cdn } from "@/lib/cdn";
+import { CDN_BASE } from "@/lib/cdn";
+import {
+  DEFAULT_OG_IMAGE,
+  OG_IMAGE_ALT,
+  OG_IMAGE_HEIGHT,
+  OG_IMAGE_WIDTH,
+  SITE_NAME,
+  SITE_URL,
+} from "@/lib/seo";
 
 function NotFoundComponent() {
   return (
@@ -85,7 +93,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         content:
           "Премиальная детейлинг-студия UNIQUE в Санкт-Петербурге. Оклейка PPF без разбора автомобиля, собственная плёнка Unique, керамика и клубный сервис. Более 10 лет опыта.",
       },
-      { name: "author", content: "UNIQUE Detailing" },
+      { name: "author", content: SITE_NAME },
       {
         property: "og:title",
         content: "UNIQUE Detailing — Европейский стандарт детейлинга и оклейки PPF",
@@ -96,6 +104,15 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "Премиальная детейлинг-студия UNIQUE в Санкт-Петербурге. Оклейка PPF без разбора автомобиля, собственная плёнка Unique, керамика и клубный сервис. Более 10 лет опыта.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: `${SITE_URL}/` },
+      { property: "og:site_name", content: SITE_NAME },
+      { property: "og:locale", content: "ru_RU" },
+      { property: "og:image", content: DEFAULT_OG_IMAGE },
+      { property: "og:image:secure_url", content: DEFAULT_OG_IMAGE },
+      { property: "og:image:type", content: "image/jpeg" },
+      { property: "og:image:width", content: String(OG_IMAGE_WIDTH) },
+      { property: "og:image:height", content: String(OG_IMAGE_HEIGHT) },
+      { property: "og:image:alt", content: OG_IMAGE_ALT },
       { name: "twitter:card", content: "summary_large_image" },
       {
         name: "twitter:title",
@@ -106,8 +123,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         content:
           "Премиальная детейлинг-студия UNIQUE в Санкт-Петербурге. Оклейка PPF без разбора автомобиля, собственная плёнка Unique, керамика и клубный сервис. Более 10 лет опыта.",
       },
-      { property: "og:image", content: cdn("/og-cover.jpg") },
-      { name: "twitter:image", content: cdn("/og-cover.jpg") },
+      { name: "twitter:image", content: DEFAULT_OG_IMAGE },
+      { name: "twitter:image:alt", content: OG_IMAGE_ALT },
     ],
     links: [
       { rel: "stylesheet", href: appCss },

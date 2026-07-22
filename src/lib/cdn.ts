@@ -33,7 +33,11 @@ export function toR2Key(path: string): string | null {
   if (p === "/media/logo.png") return "assets/unique-detailing-logo.png";
   if (p === "/media/numberplate-logo.png") return "assets/unique-detailing-numberplate-logo.png";
   if (p === "/media/hero.mp4" || p === "/media/hero.mov") return "assets/marketing/hero.mp4";
-  if (p === "/og-cover.jpg") return "assets/marketing/og-cover.jpg";
+  if (p === "/og-cover.jpg" || p === "/og-share-1200.jpg") {
+    return p === "/og-share-1200.jpg"
+      ? "assets/marketing/og-share-1200.jpg"
+      : "assets/marketing/og-cover.jpg";
+  }
   if (p.startsWith("/media/")) return `assets/marketing/${p.slice("/media/".length)}`;
   return null;
 }
