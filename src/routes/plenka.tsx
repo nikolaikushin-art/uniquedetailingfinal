@@ -4,6 +4,7 @@ import { Rule } from "@/components/site/PageHero";
 import { STUDIO_VEHICLES } from "@/lib/studio-vehicles";
 import logo from "@/assets/logo.png.asset.json";
 import { cdn } from "@/lib/cdn";
+import { pageSeo } from "@/lib/seo";
 
 /* ─────────── Coverage packages ─────────── */
 const PACKAGES = [
@@ -68,22 +69,15 @@ const FAQ = [
 ];
 
 export const Route = createFileRoute("/plenka")({
-  head: () => ({
-    meta: [
-      { title: "Плёнка UNIQUE — премиальная защитная плёнка PPF" },
-      {
-        name: "description",
-        content:
-          "UNIQUE PPF — премиальная полиуретановая защитная плёнка: технология материала, брендированная упаковка, гидрофобность и самовосстановление, коллекция покрытий и портфолио оклеенных автомобилей.",
-      },
-      { property: "og:title", content: "Плёнка UNIQUE — премиальная защитная плёнка PPF" },
-      {
-        property: "og:description",
-        content:
-          "Материал, технология, упаковка и портфолио защитной плёнки UNIQUE PPF мирового уровня.",
-      },
-    ],
-  }),
+  head: () =>
+    pageSeo({
+      title: "Плёнка UNIQUE — премиальная защитная плёнка PPF",
+      description:
+        "UNIQUE PPF — премиальная полиуретановая защитная плёнка: технология материала, брендированная упаковка, гидрофобность и самовосстановление, коллекция покрытий и портфолио оклеенных автомобилей.",
+      path: "/plenka",
+      ogDescription:
+        "Материал, технология, упаковка и портфолио защитной плёнки UNIQUE PPF мирового уровня.",
+    }),
   component: PlenkaPage,
 });
 

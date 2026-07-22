@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import logo from "@/assets/logo.png.asset.json";
-import { CONTACT_EMAIL, OPS_URL } from "@/lib/cdn";
+import { CONTACT_EMAIL } from "@/lib/cdn";
 
 type FooterLink = { to: string; hash?: string; label: string };
 
@@ -16,14 +16,14 @@ export function SiteFooter() {
           </p>
           <div className="mt-6 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.3em] text-ember">
             <span className="h-[6px] w-[6px] rounded-full bg-ember shadow-[0_0_10px_theme(colors.ember)]" />
-            Скоро открытие
+            Запись открыта
           </div>
         </div>
         <FooterCol
           title="Меню"
           items={[
             { to: "/uslugi", label: "Услуги" },
-            { to: "/plenka", label: "Пленка Unique" },
+            { to: "/plenka", label: "Плёнка Unique" },
             { to: "/raboty", label: "Работы" },
             { to: "/nasledie", label: "Наследие" },
             { to: "/klub", label: "Клуб Unique" },
@@ -54,26 +54,14 @@ export function SiteFooter() {
               </a>
             </p>
             <p className="text-mute-2">Ежедневно с 10:00 до 20:00</p>
-            <p className="pt-2">
-              <a
-                className="text-[11px] uppercase tracking-[0.25em] text-mute-2 transition-colors hover:text-ivory"
-                href={OPS_URL}
-                target="_blank"
-                rel="noreferrer noopener"
-              >
-                CRM · ops.uniquedetailing.ru
-              </a>
-            </p>
           </div>
         </div>
       </div>
       <div className="flex flex-wrap items-center justify-between gap-4 pt-8 text-[11.5px] tracking-[0.1em] text-mute-2">
         <span>© {new Date().getFullYear()} UNIQUE — все права защищены</span>
-        <span className="flex gap-2">
-          <span className="h-[5px] w-[5px] rounded-full bg-ember" />
-          <span className="h-[5px] w-[5px] rounded-full bg-ember/60" />
-          <span className="h-[5px] w-[5px] rounded-full bg-ember/30" />
-        </span>
+        <Link to="/politika" className="transition-colors hover:text-ivory">
+          Политика конфиденциальности
+        </Link>
         <span>Европейский стандарт детейлинга</span>
       </div>
     </footer>

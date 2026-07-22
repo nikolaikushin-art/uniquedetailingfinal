@@ -1,20 +1,17 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageHero, Rule } from "@/components/site/PageHero";
 import { cdn } from "@/lib/cdn";
+import { pageSeo } from "@/lib/seo";
 
 export const Route = createFileRoute("/nasledie")({
-  head: () => ({
-    meta: [
-      { title: "Наследие и мастерство — UNIQUE Detailing" },
-      {
-        name: "description",
-        content:
-          "Наследие UNIQUE, ремесло мастеров, bespoke-заказ, консьерж и персональный шофёр — редакция клубного стандарта.",
-      },
-      { property: "og:title", content: "Наследие и мастерство — UNIQUE Detailing" },
-      { property: "og:description", content: "Пять глав о клубном стандарте UNIQUE Detailing." },
-    ],
-  }),
+  head: () =>
+    pageSeo({
+      title: "Наследие и мастерство — UNIQUE Detailing",
+      description:
+        "Наследие UNIQUE, ремесло мастеров, bespoke-заказ, консьерж и персональный шофёр — редакция клубного стандарта.",
+      path: "/nasledie",
+      ogDescription: "Пять глав о клубном стандарте UNIQUE Detailing.",
+    }),
   component: NasleiePage,
 });
 

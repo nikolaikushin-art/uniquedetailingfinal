@@ -6,6 +6,7 @@ export function PageHero({
   title,
   lede,
   image,
+  imageAlt,
   mode = "car",
   seed = 0,
 }: {
@@ -13,6 +14,7 @@ export function PageHero({
   title: React.ReactNode;
   lede?: string;
   image?: string;
+  imageAlt?: string;
   mode?: "car" | "lifestyle";
   seed?: number;
 }) {
@@ -22,7 +24,7 @@ export function PageHero({
       <div className="absolute inset-0 animate-drift">
         <CdnImage
           src={bg}
-          alt=""
+          alt={imageAlt ?? eyebrow}
           className="h-full w-full object-cover"
           sizes="100vw"
           loading="eager"

@@ -1,23 +1,17 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageHero, Rule } from "@/components/site/PageHero";
 import { cdn } from "@/lib/cdn";
+import { pageSeo } from "@/lib/seo";
 
 export const Route = createFileRoute("/klub")({
-  head: () => ({
-    meta: [
-      { title: "Клуб Unique — закрытое сообщество владельцев" },
-      {
-        name: "description",
-        content:
-          "Каждый клиент UNIQUE становится частью клуба. Персональный менеджер, ежегодная ревизия, приоритетная запись и приглашения на закрытые события.",
-      },
-      { property: "og:title", content: "Клуб Unique — закрытое сообщество владельцев" },
-      {
-        property: "og:description",
-        content: "Клубная программа для владельцев автомобилей после работы в студии UNIQUE.",
-      },
-    ],
-  }),
+  head: () =>
+    pageSeo({
+      title: "Клуб Unique — закрытое сообщество владельцев",
+      description:
+        "Каждый клиент UNIQUE становится частью клуба. Персональный менеджер, ежегодная ревизия, приоритетная запись и приглашения на закрытые события.",
+      path: "/klub",
+      ogDescription: "Клубная программа для владельцев автомобилей после работы в студии UNIQUE.",
+    }),
   component: KlubPage,
 });
 

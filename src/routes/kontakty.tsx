@@ -1,8 +1,9 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { PageHero } from "@/components/site/PageHero";
 import { submitLead } from "@/lib/supabase";
 import { cdn } from "@/lib/cdn";
+import { pageSeo } from "@/lib/seo";
 
 const STUDIO_LAT = 59.849;
 const STUDIO_LON = 30.74;
@@ -90,47 +91,51 @@ function PremiumMap() {
 /* eslint-enable @typescript-eslint/no-explicit-any */
 
 export const Route = createFileRoute("/kontakty")({
-  head: () => ({
-    meta: [
-      { title: "Контакты — UNIQUE Detailing" },
-      {
-        name: "description",
-        content:
-          "Студия UNIQUE Detailing — Санкт-Петербург, микрорайон Овцино, Петрозаводская улица, 33. Ежедневно с 10:00 до 20:00. info@uniquedetailing.ru",
-      },
-      { property: "og:title", content: "Контакты — UNIQUE Detailing" },
-      {
-        property: "og:description",
-        content: "Записаться в студию UNIQUE. Скоро открытие в Санкт-Петербурге.",
-      },
-    ],
-  }),
+  head: () =>
+    pageSeo({
+      title: "Контакты — UNIQUE Detailing",
+      description:
+        "Студия UNIQUE Detailing — Санкт-Петербург, микрорайон Овцино, Петрозаводская улица, 33. Ежедневно с 10:00 до 20:00. info@uniquedetailing.ru",
+      path: "/kontakty",
+      ogDescription: "Записаться в студию UNIQUE Detailing в Санкт-Петербурге. Расчёт стоимости и запись онлайн.",
+    }),
   component: KontaktyPage,
 });
 
 function KontaktyPage() {
   const [sent, setSent] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const fd = new FormData(e.currentTarget);
+    const name = String(fd.get("name") ?? "").trim();
+    const phone = String(fd.get("phone") ?? "").trim();
+    if (!name || !phone) {
+      setError("Укажите имя и телефон — так мы сможем связаться с вами.");
+      return;
+    }
     setSubmitting(true);
+    setError(null);
     try {
-      // Persists to Supabase when configured; degrades gracefully otherwise.
-      await submitLead({
-        name: String(fd.get("name") ?? ""),
-        phone: String(fd.get("phone") ?? ""),
+      const result = await submitLead({
+        name,
+        phone,
         email: String(fd.get("email") ?? ""),
         car: String(fd.get("car") ?? ""),
         service: String(fd.get("service") ?? ""),
         comment: String(fd.get("comment") ?? ""),
       });
-    } catch (err) {
-      console.error("Lead submission failed:", err);
+      if (!result.ok) {
+        setError("Не удалось отправить заявку. Позвоните нам или напишите на info@uniquedetailing.ru.");
+        return;
+      }
+      setSent(true);
+    } catch {
+      setError("Не удалось отправить заявку. Попробуйте ещё раз или напишите на info@uniquedetailing.ru.");
     } finally {
       setSubmitting(false);
-      setSent(true);
     }
   }
 
@@ -190,7 +195,7 @@ function KontaktyPage() {
               </p>
               <p className="mt-4 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.3em] text-ember">
                 <span className="h-[6px] w-[6px] rounded-full bg-ember shadow-[0_0_10px_theme(colors.ember)]" />
-                Скоро открытие
+                Запись открыта
               </p>
             </div>
 
@@ -269,22 +274,27 @@ function KontaktyPage() {
                 </div>
 
                 {[
-                  ["Ваше имя", "name", "text"],
-                  ["Телефон", "phone", "tel"],
-                  ["Email", "email", "email"],
-                  ["Марка и модель авто", "car", "text"],
-                ].map(([label, name, type]) => (
-                  <div key={name}>
+                  ["Ваше имя", "name", "text", true],
+                  ["Телефон", "phone", "tel", true],
+                  ["Email", "email", "email", false],
+                  ["Марка и модель авто", "car", "text", false],
+                ].map(([label, name, type, required]) => (
+                  <div key={String(name)}>
                     <label
-                      htmlFor={name}
+                      htmlFor={String(name)}
                       className="mb-3 block text-[10px] uppercase tracking-[0.35em] text-mute-2"
                     >
                       {label}
+                      {required ? <span className="text-ember"> *</span> : null}
                     </label>
                     <input
-                      id={name}
-                      name={name}
-                      type={type}
+                      id={String(name)}
+                      name={String(name)}
+                      type={String(type)}
+                      required={Boolean(required)}
+                      autoComplete={
+                        name === "name" ? "name" : name === "phone" ? "tel" : name === "email" ? "email" : "off"
+                      }
                       className="w-full border-b border-line bg-transparent p-3 text-ivory outline-none focus:border-ivory"
                     />
                   </div>
@@ -327,9 +337,19 @@ function KontaktyPage() {
                   />
                 </div>
 
+                {error ? (
+                  <p className="border border-ember/40 bg-ember/10 px-4 py-3 text-[13px] leading-[1.7] text-ivory" role="alert">
+                    {error}
+                  </p>
+                ) : null}
+
                 <div className="flex flex-wrap items-center justify-between gap-4">
-                  <p className="max-w-[300px] text-[11px] leading-[1.6] text-mute-2">
-                    Нажимая «Отправить», вы соглашаетесь на обработку персональных данных.
+                  <p className="max-w-[320px] text-[11px] leading-[1.6] text-mute-2">
+                    Нажимая «Отправить», вы соглашаетесь на{" "}
+                    <Link to="/politika" className="text-mute underline-offset-2 hover:text-ivory hover:underline">
+                      обработку персональных данных
+                    </Link>
+                    .
                   </p>
                   <button type="submit" className="btn-line btn-ember" disabled={submitting}>
                     {submitting ? "Отправляем…" : "Отправить заявку"}

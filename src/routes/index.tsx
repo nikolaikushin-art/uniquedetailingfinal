@@ -4,6 +4,7 @@ import { WORKS } from "@/lib/works";
 import heroVideo from "@/assets/hero.mov.asset.json";
 import { cdnSized, cdnSrcSet, cdnWidth } from "@/lib/cdn";
 import { CdnImage } from "@/components/site/CdnImage";
+import { pageSeo } from "@/lib/seo";
 
 // Unique, curated imagery for the home page (no image is reused elsewhere).
 const HOME = {
@@ -18,32 +19,33 @@ const HOME = {
 };
 
 export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "UNIQUE Detailing — Европейский стандарт детейлинга и оклейки PPF" },
-      {
-        name: "description",
-        content:
-          "Премиальная детейлинг-студия UNIQUE в Санкт-Петербурге. Оклейка PPF без разбора автомобиля, собственная плёнка Unique, керамика и клубный сервис. Более 10 лет опыта.",
-      },
-      { property: "og:title", content: "UNIQUE Detailing — Европейский стандарт" },
-      {
-        property: "og:description",
-        content: "Оклейка PPF, керамика и клубный сервис. Скоро открытие в Санкт-Петербурге.",
-      },
-    ],
-    links: [
-      {
-        rel: "preload",
-        as: "image",
-        href: HOME.heroPoster,
-        type: "image/webp",
-        fetchpriority: "high",
-        imagesrcset: cdnSrcSet(HOME.heroPosterPath, [768, 1080, 1440]),
-        imagesizes: "100vw",
-      },
-    ],
-  }),
+  head: () => {
+    const seo = pageSeo({
+      title: "UNIQUE Detailing — Европейский стандарт детейлинга и оклейки PPF",
+      description:
+        "Премиальная детейлинг-студия UNIQUE в Санкт-Петербурге. Оклейка PPF без разбора автомобиля, собственная плёнка Unique, керамика и клубный сервис. Более 10 лет опыта.",
+      path: "/",
+      ogTitle: "UNIQUE Detailing — Европейский стандарт",
+      ogDescription:
+        "Оклейка PPF, керамика и клубный сервис UNIQUE в Санкт-Петербурге. Запись открыта.",
+      image: HOME.heroPoster,
+    });
+    return {
+      ...seo,
+      links: [
+        ...seo.links,
+        {
+          rel: "preload",
+          as: "image",
+          href: HOME.heroPoster,
+          type: "image/webp",
+          fetchpriority: "high",
+          imagesrcset: cdnSrcSet(HOME.heroPosterPath, [768, 1080, 1440]),
+          imagesizes: "100vw",
+        },
+      ],
+    };
+  },
   component: Index,
 });
 
@@ -132,7 +134,7 @@ function Index() {
           <div className="mb-8 flex items-center gap-4 animate-fade-up">
             <span className="h-[6px] w-[6px] rounded-full bg-ember shadow-[0_0_12px_theme(colors.ember)]" />
             <span className="text-[10px] uppercase tracking-[0.4em] text-ember">
-              Скоро открытие · Санкт-Петербург
+              Запись открыта · Санкт-Петербург
             </span>
           </div>
 

@@ -5,7 +5,7 @@ import { cdnSized } from "@/lib/cdn";
 
 const NAV = [
   { to: "/uslugi", label: "Услуги" },
-  { to: "/plenka", label: "Пленка Unique" },
+  { to: "/plenka", label: "Плёнка Unique" },
   { to: "/raboty", label: "Работы" },
   { to: "/nasledie", label: "Наследие" },
   { to: "/klub", label: "Клуб Unique" },
@@ -122,7 +122,7 @@ export function SiteHeader() {
               <div className="mt-10 space-y-2 text-[11px] uppercase tracking-[0.3em] text-mute-2">
                 <p>г. Санкт-Петербург · Ленинградская область</p>
                 <p>микрорайон Овцино, Петрозаводская улица, 33</p>
-                <p className="text-ember">Скоро открытие</p>
+                <p className="text-ember">Запись открыта</p>
                 <p className="normal-case tracking-normal text-mute">info@uniquedetailing.ru</p>
               </div>
             </div>

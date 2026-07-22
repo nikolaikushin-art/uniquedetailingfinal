@@ -3,34 +3,34 @@ import { useMemo, useState } from "react";
 import { WORKS, CATEGORIES } from "@/lib/works";
 import { cdnWidth } from "@/lib/cdn";
 import { CdnImage } from "@/components/site/CdnImage";
+import { pageSeo } from "@/lib/seo";
 
 const RABOTY_HERO = "/portfolio/bentley-continental-gt-speed-0.jpg";
 
 export const Route = createFileRoute("/raboty/")({
-  head: () => ({
-    meta: [
-      { title: "Работы — UNIQUE Detailing" },
-      {
-        name: "description",
-        content:
-          "Портфолио выполненных работ студии UNIQUE. Оклейка PPF, смена цвета и керамика для Audi, Aston Martin, BMW, Porsche, Bentley и других премиум-автомобилей.",
-      },
-      { property: "og:title", content: "Работы — UNIQUE Detailing" },
-      {
-        property: "og:description",
-        content: "Больше 500 автомобилей за 10 лет. Портфолио студии UNIQUE.",
-      },
-    ],
-    links: [
-      {
-        rel: "preload",
-        as: "image",
-        href: cdnWidth(RABOTY_HERO, 1440),
-        type: "image/webp",
-        fetchpriority: "high",
-      },
-    ],
-  }),
+  head: () => {
+    const seo = pageSeo({
+      title: "Работы — UNIQUE Detailing",
+      description:
+        "Портфолио выполненных работ студии UNIQUE. Оклейка PPF, смена цвета и керамика для Audi, Aston Martin, BMW, Porsche, Bentley и других премиум-автомобилей.",
+      path: "/raboty",
+      ogDescription: "Больше 500 автомобилей за 10 лет. Портфолио студии UNIQUE.",
+      image: cdnWidth(RABOTY_HERO, 1440),
+    });
+    return {
+      ...seo,
+      links: [
+        ...seo.links,
+        {
+          rel: "preload",
+          as: "image",
+          href: cdnWidth(RABOTY_HERO, 1440),
+          type: "image/webp",
+          fetchpriority: "high",
+        },
+      ],
+    };
+  },
   component: RabotyPage,
 });
 
@@ -48,7 +48,7 @@ function RabotyPage() {
         <div className="absolute inset-0 animate-drift opacity-70">
           <CdnImage
             src={RABOTY_HERO}
-            alt=""
+            alt="Портфолио UNIQUE Detailing — Bentley Continental GT Speed"
             className="h-full w-full object-cover"
             sizes="100vw"
             loading="eager"

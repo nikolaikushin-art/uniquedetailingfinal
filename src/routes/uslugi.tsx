@@ -3,22 +3,17 @@ import { useEffect } from "react";
 import { PageHero, Rule } from "@/components/site/PageHero";
 import { cdn } from "@/lib/cdn";
 
+import { pageSeo } from "@/lib/seo";
+
 export const Route = createFileRoute("/uslugi")({
-  head: () => ({
-    meta: [
-      { title: "Услуги — UNIQUE Detailing" },
-      {
-        name: "description",
-        content:
-          "Полная и зональная оклейка PPF, смена цвета плёнкой, керамика, восстановление ЛКП. Работа без разбора автомобиля по европейскому стандарту.",
-      },
-      { property: "og:title", content: "Услуги — UNIQUE Detailing" },
-      {
-        property: "og:description",
-        content: "PPF, керамика, смена цвета и восстановление ЛКП в студии UNIQUE.",
-      },
-    ],
-  }),
+  head: () =>
+    pageSeo({
+      title: "Услуги — UNIQUE Detailing",
+      description:
+        "Полная и зональная оклейка PPF, смена цвета плёнкой, керамика, восстановление ЛКП. Работа без разбора автомобиля по европейскому стандарту.",
+      path: "/uslugi",
+      ogDescription: "PPF, керамика, смена цвета и восстановление ЛКП в студии UNIQUE.",
+    }),
   component: UslugiPage,
 });
 
