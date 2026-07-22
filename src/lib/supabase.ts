@@ -79,7 +79,7 @@ export async function submitLead(lead: Lead): Promise<SubmitResult> {
 
   // Best-effort studio notification — never fails the form UX.
   try {
-    await supabase.functions.invoke("send-notification", {
+    const notify = await supabase.functions.invoke("send-notification", {
       body: {
         type: "website_lead",
         to: "info@uniquedetailing.ru",
@@ -94,11 +94,12 @@ export async function submitLead(lead: Lead): Promise<SubmitResult> {
         },
       },
     });
+    void notify;
   } catch {
-    /* ignore */
+    /* ignore email/notify failures */
   }
 
-  return { ok: true, id: typeof data === "string" ? data : undefined };
+  return { ok: true, id: typeof data === "string" ? data : data != null ? String(data) : undefined };
 }
 
 export async function fetchPublicServices(): Promise<PublicService[]> {
