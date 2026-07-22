@@ -2,13 +2,14 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { WORKS } from "@/lib/works";
 import heroVideo from "@/assets/hero.mov.asset.json";
-import { cdnSized } from "@/lib/cdn";
+import { cdnSized, cdnSrcSet, cdnWidth } from "@/lib/cdn";
 import { CdnImage } from "@/components/site/CdnImage";
 
 // Unique, curated imagery for the home page (no image is reused elsewhere).
 const HOME = {
   heroPosterPath: "/portfolio/mercedes-benz-g-63-amg-0.jpg",
   heroPoster: cdnSized("/portfolio/mercedes-benz-g-63-amg-0.jpg", 1440),
+  heroPosterMobile: cdnWidth("/portfolio/mercedes-benz-g-63-amg-0.jpg", 768),
   studio: "/portfolio/rolls-royce-phantom-series-ii-craft-1.jpg",
   // Shared services visual — PPF install craft (matches core offering).
   services: "/ppf/ppf-install-apply.jpg",
@@ -38,6 +39,8 @@ export const Route = createFileRoute("/")({
         href: HOME.heroPoster,
         type: "image/webp",
         fetchpriority: "high",
+        imagesrcset: cdnSrcSet(HOME.heroPosterPath, [768, 1080, 1440]),
+        imagesizes: "100vw",
       },
     ],
   }),
@@ -50,14 +53,21 @@ function HeroVideo() {
 
   useEffect(() => {
     // Paint the poster first; hydrate the heavy MP4 after the browser is idle.
+    // On small viewports, skip autoplaying the MP4 entirely — poster is enough.
+    const isCoarse =
+      typeof window !== "undefined" &&
+      window.matchMedia("(max-width: 768px), (prefers-reduced-motion: reduce)").matches;
+
+    if (isCoarse) return;
+
     const start = () => setActive(true);
     let idleId: number | undefined;
     let timeoutId: number | undefined;
 
     if (typeof window !== "undefined" && "requestIdleCallback" in window) {
-      idleId = window.requestIdleCallback(start, { timeout: 1800 });
+      idleId = window.requestIdleCallback(start, { timeout: 2200 });
     } else {
-      timeoutId = window.setTimeout(start, 900);
+      timeoutId = window.setTimeout(start, 1200);
     }
 
     return () => {
@@ -82,6 +92,8 @@ function HeroVideo() {
     <>
       <img
         src={HOME.heroPoster}
+        srcSet={cdnSrcSet(HOME.heroPosterPath, [768, 1080, 1440])}
+        sizes="100vw"
         alt=""
         className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
           active ? "opacity-0" : "opacity-100"
@@ -97,7 +109,7 @@ function HeroVideo() {
           loop
           playsInline
           preload="none"
-          poster={HOME.heroPoster}
+          poster={HOME.heroPosterMobile}
           className="absolute inset-0 h-full w-full object-cover"
         />
       )}

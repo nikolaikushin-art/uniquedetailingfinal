@@ -63,6 +63,9 @@ const limit = limitArg ? Number(limitArg.split("=")[1]) : Infinity;
 const concurrency = Number(
   process.argv.find((a) => a.startsWith("--concurrency="))?.split("=")[1] || 6,
 );
+const refreshTokenEvery = Number(
+  process.argv.find((a) => a.startsWith("--refresh-every="))?.split("=")[1] || 80,
+);
 
 const TMP = join(ROOT, ".tmp-r2-optimize");
 mkdirSync(TMP, { recursive: true });
@@ -75,6 +78,13 @@ function walkFiles(dir, out = []) {
     else out.push(p);
   }
   return out;
+}
+
+function slugify(brand, model) {
+  return `${brand}-${model}`
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
 }
 
 /** Collect every /portfolio|/ppf|/media|/og-cover path referenced in source. */
@@ -92,38 +102,47 @@ function collectLocalPaths() {
   for (const file of files) {
     const text = readFileSync(file, "utf8");
     for (const m of text.matchAll(re)) paths.add(m[1]);
-    // works.ts builds: `/portfolio/${slug}-0.jpg` etc — expand from slug strings
-    for (const m of text.matchAll(/slug:\s*["']([a-z0-9-]+)["']/gi)) {
-      const slug = m[1];
-      for (const suffix of [
-        "0",
-        "1",
-        "2",
-        "3",
-        "ext-1",
-        "ext-2",
-        "ext-3",
-        "craft-1",
-        "craft-2",
-        "craft-3",
-        "craft-4",
-        "craft-5",
-        "craft-6",
-        "det-1",
-        "det-2",
-        "det-3",
-        "det-4",
-        "det-5",
-        "det-6",
-        "int-1",
-        "int-2",
-        "int-3",
-        "int-4",
-      ]) {
-        paths.add(`/portfolio/${slug}-${suffix}.jpg`);
-      }
+  }
+
+  // works.ts builds gallery URLs from STUDIO_VEHICLES via slugify(brand, model).
+  // Expand the full known suffix set so every portfolio JPEG gets WebP variants.
+  const vehiclesSrc = readFileSync(join(ROOT, "src/lib/studio-vehicles.ts"), "utf8");
+  const brands = [...vehiclesSrc.matchAll(/brand:\s*"([^"]+)"/g)].map((m) => m[1]);
+  const models = [...vehiclesSrc.matchAll(/model:\s*"([^"]+)"/g)].map((m) => m[1]);
+  const count = Math.min(brands.length, models.length);
+  const suffixes = [
+    "0",
+    "1",
+    "2",
+    "3",
+    "ext-1",
+    "ext-2",
+    "ext-3",
+    "craft-1",
+    "craft-2",
+    "craft-3",
+    "craft-4",
+    "craft-5",
+    "craft-6",
+    "det-1",
+    "det-2",
+    "det-3",
+    "det-4",
+    "det-5",
+    "det-6",
+    "int-1",
+    "int-2",
+    "int-3",
+    "int-4",
+    "int-5",
+  ];
+  for (let i = 0; i < count; i++) {
+    const slug = slugify(brands[i], models[i]);
+    for (const suffix of suffixes) {
+      paths.add(`/portfolio/${slug}-${suffix}.jpg`);
     }
   }
+
   return [...paths];
 }
 
@@ -341,24 +360,35 @@ const imagePaths = collectLocalPaths()
 console.log(`Found ${imagePaths.length} image path candidates`);
 console.log(`CDN ${PUBLIC_URL} · widths ${WIDTHS.join(",")} · concurrency ${concurrency}`);
 
-const token = await login();
+let token = await login();
 console.log("Authenticated for presign uploads");
 
 let processed = 0;
 let uploadedVariants = 0;
 let skipped = 0;
 let failed = 0;
+let uploadsSinceRefresh = 0;
 const queue = imagePaths.slice(0, Number.isFinite(limit) ? limit : imagePaths.length);
+
+async function getToken() {
+  if (uploadsSinceRefresh >= refreshTokenEvery) {
+    token = await login();
+    uploadsSinceRefresh = 0;
+    console.log("\nRefreshed presign auth token");
+  }
+  return token;
+}
 
 await mapPool(queue, concurrency, async (localPath) => {
   try {
-    const res = await optimizeImage(token, localPath);
+    const res = await optimizeImage(await getToken(), localPath);
     if (res.skipped) {
       skipped++;
       process.stdout.write(".");
     } else {
       processed++;
       uploadedVariants += res.uploaded || 0;
+      uploadsSinceRefresh += res.uploaded || 0;
       process.stdout.write("+");
     }
   } catch (err) {
