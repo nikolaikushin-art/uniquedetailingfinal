@@ -97,7 +97,8 @@ export const Route = createFileRoute("/kontakty")({
       description:
         "Студия UNIQUE Detailing — Санкт-Петербург, микрорайон Овцино, Петрозаводская улица, 33. Ежедневно с 10:00 до 20:00. info@uniquedetailing.ru",
       path: "/kontakty",
-      ogDescription: "Записаться в студию UNIQUE Detailing в Санкт-Петербурге. Расчёт стоимости и запись онлайн.",
+      ogDescription:
+        "Записаться в студию UNIQUE Detailing в Санкт-Петербурге. Расчёт стоимости и запись онлайн.",
     }),
   component: KontaktyPage,
 });
@@ -128,12 +129,16 @@ function KontaktyPage() {
         comment: String(fd.get("comment") ?? ""),
       });
       if (!result.ok) {
-        setError("Не удалось отправить заявку. Позвоните нам или напишите на info@uniquedetailing.ru.");
+        setError(
+          "Не удалось отправить заявку. Позвоните нам или напишите на info@uniquedetailing.ru.",
+        );
         return;
       }
       setSent(true);
     } catch {
-      setError("Не удалось отправить заявку. Попробуйте ещё раз или напишите на info@uniquedetailing.ru.");
+      setError(
+        "Не удалось отправить заявку. Попробуйте ещё раз или напишите на info@uniquedetailing.ru.",
+      );
     } finally {
       setSubmitting(false);
     }
@@ -293,7 +298,13 @@ function KontaktyPage() {
                       type={String(type)}
                       required={Boolean(required)}
                       autoComplete={
-                        name === "name" ? "name" : name === "phone" ? "tel" : name === "email" ? "email" : "off"
+                        name === "name"
+                          ? "name"
+                          : name === "phone"
+                            ? "tel"
+                            : name === "email"
+                              ? "email"
+                              : "off"
                       }
                       className="w-full border-b border-line bg-transparent p-3 text-ivory outline-none focus:border-ivory"
                     />
@@ -338,7 +349,10 @@ function KontaktyPage() {
                 </div>
 
                 {error ? (
-                  <p className="border border-ember/40 bg-ember/10 px-4 py-3 text-[13px] leading-[1.7] text-ivory" role="alert">
+                  <p
+                    className="border border-ember/40 bg-ember/10 px-4 py-3 text-[13px] leading-[1.7] text-ivory"
+                    role="alert"
+                  >
                     {error}
                   </p>
                 ) : null}
@@ -346,7 +360,10 @@ function KontaktyPage() {
                 <div className="flex flex-wrap items-center justify-between gap-4">
                   <p className="max-w-[320px] text-[11px] leading-[1.6] text-mute-2">
                     Нажимая «Отправить», вы соглашаетесь на{" "}
-                    <Link to="/politika" className="text-mute underline-offset-2 hover:text-ivory hover:underline">
+                    <Link
+                      to="/politika"
+                      className="text-mute underline-offset-2 hover:text-ivory hover:underline"
+                    >
                       обработку персональных данных
                     </Link>
                     .

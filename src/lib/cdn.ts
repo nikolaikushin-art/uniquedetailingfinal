@@ -73,10 +73,7 @@ export function cdnWidth(pathOrUrl: string, width: number): string {
 }
 
 /** `srcSet` string of WebP variants for `<source type="image/webp">` or `<img>`. */
-export function cdnSrcSet(
-  pathOrUrl: string,
-  widths: readonly number[] = CDN_WIDTHS,
-): string {
+export function cdnSrcSet(pathOrUrl: string, widths: readonly number[] = CDN_WIDTHS): string {
   return widths.map((w) => `${cdnWidth(pathOrUrl, w)} ${w}w`).join(", ");
 }
 

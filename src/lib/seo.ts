@@ -12,9 +12,7 @@ export const SITE_URL = (
  */
 export const OG_IMAGE_PATH = "/og-share-1200.jpg";
 export const DEFAULT_OG_IMAGE =
-  cdn(OG_IMAGE_PATH) ||
-  cdn("/og-cover.jpg") ||
-  `${CDN_BASE}/assets/marketing/og-share-1200.jpg`;
+  cdn(OG_IMAGE_PATH) || cdn("/og-cover.jpg") || `${CDN_BASE}/assets/marketing/og-share-1200.jpg`;
 
 export const OG_IMAGE_WIDTH = 1200;
 export const OG_IMAGE_HEIGHT = 630;
@@ -42,7 +40,9 @@ export function absoluteOgImage(image?: string | null): string {
   if (/^https?:\/\//i.test(image)) {
     // Social scrapers often fail on WebP — prefer JPEG/PNG siblings when possible.
     if (/\.webp(\?|$)/i.test(image)) {
-      const jpeg = image.replace(/\.w\d+\.webp(\?.*)?$/i, ".jpg$1").replace(/\.webp(\?.*)?$/i, ".jpg$1");
+      const jpeg = image
+        .replace(/\.w\d+\.webp(\?.*)?$/i, ".jpg$1")
+        .replace(/\.webp(\?.*)?$/i, ".jpg$1");
       return jpeg || DEFAULT_OG_IMAGE;
     }
     return image;

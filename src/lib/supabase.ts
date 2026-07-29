@@ -99,7 +99,10 @@ export async function submitLead(lead: Lead): Promise<SubmitResult> {
     /* ignore email/notify failures */
   }
 
-  return { ok: true, id: typeof data === "string" ? data : data != null ? String(data) : undefined };
+  return {
+    ok: true,
+    id: typeof data === "string" ? data : data != null ? String(data) : undefined,
+  };
 }
 
 export async function fetchPublicServices(): Promise<PublicService[]> {

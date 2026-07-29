@@ -30,8 +30,7 @@ export function CdnImage({
   fallbackWidth,
 }: CdnImageProps) {
   const original = cdnUrl(src);
-  const fallback =
-    fallbackWidth != null ? cdnWidth(src, fallbackWidth) || original : original;
+  const fallback = fallbackWidth != null ? cdnWidth(src, fallbackWidth) || original : original;
   const webpSrcSet = cdnSrcSet(src, widths);
 
   return (

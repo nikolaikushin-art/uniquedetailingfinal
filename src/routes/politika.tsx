@@ -31,9 +31,8 @@ function PolitikaPage() {
             <span className="text-ivory">uniquedetailing.ru</span>.
           </p>
           <p>
-            <span className="text-ivory">Какие данные мы можем получить:</span> имя, телефон,
-            адрес электронной почты, марка и модель автомобиля, выбранная услуга и комментарий к
-            заявке.
+            <span className="text-ivory">Какие данные мы можем получить:</span> имя, телефон, адрес
+            электронной почты, марка и модель автомобиля, выбранная услуга и комментарий к заявке.
           </p>
           <p>
             <span className="text-ivory">Зачем:</span> чтобы связаться с вами, рассчитать стоимость
@@ -45,9 +44,12 @@ function PolitikaPage() {
             вашего запроса на удаление — если иное не требуется законом.
           </p>
           <p>
-            <span className="text-ivory">Ваши права:</span> вы можете запросить уточнение, ограничение
-            обработки или удаление данных, написав на{" "}
-            <a className="text-ivory underline-offset-4 hover:underline" href={`mailto:${CONTACT_EMAIL}`}>
+            <span className="text-ivory">Ваши права:</span> вы можете запросить уточнение,
+            ограничение обработки или удаление данных, написав на{" "}
+            <a
+              className="text-ivory underline-offset-4 hover:underline"
+              href={`mailto:${CONTACT_EMAIL}`}
+            >
               {CONTACT_EMAIL}
             </a>
             .

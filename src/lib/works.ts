@@ -4,6 +4,7 @@
 // keyed by slug, so every card and detail page matches its label.
 import { cdn } from "./cdn";
 import { storyFor } from "./project-stories";
+import { REAL_PORTFOLIO } from "./real-portfolio";
 import { STUDIO_VEHICLES, type StudioVehicle } from "./studio-vehicles";
 
 export type Spec = { label: string; value: string };
@@ -325,7 +326,8 @@ function filmFor(vehicle: StudioVehicle, i: number): string {
 }
 
 export const WORKS: Work[] = STUDIO_VEHICLES.map((vehicle, i) => {
-  const film = filmFor(vehicle, i);
+  const real = REAL_PORTFOLIO[vehicle.slug];
+  const film = real?.film ?? filmFor(vehicle, i);
   // Per-vehicle photo set: 0 = hero/front 3/4, 1 = rear 3/4, 2 = interior, 3 = detail.
   const shot = (n: 0 | 1 | 2 | 3) => cdn(`/portfolio/${vehicle.slug}-${n}.jpg`);
   // Three extra unique exterior angles (front-on, side profile, elevated rear 3/4).
@@ -336,7 +338,7 @@ export const WORKS: Work[] = STUDIO_VEHICLES.map((vehicle, i) => {
   const detail = (n: 1 | 2 | 3 | 4 | 5 | 6) => cdn(`/portfolio/${vehicle.slug}-det-${n}.jpg`);
   // Six craftsmanship stages: prep, wash, correction, PPF, coating, inspection.
   const craft = (n: 1 | 2 | 3 | 4 | 5 | 6) => cdn(`/portfolio/${vehicle.slug}-craft-${n}.jpg`);
-  const gallery = [
+  const gallery = real?.gallery.map(cdn) ?? [
     // 0–5 exterior (6 distinct angles, no repeats)
     shot(0),
     shot(1),
@@ -387,14 +389,15 @@ export const WORKS: Work[] = STUDIO_VEHICLES.map((vehicle, i) => {
     tagline: vehicle.tagline,
     hours: vehicle.hours,
     film,
-    duration: ["5 дней", "7 дней", "9 дней", "11 дней", "14 дней", "18 дней"][i % 6],
-    story: storyFor(vehicle.slug) ?? buildStory(vehicle, film),
-    quote: QUOTES[(hashSlug(vehicle.slug) + i) % QUOTES.length],
-    hero: shot(0),
+    duration:
+      real?.duration ?? ["5 дней", "7 дней", "9 дней", "11 дней", "14 дней", "18 дней"][i % 6],
+    story: real?.story ?? storyFor(vehicle.slug) ?? buildStory(vehicle, film),
+    quote: real?.quote ?? QUOTES[(hashSlug(vehicle.slug) + i) % QUOTES.length],
+    hero: gallery[0] ?? shot(0),
     gallery,
-    works: pick(WORKS_POOL, i, 6),
-    materials: pick(MATERIALS_POOL, i, 4),
-    faqs: pick(FAQS_POOL, i, 4),
+    works: real?.works ?? pick(WORKS_POOL, i, 6),
+    materials: real?.materials ?? pick(MATERIALS_POOL, i, 4),
+    faqs: real?.faqs ?? pick(FAQS_POOL, i, 4),
     year: vehicle.year,
     city: "Санкт-Петербург",
     variant: (i % 4) as 0 | 1 | 2 | 3,

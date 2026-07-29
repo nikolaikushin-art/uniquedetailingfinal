@@ -43,7 +43,9 @@ export const LIFESTYLE_IMAGES = LIFESTYLE_IMAGE_PATHS.map((p) => cdn(p));
 
 export const carImage = (i: number, w = 1440) =>
   cdnSized(
-    CAR_IMAGE_PATHS[((i % CAR_IMAGE_PATHS.length) + CAR_IMAGE_PATHS.length) % CAR_IMAGE_PATHS.length],
+    CAR_IMAGE_PATHS[
+      ((i % CAR_IMAGE_PATHS.length) + CAR_IMAGE_PATHS.length) % CAR_IMAGE_PATHS.length
+    ],
     w,
   );
 export const lifestyleImage = (i: number, w = 1440) =>
@@ -57,7 +59,9 @@ export const lifestyleImage = (i: number, w = 1440) =>
 
 export const carImageSrcSet = (i: number, widths: number[] = [480, 768, 1080, 1440]) =>
   cdnSrcSet(
-    CAR_IMAGE_PATHS[((i % CAR_IMAGE_PATHS.length) + CAR_IMAGE_PATHS.length) % CAR_IMAGE_PATHS.length],
+    CAR_IMAGE_PATHS[
+      ((i % CAR_IMAGE_PATHS.length) + CAR_IMAGE_PATHS.length) % CAR_IMAGE_PATHS.length
+    ],
     widths,
   );
 
