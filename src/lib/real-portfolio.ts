@@ -19,11 +19,14 @@ const GROUPS = [
   ["showcase", 6],
 ] as const;
 
+const IMAGE_VERSION = "cinematic-20260729";
+
 const gallery = (slug: string) =>
   GROUPS.flatMap(([group, count]) =>
     Array.from(
       { length: count },
-      (_, i) => `/portfolio/real/${slug}/${group}-${String(i + 1).padStart(2, "0")}.jpg`,
+      (_, i) =>
+        `/portfolio/real/${slug}/${group}-${String(i + 1).padStart(2, "0")}.jpg?v=${IMAGE_VERSION}`,
     ),
   );
 
